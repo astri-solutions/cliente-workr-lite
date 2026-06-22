@@ -17,24 +17,30 @@
 
   &__logo { height: 24px; }
 
-  &__grid {
+  // Grid do mapa do site
+  &__nav-grid {
     display: grid;
-    grid-template-columns: 1.5fr repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: $spacing-8;
-    margin-bottom: $spacing-12;
+    padding-bottom: $spacing-10;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    margin-bottom: $spacing-10;
 
-    @include respond-down(desktop) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    @include respond-down(tablet) {
-      grid-template-columns: 1fr;
-    }
+    @include respond-down(desktop) { grid-template-columns: repeat(2, 1fr); }
+    @include respond-down(tablet)  { grid-template-columns: 1fr; }
   }
 
-  &__info {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-6;
+  // Grid de informações (endereço, contato, redes)
+  &__info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-8;
+    padding-bottom: $spacing-10;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    margin-bottom: $spacing-10;
+
+    @include respond-down(desktop) { grid-template-columns: repeat(2, 1fr); }
+    @include respond-down(tablet)  { grid-template-columns: 1fr; }
   }
 
   &__block {
@@ -59,12 +65,23 @@
     a { transition: color 0.2s; &:hover { color: var(--color-primary); } }
   }
 
+  &__social-links {
+    display: flex;
+    gap: $spacing-3;
+    margin-top: $spacing-1;
+    a {
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      &:hover { opacity: 1; color: var(--color-primary); }
+      svg { width: 20px; height: 20px; display: block; }
+    }
+  }
+
   &__bottom {
-    padding-top: $spacing-8;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: $spacing-6;
     display: flex;
     flex-direction: column;
-    gap: $spacing-4;
+    gap: $spacing-3;
   }
 
   &__bottom-row {
@@ -81,14 +98,6 @@
     gap: $spacing-4;
     flex-wrap: wrap;
     a { font-size: $font-size-xs; transition: color 0.2s; &:hover { color: var(--color-primary); } }
-  }
-
-  &__social {
-    display: flex;
-    align-items: center;
-    gap: $spacing-3;
-    span { font-size: $font-size-xs; }
-    a { opacity: 0.7; transition: opacity 0.2s; &:hover { opacity: 1; } svg { width: 20px; height: 20px; } }
   }
 
   &__powered {

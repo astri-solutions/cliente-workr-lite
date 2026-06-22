@@ -16,49 +16,52 @@ export function initFooter(config) {
   const legalLinks = (footer.legalLinks || []).map(l =>
     `<a href="${l.href}">${l.label}</a>`).join('');
 
+  const socialLinks = [
+    footer.social.linkedin  !== '#' ? `<a href="${footer.social.linkedin}"  aria-label="LinkedIn"  target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>` : '',
+    footer.social.instagram !== '#' ? `<a href="${footer.social.instagram}" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>` : '',
+    footer.social.facebook  !== '#' ? `<a href="${footer.social.facebook}"  aria-label="Facebook"  target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>` : '',
+  ].filter(Boolean).join('');
+
   el.className = 'site-footer';
   el.innerHTML = `
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <img src="${company.logoNegative}" alt="${company.name}" class="site-footer__logo" />
       </div>
-      <div class="site-footer__grid">
-        <div class="site-footer__info">
-          <div class="site-footer__block">
-            <h4>Endereço</h4>
-            <p class="site-footer__address-text">${footer.address}</p>
-          </div>
-          <div class="site-footer__block">
-            <h4>Entre em Contato</h4>
-            <div class="site-footer__contact-details">
-              <a href="mailto:${footer.email}">${footer.email}</a>
-              <a href="tel:${footer.phone.replace(/\D/g,'')}">${footer.phone}</a>
-              <p>${footer.hours}</p>
-            </div>
-          </div>
-        </div>
+
+      <div class="site-footer__nav-grid">
         ${columns}
       </div>
+
+      <div class="site-footer__info-grid">
+        <div class="site-footer__block">
+          <h4>Endereço</h4>
+          <p class="site-footer__address-text">${footer.address}</p>
+        </div>
+        <div class="site-footer__block">
+          <h4>Entre em Contato</h4>
+          <div class="site-footer__contact-details">
+            <a href="mailto:${footer.email}">${footer.email}</a>
+            <a href="tel:${footer.phone.replace(/\D/g,'')}">${footer.phone}</a>
+            <p>${footer.hours}</p>
+          </div>
+        </div>
+        <div class="site-footer__block">
+          <h4>Redes Sociais</h4>
+          <div class="site-footer__social-links">${socialLinks}</div>
+        </div>
+      </div>
+
       <div class="site-footer__bottom">
         <div class="site-footer__bottom-row site-footer__bottom-row--spread">
           <div class="site-footer__bottom-links">${legalLinks}</div>
-          <div class="site-footer__social">
-            <span>Siga a ${company.nameShort}:</span>
-            ${footer.social.linkedin !== '#' ? `
-            <a href="${footer.social.linkedin}" aria-label="LinkedIn" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/>
-                <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
-              </svg>
-            </a>` : ''}
-          </div>
-        </div>
-        <div class="site-footer__bottom-row site-footer__bottom-row--spread">
-          <span>${footer.copyright}</span>
           <a href="https://astri.solutions" class="site-footer__powered" target="_blank" rel="noopener">
             <span>Powered by</span>
             <img src="/assets/logotipo/logotipo-negative.svg" alt="Astri Solutions" />
           </a>
+        </div>
+        <div class="site-footer__bottom-row site-footer__bottom-row--spread">
+          <span>${footer.copyright}</span>
         </div>
         <p class="site-footer__legal">${footer.legalText || ''}</p>
       </div>
