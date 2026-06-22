@@ -19,10 +19,17 @@
     border-radius: 6px;
     transition: background 0.2s, color 0.2s;
     white-space: nowrap;
+    text-decoration: none;
 
-    &:hover {
-      background: var(--color-surface);
-      color: var(--color-primary);
+    &:hover,
+    .nav-list__item--open > & {
+      background: var(--color-secondary);
+      color: #fff;
+    }
+
+    &--link:hover {
+      background: var(--color-secondary);
+      color: #fff;
     }
   }
 

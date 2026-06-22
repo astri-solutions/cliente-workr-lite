@@ -25,19 +25,38 @@ export function initNav() {
   closeBtn?.addEventListener('click', closeDrawer);
   overlay?.addEventListener('click', closeDrawer);
 
-  // Dropdowns desktop
+  // Dropdowns — hover no desktop, click no mobile
+  const isMobile = () => window.innerWidth < 1024;
+
+  function closeAll() {
+    document.querySelectorAll('.nav-list__item--open').forEach(el => {
+      el.classList.remove('nav-list__item--open');
+      el.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', 'false');
+    });
+  }
+
   triggers.forEach(trigger => {
     const item = trigger.closest('.nav-list__item');
 
+    // Hover (desktop)
+    item.addEventListener('mouseenter', () => {
+      if (isMobile()) return;
+      closeAll();
+      item.classList.add('nav-list__item--open');
+      trigger.setAttribute('aria-expanded', 'true');
+    });
+
+    item.addEventListener('mouseleave', () => {
+      if (isMobile()) return;
+      item.classList.remove('nav-list__item--open');
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+
+    // Click (mobile drawer)
     trigger.addEventListener('click', () => {
+      if (!isMobile()) return;
       const isOpen = item.classList.contains('nav-list__item--open');
-
-      // Fechar todos
-      document.querySelectorAll('.nav-list__item--open').forEach(el => {
-        el.classList.remove('nav-list__item--open');
-        el.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', 'false');
-      });
-
+      closeAll();
       if (!isOpen) {
         item.classList.add('nav-list__item--open');
         trigger.setAttribute('aria-expanded', 'true');
@@ -45,14 +64,9 @@ export function initNav() {
     });
   });
 
-  // Fechar ao clicar fora
+  // Fechar ao clicar fora (mobile)
   document.addEventListener('click', e => {
-    if (!e.target.closest('.nav-list__item')) {
-      document.querySelectorAll('.nav-list__item--open').forEach(el => {
-        el.classList.remove('nav-list__item--open');
-        el.querySelector('[data-nav-trigger]')?.setAttribute('aria-expanded', 'false');
-      });
-    }
+    if (isMobile() && !e.target.closest('.nav-list__item')) closeAll();
   });
 
   // Scroll hide/show

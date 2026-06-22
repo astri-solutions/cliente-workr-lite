@@ -6,6 +6,15 @@ export function initHeader(config) {
   if (!el) return;
 
   const navItems = config.nav.map(item => {
+    if (!item.children || item.children.length === 0) {
+      return `
+        <li class="nav-list__item">
+          <a class="nav-list__trigger nav-list__trigger--link" href="${item.href}">
+            ${item.label}
+          </a>
+        </li>`;
+    }
+
     const children = item.children.map(child =>
       `<li><a class="nav-dropdown__link" href="${child.href}">${child.label}</a></li>`
     ).join('');

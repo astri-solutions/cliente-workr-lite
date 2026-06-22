@@ -18,9 +18,8 @@ export const siteConfig = {
   nav: [
     {
       label: 'A Companhia',
-      children: [
-        { label: 'A Companhia', href: '/a-companhia.html' },
-      ],
+      href:  '/a-companhia.html',
+      children: [],
     },
     {
       label: 'Governança',
