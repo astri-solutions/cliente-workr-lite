@@ -4,7 +4,7 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: $spacing-2;
+  gap: $spacing-1;   // 4px — label colado ao seu input
 
   &__label {
     font-size: $font-size-sm;
@@ -42,7 +42,7 @@
   border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: $spacing-5;
+  gap: $spacing-6;   // 24px — respiro entre os grupos de campo
 }
 
 .contact-success {
