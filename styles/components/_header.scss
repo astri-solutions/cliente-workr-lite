@@ -21,7 +21,7 @@
   }
 
   &__brand { display: flex; align-items: center; flex-shrink: 0; }
-  &__logo  { height: 36px; width: auto; }
+  &__logo  { height: 24px; width: auto; }
 
   &__nav {
     @include respond-down(desktop) {
