@@ -116,4 +116,11 @@
     }
     &:hover::after { opacity: 1; }
   }
+
+  // Tooltips do grupo de idioma: alinhar à direita para não cortar na borda
+  .topbar__lang [data-tooltip]::after {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
 }
