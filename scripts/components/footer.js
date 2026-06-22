@@ -5,13 +5,20 @@ export function initFooter(config) {
 
   const { footer, company } = config;
 
-  const columns = (footer.columns || []).map(col => `
-    <div class="site-footer__block">
-      <h4>${col.title}</h4>
-      <ul>${col.links.map(l =>
-        `<li><a href="${l.href}">${l.label}</a></li>`).join('')}
-      </ul>
-    </div>`).join('');
+  // Usa config.nav como fonte única da árvore de canais
+  const navTree = config.nav || [];
+  const columns = navTree.map(item => {
+    const links = item.children && item.children.length
+      ? item.children
+      : [{ label: item.label, href: item.href }];
+    return `
+      <div class="site-footer__block">
+        <h4>${item.label}</h4>
+        <ul>${links.map(l =>
+          `<li><a href="${l.href}">${l.label}</a></li>`).join('')}
+        </ul>
+      </div>`;
+  }).join('');
 
   const legalLinks = (footer.legalLinks || []).map(l =>
     `<a href="${l.href}">${l.label}</a>`).join('');

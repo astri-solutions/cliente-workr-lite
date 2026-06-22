@@ -57,37 +57,6 @@ export const siteConfig = {
       instagram: '#',
       facebook:  '#',
     },
-    columns: [
-      {
-        title: 'A Companhia',
-        links: [
-          { label: 'A Companhia', href: '/a-companhia.html' },
-        ],
-      },
-      {
-        title: 'Governança',
-        links: [
-          { label: 'Composição Acionária', href: '/composicao-acionaria.html' },
-          { label: 'Atas e Assembleias',   href: '/atas-assembleias.html'     },
-          { label: 'Documentos CVM',       href: '/documentos-cvm.html'       },
-        ],
-      },
-      {
-        title: 'Investidores',
-        links: [
-          { label: 'Central de Resultados', href: '/central-resultados.html' },
-          { label: 'Calendário de Eventos', href: '/calendario-eventos.html' },
-          { label: 'Ratings',               href: '/ratings.html'            },
-        ],
-      },
-      {
-        title: 'Contato',
-        links: [
-          { label: 'Fale com RI', href: '/fale-com-ri.html' },
-          { label: 'Mailing',     href: '/mailing.html'     },
-        ],
-      },
-    ],
     legalLinks: [
       { label: 'Termos e Condições',      href: '/termos-e-condicoes.html'      },
       { label: 'Política de Privacidade', href: '/politica-de-privacidade.html' },
