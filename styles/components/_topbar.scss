@@ -4,9 +4,11 @@
 .topbar {
   background-color: var(--color-secondary);
   color: var(--color-text-inverse);
-  font-size: $font-size-sm;
+  font-size: 12px;
   position: relative;
   z-index: 100;
+
+  @include respond-down(desktop) { display: none; }
 
   &__inner {
     @include container;
