@@ -1,0 +1,111 @@
+// styles/components/_footer.scss
+@use '../abstracts' as *;
+
+.site-footer {
+  background: var(--color-secondary);
+  color: rgba(255,255,255,0.8);
+  font-size: $font-size-sm;
+  margin-top: auto;
+
+  &__inner { @include container; padding-block: $spacing-16; }
+
+  &__top {
+    margin-bottom: $spacing-12;
+    padding-bottom: $spacing-8;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  &__logo { height: 40px; }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(4, 1fr);
+    gap: $spacing-8;
+    margin-bottom: $spacing-12;
+
+    @include respond-down(desktop) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @include respond-down(tablet) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-6;
+  }
+
+  &__block {
+    h4 {
+      color: #fff;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: $spacing-3;
+    }
+    ul { display: flex; flex-direction: column; gap: $spacing-2; }
+    a { transition: color 0.2s; &:hover { color: var(--color-primary); } }
+  }
+
+  &__address-text { line-height: $line-height-relaxed; }
+
+  &__contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+    a { transition: color 0.2s; &:hover { color: var(--color-primary); } }
+  }
+
+  &__bottom {
+    padding-top: $spacing-8;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+  }
+
+  &__bottom-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+    flex-wrap: wrap;
+
+    &--spread { justify-content: space-between; }
+  }
+
+  &__bottom-links {
+    display: flex;
+    gap: $spacing-4;
+    flex-wrap: wrap;
+    a { font-size: $font-size-xs; transition: color 0.2s; &:hover { color: var(--color-primary); } }
+  }
+
+  &__social {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+    span { font-size: $font-size-xs; }
+    a { opacity: 0.7; transition: opacity 0.2s; &:hover { opacity: 1; } svg { width: 20px; height: 20px; } }
+  }
+
+  &__powered {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    opacity: 0.5;
+    font-size: $font-size-xs;
+    transition: opacity 0.2s;
+    &:hover { opacity: 0.9; }
+    img { height: 18px; }
+  }
+
+  &__legal {
+    font-size: $font-size-xs;
+    opacity: 0.5;
+    line-height: $line-height-relaxed;
+    max-width: 80ch;
+  }
+}

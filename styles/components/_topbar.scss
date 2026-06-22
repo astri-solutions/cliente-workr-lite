@@ -1,0 +1,119 @@
+// styles/components/_topbar.scss
+@use '../abstracts' as *;
+
+.topbar {
+  background-color: var(--color-secondary);
+  color: var(--color-text-inverse);
+  font-size: $font-size-sm;
+  position: relative;
+  z-index: 100;
+
+  &__inner {
+    @include container;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-4;
+    height: 40px;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+
+    @include respond-down(desktop) { display: none; }
+  }
+
+  &__link {
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    &:hover, &--active { opacity: 1; }
+  }
+
+  &__sep {
+    width: 1px;
+    height: 16px;
+    background: rgba(255,255,255,0.3);
+  }
+
+  &__tickers {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+  }
+
+  &__ticker {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    &-symbol { font-weight: $font-weight-bold; }
+    &-change {
+      display: flex; align-items: center; gap: 2px;
+      &--up   { color: #6EFFA3; }
+      &--down { color: #FF8080; }
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+
+    @include respond-down(tablet) { display: none; }
+  }
+
+  &__a11y {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    &-label { font-size: $font-size-xs; opacity: 0.7; }
+    &-btn {
+      color: inherit;
+      opacity: 0.7;
+      padding: 2px 4px;
+      transition: opacity 0.2s;
+      &:hover { opacity: 1; }
+      svg { width: 16px; height: 16px; }
+    }
+  }
+
+  &__lang {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    &-btn {
+      color: inherit;
+      opacity: 0.6;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      transition: opacity 0.2s;
+      &.is-active, &:hover { opacity: 1; }
+    }
+    &-sep { opacity: 0.3; }
+  }
+
+  // Tooltip
+  [data-tooltip] {
+    position: relative;
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-gray-900, #171717);
+      color: #fff;
+      font-size: 11px;
+      white-space: nowrap;
+      padding: 3px 8px;
+      border-radius: 4px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+    }
+    &:hover::after { opacity: 1; }
+  }
+}

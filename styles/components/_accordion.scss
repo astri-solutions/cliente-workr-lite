@@ -1,0 +1,36 @@
+// styles/components/_accordion.scss
+@use '../abstracts' as *;
+
+.accordion {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+
+  &__item { border-bottom: 1px solid var(--color-border); &:last-child { border-bottom: none; } }
+
+  &__trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-4;
+    padding: $spacing-5 $spacing-6;
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    text-align: left;
+    transition: background 0.15s;
+    &:hover { background: var(--color-surface); }
+    svg { flex-shrink: 0; width: 20px; height: 20px; transition: transform 0.25s; }
+  }
+
+  &__item--open &__trigger svg { transform: rotate(180deg); }
+
+  &__body {
+    display: none;
+    padding: 0 $spacing-6 $spacing-6;
+    color: var(--color-text-muted);
+    line-height: $line-height-relaxed;
+  }
+
+  &__item--open &__body { display: block; }
+}

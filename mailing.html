@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mailing — Workr Lite Teste RI</title>
+    <meta name="description" content="Cadastre-se para receber comunicados e informações de RI." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles/main.scss" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <div id="site-topbar"></div>
+    <header id="site-header"></header>
+
+    <main>
+      <section class="page-header" aria-labelledby="page-title">
+        <img class="page-header__bg"
+             src="https://images.unsplash.com/photo-1423666639383-1a2235e15c3f?auto=format&fit=crop&w=1920&q=80"
+             alt="" aria-hidden="true" />
+        <div class="page-header__overlay" aria-hidden="true"></div>
+        <div class="page-header__inner">
+          <ol class="page-header__breadcrumb" aria-label="Você está em">
+            <li><a href="/">Home</a></li>
+            <li><a href="/mailing.html">Contato</a></li>
+            <li aria-current="page">Mailing</li>
+          </ol>
+          <h1 id="page-title" class="page-header__title">Mailing</h1>
+          <p class="page-header__lede">Cadastre-se para receber comunicados e informações de RI.</p>
+        </div>
+      </section>
+
+      <section class="page-section" aria-label="Mailing">
+  <div class="page-section__container">
+    <div class="contact-form-card" style="max-width:560px">
+      <h2>Cadastre-se no Mailing</h2>
+      <p style="color:var(--color-text-muted)">Receba as principais informações e comunicados de RI diretamente no seu e-mail.</p>
+      <form data-contact-form novalidate>
+        <div class="field"><label class="field__label" for="mail-name">Nome *</label><input class="field__input" type="text" id="mail-name" name="name" placeholder="Seu nome completo" required /></div>
+        <div class="field"><label class="field__label" for="mail-email">E-mail *</label><input class="field__input" type="email" id="mail-email" name="email" placeholder="seu@email.com" required /></div>
+        <div class="field"><label class="field__label" for="mail-profile">Perfil</label><div class="select"><select id="mail-profile" name="profile" class="field__input"><option value="">Selecione</option><option>Investidor Pessoa Física</option><option>Investidor Institucional</option><option>Analista</option><option>Imprensa</option><option>Outro</option></select></div></div>
+        <button class="btn btn--secondary btn--lg" type="submit">Cadastrar</button>
+        <div class="contact-success" data-form-success aria-live="polite"><p>Cadastro realizado com sucesso!</p></div>
+      </form>
+    </div>
+  </div>
+</section>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <div class="search-overlay" id="search-overlay" aria-hidden="true" aria-label="Busca" role="dialog">
+      <div class="search-overlay__inner">
+        <div class="search-overlay__box">
+          <svg class="search-overlay__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-overlay__input" type="search" placeholder="O que você está procurando?" aria-label="Campo de busca" data-search-input />
+          <button class="search-overlay__close" type="button" aria-label="Fechar busca" data-search-close>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <p class="search-overlay__hint">Pressione <kbd>ESC</kbd> para fechar</p>
+      </div>
+    </div>
+
+    <script type="module" src="/scripts/page.js"></script>
+  </body>
+</html>
