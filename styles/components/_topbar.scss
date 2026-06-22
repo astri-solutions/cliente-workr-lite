@@ -101,7 +101,7 @@
     &::after {
       content: attr(data-tooltip);
       position: absolute;
-      bottom: calc(100% + 6px);
+      top: calc(100% + 6px);
       left: 50%;
       transform: translateX(-50%);
       background: var(--color-gray-900, #171717);
@@ -122,5 +122,6 @@
     left: auto;
     right: 0;
     transform: none;
+    top: calc(100% + 6px);
   }
 }
