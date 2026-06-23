@@ -47,6 +47,7 @@ export const siteConfig = {
   ],
 
   footer: {
+    variant: 'full', // 'full' | 'simple'
     address:   'Av. Brigadeiro Faria Lima, 2.277, 17º andar — São Paulo/SP, CEP 01452-000',
     email:     'workrlite@astri.com',
     phone:     '(11) 1234-5678',
