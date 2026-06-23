@@ -183,6 +183,20 @@
   &:first-child { border-top: 1px solid var(--color-border); }
   &:hover { background: var(--color-surface); }
 
+  @include respond-down(tablet) {
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+    .doc-row__date {
+      width: 100%;
+      min-width: unset;
+    }
+
+    .doc-row__sep { display: none; }
+
+    .doc-row__title { flex: 1; }
+  }
+
   &__date {
     font-size: $font-size-sm;
     color: var(--color-text-muted);
