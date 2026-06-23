@@ -123,44 +123,16 @@
     }
   }
 
-  &__drawer-utils {
+  &__drawer-lang {
     display: none;
     @include respond-down(desktop) {
       display: flex;
-      flex-direction: column;
-      gap: $spacing-4;
-      padding-top: $spacing-5;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin-top: $spacing-2;
+      flex-direction: row;
+      align-items: center;
+      gap: $spacing-2;
+      margin-top: $spacing-3;
+      margin-bottom: $spacing-4;
     }
-  }
-
-  &__drawer-util-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.5;
-    margin-bottom: $spacing-2;
-    display: block;
-    color: #fff;
-  }
-
-  &__drawer-util-controls {
-    display: flex;
-    align-items: center;
-    gap: $spacing-3;
-  }
-
-  &__drawer-a11y,
-  &__drawer-lang {
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__drawer-lang {
-    flex-direction: row;
-    align-items: center;
-    gap: $spacing-2;
   }
 
   &__drawer-close {

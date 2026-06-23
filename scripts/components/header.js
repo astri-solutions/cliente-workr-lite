@@ -63,33 +63,15 @@ export function initHeader(config) {
           <input type="search" placeholder="Buscar..." aria-label="Buscar" data-search-input />
         </div>
 
-        <ul class="nav-list">${navItems}</ul>
-
-        <div class="site-header__drawer-utils">
-          <div class="site-header__drawer-a11y" role="group" aria-label="Acessibilidade">
-            <span class="site-header__drawer-util-label">Acessibilidade</span>
-            <div class="site-header__drawer-util-controls">
-              <button class="topbar__a11y-btn" type="button" data-a11y="contrast"
-                aria-label="Alternar alto contraste" data-tooltip="Alto contraste">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-                  <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>
-                </svg>
-              </button>
-              <button class="topbar__a11y-btn" type="button" data-a11y="font-up"
-                aria-label="Aumentar fonte" data-tooltip="Aumentar texto">A<sup>+</sup></button>
-              <button class="topbar__a11y-btn" type="button" data-a11y="font-down"
-                aria-label="Reduzir fonte" data-tooltip="Reduzir texto">A<sup>-</sup></button>
-            </div>
-          </div>
-          <div class="site-header__drawer-lang" role="group" aria-label="Idioma">
-            <button class="topbar__lang-btn is-active" type="button"
-              data-lang="pt" aria-pressed="true">PT</button>
-            <span aria-hidden="true" style="opacity:0.3">|</span>
-            <button class="topbar__lang-btn" type="button"
-              data-lang="en" aria-pressed="false">EN</button>
-          </div>
+        <div class="site-header__drawer-lang" role="group" aria-label="Idioma">
+          <button class="topbar__lang-btn is-active" type="button"
+            data-lang="pt" aria-pressed="true">PT</button>
+          <span aria-hidden="true" style="opacity:0.3">|</span>
+          <button class="topbar__lang-btn" type="button"
+            data-lang="en" aria-pressed="false">EN</button>
         </div>
+
+        <ul class="nav-list">${navItems}</ul>
       </nav>
       <div class="site-header__actions">
         <button class="site-header__search" type="button"
