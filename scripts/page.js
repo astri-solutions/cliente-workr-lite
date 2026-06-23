@@ -4,6 +4,7 @@ import { initTopbar }  from './components/topbar.js';
 import { initHeader }  from './components/header.js';
 import { initFooter }  from './components/footer.js';
 import { initSearch }  from './components/search.js';
+import './icons.js';
 import './reveal.js';
 import './accordion.js';
 import './counter.js';
