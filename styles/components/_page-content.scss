@@ -93,11 +93,12 @@
 
 .stat-item {
   &__value {
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: $font-weight-bold;
     color: var(--color-primary);
     line-height: 1;
-    margin-bottom: $spacing-2;
+    letter-spacing: -0.02em;
+    margin-bottom: $spacing-3;
   }
 
   &__label {

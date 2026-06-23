@@ -6,6 +6,7 @@ import { initFooter }  from './components/footer.js';
 import { initSearch }  from './components/search.js';
 import './reveal.js';
 import './accordion.js';
+import './counter.js';
 
 // Inicializa todos os componentes compartilhados
 initTopbar(siteConfig);
