@@ -120,10 +120,23 @@
 
   // ── Variante simples ──────────────────────────────────────────────────────────
   &--simple {
-    .site-footer__inner { padding-block: $spacing-6; }
+    .site-footer__inner { padding-block: $spacing-5; }
+
     .site-footer__top,
     .site-footer__nav-grid,
-    .site-footer__info-grid { display: none; }
-    .site-footer__bottom { padding-top: 0; border-top: none; }
+    .site-footer__info-grid,
+    .site-footer__legal { display: none; }
+
+    .site-footer__bottom {
+      padding-top: 0;
+      border-top: none;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: $spacing-4;
+    }
+
+    .site-footer__bottom-row { display: contents; }
   }
 }
