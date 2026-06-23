@@ -2,10 +2,10 @@
 @use '../abstracts' as *;
 
 .page-section {
-  padding-block: $spacing-16;
+  padding-block: 112px;
 
-  @include respond-down(desktop) { padding-block: $spacing-12; }
-  @include respond-down(tablet)  { padding-block: $spacing-10; }
+  @include respond-down(desktop) { padding-block: 80px; }
+  @include respond-down(tablet)  { padding-block: 56px; }
 
   &--alt { background: var(--color-tertiary, #F6F6F0); }
   &--dark { background: var(--color-secondary); color: #fff; }
