@@ -179,7 +179,7 @@ function renderCalendar() {
 
   // Past events
   pastEl.innerHTML = `
-    <div class="filter-bar" style="margin-bottom:32px">
+    <div class="filter-bar" style="margin-bottom:24px">
       <h2 class="past-events__title">Eventos realizados</h2>
       <div class="filter-bar__group">
         <span class="filter-bar__label">Filtrar por:</span>
@@ -187,10 +187,9 @@ function renderCalendar() {
       </div>
     </div>
     ${PAST_EVENTS.map(e => `
-      <div class="event-past-item">
-        <span class="event-past-item__date">${e.date}</span>
-        <span class="event-past-item__sep">-</span>
-        <span class="event-past-item__label">${e.label}</span>
+      <div class="doc-row">
+        <span class="doc-row__date">${e.date}</span>
+        <span class="doc-row__title">${e.label}</span>
         <a href="${e.href}" class="doc-row__pdf" aria-label="Baixar PDF">${PDF_ICON}</a>
       </div>`).join('')}`;
 }
