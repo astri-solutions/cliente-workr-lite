@@ -1,0 +1,200 @@
+// styles/components/_calendar.scss
+@use '../abstracts' as *;
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-4;
+  margin-bottom: $spacing-6;
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    min-width: 200px;
+    text-align: center;
+  }
+
+  &__controls { display: flex; gap: $spacing-2; }
+
+  &__btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+
+    &:hover { background: var(--color-surface); border-color: var(--color-secondary); }
+  }
+}
+
+// ── Widget (calendar + event list side by side) ────────────────────────────────
+.cal-widget {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: $spacing-8;
+  align-items: flex-start;
+  margin-bottom: $spacing-6;
+
+  @include respond-down(desktop) { grid-template-columns: 1fr; }
+}
+
+// ── Grid ──────────────────────────────────────────────────────────────────────
+.cal-grid {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 360px;
+
+  @include respond-down(tablet) { min-width: unset; width: 100%; }
+}
+
+.cal-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--color-secondary);
+  color: #fff;
+
+  &__day {
+    padding: $spacing-2;
+    text-align: center;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.cal-body {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-cell {
+  padding: $spacing-2 $spacing-1;
+  text-align: center;
+  font-size: $font-size-sm;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  min-height: 52px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  &:nth-child(7n) { border-right: none; }
+
+  &--out { color: var(--color-text-muted); opacity: 0.4; }
+
+  &__dots { display: flex; gap: 3px; justify-content: center; }
+  &__dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+}
+
+// ── Event list (next to calendar) ─────────────────────────────────────────────
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-4;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: $font-size-sm;
+  background: var(--color-bg);
+
+  &__date {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  &__sep { color: var(--color-text-muted); }
+
+  &__label { flex: 1; color: var(--color-text); }
+}
+
+// ── Legend ────────────────────────────────────────────────────────────────────
+.event-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+  margin-bottom: $spacing-12;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    font-size: $font-size-xs;
+    color: var(--color-text-muted);
+  }
+
+  &__dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+}
+
+// ── Past events ───────────────────────────────────────────────────────────────
+.past-events__title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--color-secondary);
+}
+
+.event-past-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4 $spacing-5;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin-bottom: $spacing-3;
+  font-size: $font-size-sm;
+  background: var(--color-bg);
+  transition: background 0.15s;
+
+  &:hover { background: var(--color-surface); }
+
+  &__date {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    min-width: 90px;
+    text-align: center;
+  }
+
+  &__sep { color: var(--color-text-muted); }
+  &__label { flex: 1; color: var(--color-text); }
+}
+
+// ── Results table ─────────────────────────────────────────────────────────────
+.results-table {
+  th:first-child, td:first-child { text-align: left; }
+  th:not(:first-child), td:not(:first-child) { text-align: center; }
+
+  &__file {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+    padding: $spacing-1;
+    border-radius: 4px;
+
+    &:hover { color: var(--color-secondary); }
+
+    svg { width: 32px; height: 32px; display: block; }
+  }
+}

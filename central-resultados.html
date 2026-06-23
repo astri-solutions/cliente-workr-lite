@@ -32,23 +32,70 @@
         </div>
       </section>
 
-      <section class="page-section" aria-label="Filtros">
-  <div class="page-section__container">
-    <div class="page-filter">
-      <div class="page-filter__fields">
-        <div class="select">
-          <select id="filter-year" aria-label="Ano"><option value="">Todos os anos</option></select>
+      <section class="page-section" aria-labelledby="resultados-title">
+        <div class="page-section__container">
+
+          <div class="filter-bar">
+            <h2 id="resultados-title" class="results-table__section-title">Resultados</h2>
+            <div class="filter-bar__group">
+              <span class="filter-bar__label">Filtrar por:</span>
+              <div class="select results-select">
+                <select aria-label="Ano">
+                  <option>2026</option>
+                  <option>2025</option>
+                  <option>2024</option>
+                  <option>2023</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="data-table-wrap">
+            <table class="data-table results-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>1T26</th>
+                  <th>2T26</th>
+                  <th>3T26</th>
+                  <th>4T26</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ITR/DFP</td>
+                  <td><a href="#" class="results-table__file" aria-label="ITR/DFP 1T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="ITR/DFP 2T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="ITR/DFP 3T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="ITR/DFP 4T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                </tr>
+                <tr>
+                  <td>Replay da conferência</td>
+                  <td><a href="#" class="results-table__file" aria-label="Replay 1T26"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polygon points="10 8 16 11 10 14 10 8" fill="currentColor" stroke="none"/></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Replay 2T26"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polygon points="10 8 16 11 10 14 10 8" fill="currentColor" stroke="none"/></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Replay 3T26"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polygon points="10 8 16 11 10 14 10 8" fill="currentColor" stroke="none"/></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Replay 4T26"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polygon points="10 8 16 11 10 14 10 8" fill="currentColor" stroke="none"/></svg></a></td>
+                </tr>
+                <tr>
+                  <td>Apresentação de Resultados</td>
+                  <td><a href="#" class="results-table__file" aria-label="Apresentação 1T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Apresentação 2T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Apresentação 3T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Apresentação 4T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                </tr>
+                <tr>
+                  <td>Relatório da administração</td>
+                  <td><a href="#" class="results-table__file" aria-label="Relatório 1T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Relatório 2T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Relatório 3T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                  <td><a href="#" class="results-table__file" aria-label="Relatório 4T26 PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><text x="6" y="18" font-size="5" fill="currentColor" stroke="none" font-weight="600">PDF</text></svg></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
-        <div class="select">
-          <select id="filter-type" aria-label="Tipo"><option value="">Todos os tipos</option></select>
-        </div>
-      </div>
-    </div>
-    <div class="doc-list" id="doc-list">
-      <!-- Renderizado via JS -->
-    </div>
-  </div>
-</section>
+      </section>
     </main>
 
     <footer id="site-footer"></footer>
