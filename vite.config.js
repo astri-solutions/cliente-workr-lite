@@ -21,6 +21,8 @@ export default defineConfig({
         termosCondicoes:      resolve(__dirname, 'termos-e-condicoes.html'),
         politicaPrivacidade:  resolve(__dirname, 'politica-de-privacidade.html'),
         definicaoCookies:     resolve(__dirname, 'definicao-de-cookies.html'),
+        homeV2:               resolve(__dirname, 'home-v2.html'),
+        icons:                resolve(__dirname, 'icons.html'),
       },
     },
   },
