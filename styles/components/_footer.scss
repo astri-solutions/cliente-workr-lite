@@ -117,4 +117,13 @@
     line-height: $line-height-relaxed;
     max-width: 80ch;
   }
+
+  // ── Variante simples ──────────────────────────────────────────────────────────
+  &--simple {
+    .site-footer__inner { padding-block: $spacing-6; }
+    .site-footer__top,
+    .site-footer__nav-grid,
+    .site-footer__info-grid { display: none; }
+    .site-footer__bottom { padding-top: 0; border-top: none; }
+  }
 }
