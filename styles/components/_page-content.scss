@@ -184,7 +184,7 @@
   &:hover { background: var(--color-surface); }
 
   &__date {
-    font-size: $font-size-xs;
+    font-size: $font-size-sm;
     color: var(--color-text-muted);
     white-space: nowrap;
     min-width: 90px;
