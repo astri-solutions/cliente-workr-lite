@@ -4,14 +4,16 @@
 // ── Tag pill ──────────────────────────────────────────────────────────────────
 .tag-pill {
   display: inline-block;
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
+  align-self: flex-start;
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   padding: 3px 12px;
   border-radius: 99px;
   margin-bottom: $spacing-4;
   letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 // ── Highlight cards ───────────────────────────────────────────────────────────
