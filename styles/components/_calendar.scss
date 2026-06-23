@@ -4,7 +4,7 @@
 // ── Main layout: cal-box + event-list-wrap side by side ───────────────────────
 #event-calendar {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: $spacing-8;
   align-items: flex-start;
   margin-bottom: $spacing-6;
@@ -17,10 +17,7 @@
   border: 1px solid var(--color-border);
   border-radius: 8px;
   overflow: hidden;
-  min-width: 340px;
-  width: 340px;
-
-  @include respond-down(desktop) { width: 100%; min-width: unset; }
+  @include respond-down(desktop) { width: 100%; }
 
   &__nav {
     display: flex;
