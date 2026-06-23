@@ -4,7 +4,7 @@
 .site-footer {
   background: #083e49;
   color: rgba(255,255,255,0.8);
-  font-size: $font-size-sm;
+  font-size: 12px;
   margin-top: auto;
 
   &__inner { @include container; padding-block: $spacing-16; }
