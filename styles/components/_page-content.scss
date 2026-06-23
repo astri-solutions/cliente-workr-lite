@@ -40,6 +40,7 @@
 .stats-section {
   position: relative;
   overflow: hidden;
+  min-height: 420px;
 
   &__bg {
     position: absolute;
@@ -65,7 +66,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: $spacing-10;
+    gap: $spacing-12;
   }
 
   &__badge {
