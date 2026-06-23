@@ -32,24 +32,26 @@
         </div>
       </section>
 
-      <section class="page-section" aria-label="Dados">
-  <div class="page-section__container">
-    <div class="data-table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Valor</th>
-            <th>Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="3">PREENCHER_DEPOIS</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+      <section class="page-section" aria-label="Calendário">
+        <div class="page-section__container">
+
+          <!-- Calendar widget -->
+          <div class="event-calendar" id="event-calendar">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Legend -->
+          <div class="event-legend" id="event-legend">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Past events -->
+          <div class="past-events" id="past-events">
+            <!-- Rendered by JS -->
+          </div>
+
+        </div>
+      </section>
     </main>
 
     <footer id="site-footer"></footer>
@@ -68,5 +70,6 @@
     </div>
 
     <script type="module" src="/scripts/page.js"></script>
+    <script type="module" src="/scripts/calendar.js"></script>
   </body>
 </html>
