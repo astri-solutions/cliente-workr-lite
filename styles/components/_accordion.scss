@@ -26,11 +26,51 @@
   &__item--open &__trigger svg { transform: rotate(180deg); }
 
   &__body {
-    display: none;
-    padding: 0 $spacing-6 $spacing-6;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 $spacing-6;
     color: var(--color-text-muted);
     line-height: $line-height-relaxed;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
   }
 
-  &__item--open &__body { display: block; }
+  &__item--open &__body {
+    max-height: 2000px;
+    padding: $spacing-1 $spacing-6 $spacing-6;
+  }
+
+  // Primary variant
+  &--primary {
+    border: none;
+
+    .accordion__item {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      margin-bottom: $spacing-3;
+      overflow: hidden;
+
+      &:last-child { margin-bottom: 0; }
+    }
+
+    .accordion__item--open .accordion__trigger {
+      background: var(--color-primary);
+      color: var(--color-on-primary, #fff);
+
+      svg { color: var(--color-on-primary, #fff); }
+    }
+
+    .accordion__item--open .accordion__trigger svg {
+      transform: rotate(45deg);
+    }
+
+    .accordion__item--open .accordion__body {
+      max-height: 2000px;
+      border: 2px solid var(--color-primary);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background: var(--color-background, #fff);
+      padding: $spacing-5;
+      color: var(--color-text-muted);
+    }
+  }
 }

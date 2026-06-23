@@ -1,0 +1,168 @@
+// styles/components/_page-content.scss
+@use '../abstracts' as *;
+
+// --- Tag Pill ---
+.tag-pill {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  font-size: $font-size-xs;
+  padding: 3px 12px;
+  border-radius: 99px;
+  display: inline-block;
+  margin-bottom: $spacing-4;
+
+  &--white {
+    border-color: #fff;
+    color: #fff;
+  }
+}
+
+// --- Highlight Cards ---
+.highlight-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-4;
+  margin-top: $spacing-6;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.highlight-card {
+  padding: $spacing-5;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+  color: var(--color-text-muted);
+}
+
+// --- Stat Grid ---
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-8;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-item {
+  text-align: center;
+
+  &__value {
+    display: block;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: $font-weight-bold;
+    color: var(--color-primary);
+    line-height: $line-height-tight;
+    margin-bottom: $spacing-2;
+  }
+
+  &__label {
+    display: block;
+    font-size: $font-size-xs;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: $line-height-relaxed;
+  }
+}
+
+// --- Doc Row ---
+.doc-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-4 $spacing-5;
+  border-bottom: 1px solid var(--color-border);
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--color-surface);
+  }
+
+  &__date {
+    font-size: $font-size-xs;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    min-width: 90px;
+  }
+
+  &__title {
+    flex: 1;
+    font-size: $font-size-sm;
+  }
+
+  &__pdf {
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}
+
+// --- Doc Group ---
+.doc-group {
+  margin-bottom: $spacing-10;
+
+  &__title {
+    color: var(--color-primary);
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-5;
+  }
+}
+
+// --- Shareholder Summary ---
+.shareholder-summary {
+  background: var(--color-surface);
+  border-radius: 8px;
+  padding: $spacing-4 $spacing-6;
+  margin-bottom: $spacing-6;
+  display: flex;
+  gap: $spacing-8;
+  flex-wrap: wrap;
+  font-size: $font-size-sm;
+
+  &__item {
+    display: flex;
+    gap: $spacing-2;
+    align-items: center;
+
+    strong:first-child {
+      color: var(--color-secondary);
+    }
+  }
+}
+
+// --- Filter Bar ---
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+  margin-bottom: $spacing-8;
+
+  &__group {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+  }
+
+  &__label {
+    font-size: $font-size-sm;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+}

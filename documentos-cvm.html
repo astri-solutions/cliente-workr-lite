@@ -32,23 +32,82 @@
         </div>
       </section>
 
-      <section class="page-section" aria-label="Filtros">
-  <div class="page-section__container">
-    <div class="page-filter">
-      <div class="page-filter__fields">
-        <div class="select">
-          <select id="filter-year" aria-label="Ano"><option value="">Todos os anos</option></select>
+      <section class="page-section" aria-label="Documentos CVM" data-reveal>
+        <div class="page-section__container">
+          <div class="filter-bar">
+            <div class="filter-bar__group">
+              <span class="filter-bar__label">Filtrar por:</span>
+              <div class="select">
+                <select aria-label="Ano">
+                  <option>2026</option>
+                  <option>2025</option>
+                  <option>2024</option>
+                  <option>2023</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion accordion--primary">
+            <!-- Item 1: aberto -->
+            <div class="accordion__item accordion__item--open">
+              <button class="accordion__trigger" type="button" aria-expanded="true">
+                Informações Trimestrais (ITR)
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion__body">
+                <div class="doc-row">
+                  <span class="doc-row__date">14/05/2026</span>
+                  <span class="doc-row__title">ITR — 1T26 — Informações Trimestrais</span>
+                  <a href="#" class="doc-row__pdf" aria-label="Baixar PDF">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false">
+                Formulário de Referência
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion__body"></div>
+            </div>
+            <!-- Item 3 -->
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false">
+                Formulário Cadastral
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion__body"></div>
+            </div>
+            <!-- Item 4 -->
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false">
+                Fatos Relevantes
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion__body"></div>
+            </div>
+            <!-- Item 5 -->
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false">
+                Comunicados ao Mercado
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion__body"></div>
+            </div>
+            <!-- Item 6 -->
+            <div class="accordion__item">
+              <button class="accordion__trigger" type="button" aria-expanded="false">
+                Aviso aos Acionistas
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion__body"></div>
+            </div>
+          </div>
         </div>
-        <div class="select">
-          <select id="filter-type" aria-label="Tipo"><option value="">Todos os tipos</option></select>
-        </div>
-      </div>
-    </div>
-    <div class="doc-list" id="doc-list">
-      <!-- Renderizado via JS -->
-    </div>
-  </div>
-</section>
+      </section>
     </main>
 
     <footer id="site-footer"></footer>
