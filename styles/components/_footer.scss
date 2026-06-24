@@ -91,6 +91,12 @@
     flex-wrap: wrap;
 
     &--spread { justify-content: space-between; }
+
+    @include respond-down(tablet) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-3;
+    }
   }
 
   &__bottom-links {
@@ -98,6 +104,11 @@
     gap: $spacing-4;
     flex-wrap: wrap;
     a { font-size: $font-size-xs; transition: color 0.2s; &:hover { color: var(--color-primary); } }
+
+    @include respond-down(tablet) {
+      flex-direction: column;
+      gap: $spacing-2;
+    }
   }
 
   &__powered {
