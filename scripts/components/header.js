@@ -31,11 +31,16 @@ export function initHeader(config) {
   }).join('');
 
   const hideNav = el.hasAttribute('data-hide-nav');
-  el.className = 'site-header';
+  const variant = config.header?.variant || 'navbar-default';
+  const isDark   = variant === 'navbar-dark';
+  const isBlur   = variant === 'navbar-blur';
+  const logoSrc  = (isDark || isBlur) ? config.company.logoNegative : config.company.logoOriginal;
+
+  el.className = `site-header site-header--${variant}`;
   el.innerHTML = `
     <div class="site-header__inner">
       <a href="/" class="site-header__brand" aria-label="${config.company.name}">
-        <img src="${config.company.logoOriginal}" alt="${config.company.name}"
+        <img src="${logoSrc}" alt="${config.company.name}"
              class="site-header__logo" />
       </a>
       <nav class="site-header__nav${hideNav ? ' site-header__nav--hidden' : ''}" id="site-nav" data-nav aria-label="Principal">
@@ -93,7 +98,7 @@ export function initHeader(config) {
     const observer = new MutationObserver(() => {
       logoEl.src = html.dataset.contrast === 'on'
         ? config.company.logoContrast
-        : config.company.logoOriginal;
+        : logoSrc;
     });
     observer.observe(html, { attributes: true, attributeFilter: ['data-contrast'] });
   }
