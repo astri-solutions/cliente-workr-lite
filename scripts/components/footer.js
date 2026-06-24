@@ -61,16 +61,12 @@ export function initFooter(config) {
       </div>
 
       <div class="site-footer__bottom">
-        <div class="site-footer__bottom-row site-footer__bottom-row--spread">
-          <div class="site-footer__bottom-links">${legalLinks}</div>
-          <a href="https://astri.solutions" class="site-footer__powered" target="_blank" rel="noopener">
-            <span>Powered by</span>
-            <img src="/assets/logotipo/logotipo-negative.svg" alt="Astri Solutions" />
-          </a>
-        </div>
-        <div class="site-footer__bottom-row site-footer__bottom-row--spread">
-          <span>${footer.copyright}</span>
-        </div>
+        <div class="site-footer__bottom-links">${legalLinks}</div>
+        <span class="site-footer__copyright">${footer.copyright}</span>
+        <a href="https://astri.solutions" class="site-footer__powered" target="_blank" rel="noopener">
+          <span>Powered by</span>
+          <img src="/assets/logotipo/logotipo-negative.svg" alt="Astri Solutions" />
+        </a>
         <p class="site-footer__legal">${footer.legalText || ''}</p>
       </div>
     </div>`;
