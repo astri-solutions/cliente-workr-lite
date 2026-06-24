@@ -186,11 +186,15 @@ function renderCalendar() {
       </div>
     </div>
     ${PAST_EVENTS.map(e => `
-      <div class="doc-row">
+      <a href="${e.href}" class="doc-row" aria-label="${e.label}">
         <span class="doc-row__date">${e.date}</span>
+        <span class="doc-row__sep">-</span>
         <span class="doc-row__title">${e.label}</span>
-        <a href="${e.href}" class="doc-row__pdf" aria-label="Baixar PDF">${PDF_ICON}</a>
-      </div>`).join('')}`;
+        <span class="doc-row__pdf" aria-hidden="true">
+          <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
+          <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
+        </span>
+      </a>`).join('')}`;
 }
 
 renderCalendar();
