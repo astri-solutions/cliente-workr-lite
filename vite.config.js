@@ -22,6 +22,7 @@ export default defineConfig({
         politicaPrivacidade:  resolve(__dirname, 'politica-de-privacidade.html'),
         definicaoCookies:     resolve(__dirname, 'definicao-de-cookies.html'),
         homeV2:               resolve(__dirname, 'home-v2.html'),
+        homeSideBar:          resolve(__dirname, 'home-side-bar.html'),
         icons:                resolve(__dirname, 'icons.html'),
       },
     },
