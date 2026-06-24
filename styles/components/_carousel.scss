@@ -60,6 +60,14 @@
     padding-block: $spacing-12;
   }
 
+  &__logo {
+    height: 36px;
+    width: auto;
+    margin-bottom: $spacing-2;
+
+    @include respond-down(tablet) { height: 28px; }
+  }
+
   &__title {
     font-size: clamp($font-size-2xl, 4vw, 48px);
     font-weight: $font-weight-bold;

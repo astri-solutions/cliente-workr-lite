@@ -30,6 +30,7 @@ export function initHeader(config) {
       </li>`;
   }).join('');
 
+  const hideNav = el.hasAttribute('data-hide-nav');
   el.className = 'site-header';
   el.innerHTML = `
     <div class="site-header__inner">
@@ -37,7 +38,7 @@ export function initHeader(config) {
         <img src="${config.company.logoOriginal}" alt="${config.company.name}"
              class="site-header__logo" />
       </a>
-      <nav class="site-header__nav" id="site-nav" data-nav aria-label="Principal">
+      <nav class="site-header__nav${hideNav ? ' site-header__nav--hidden' : ''}" id="site-nav" data-nav aria-label="Principal">
         <div class="site-header__drawer-top">
           <img src="${config.company.logoNegative}" alt="${config.company.name}"
                class="site-header__drawer-logo" />
@@ -65,7 +66,7 @@ export function initHeader(config) {
 
         <ul class="nav-list">${navItems}</ul>
       </nav>
-      <div class="site-header__actions">
+      ${hideNav ? '' : `<div class="site-header__actions">
         <button class="site-header__search" type="button"
           aria-label="Buscar" data-search-toggle>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -79,7 +80,7 @@ export function initHeader(config) {
           aria-controls="site-nav" data-nav-hamburger>
           <span></span><span></span><span></span>
         </button>
-      </div>
+      </div>`}
     </div>
     <div class="site-header__overlay" data-nav-overlay aria-hidden="true"></div>`;
 
