@@ -36,8 +36,15 @@
   &__chevron {
     width: 14px;
     height: 14px;
-    transition: transform 0.25s;
+    transition: transform 0.25s, filter 0.2s;
     flex-shrink: 0;
+    // bitmap icon is black — invert to white on teal background
+    filter: brightness(0) invert(0);
+  }
+
+  &__trigger:hover &__chevron,
+  &__item--open > &__trigger &__chevron {
+    filter: brightness(0) invert(1);
   }
 
   &__item--open &__chevron { transform: rotate(180deg); }
