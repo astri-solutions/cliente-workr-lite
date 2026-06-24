@@ -298,5 +298,7 @@
   }
 }
 
-// Compensate fixed navbar-blur pushing content down
-body:has(.site-header--navbar-blur) main { padding-top: 72px; }
+// navbar-blur is fixed over content — no padding needed on main
+body:has(.site-header--navbar-blur) .site-header--navbar-blur {
+  top: 0;
+}
