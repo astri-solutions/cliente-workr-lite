@@ -216,20 +216,21 @@
   }
 
   &__pdf {
-    opacity: 0.7;
-    transition: opacity 0.2s, filter 0.2s;
+    transition: filter 0.2s;
     display: flex;
     align-items: center;
     padding: $spacing-1;
     border-radius: 4px;
 
-    &:hover { opacity: 1; }
-
     svg, img {
-      width: 20px;
-      height: 20px;
+      width: 32px;
+      height: 32px;
       display: block;
-      filter: invert(26%) sepia(57%) saturate(700%) hue-rotate(152deg) brightness(87%) contrast(100%);
+      filter: brightness(0) invert(23%) sepia(72%) saturate(641%) hue-rotate(153deg) brightness(88%) contrast(96%);
+    }
+
+    &:hover svg, &:hover img {
+      filter: brightness(0) invert(23%) sepia(72%) saturate(800%) hue-rotate(153deg) brightness(100%) contrast(100%);
     }
   }
 }
@@ -239,7 +240,7 @@
   margin-bottom: $spacing-10;
 
   &__title {
-    color: var(--color-primary);
+    color: var(--color-secondary);
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
     margin-bottom: $spacing-5;

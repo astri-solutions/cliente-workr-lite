@@ -265,10 +265,10 @@
       height: 32px;
       display: block;
       // tint bitmap icons to secondary color (#0b5b68)
-      filter: invert(26%) sepia(57%) saturate(700%) hue-rotate(152deg) brightness(87%) contrast(100%);
+      filter: brightness(0) invert(23%) sepia(72%) saturate(641%) hue-rotate(153deg) brightness(88%) contrast(96%);
     }
 
-    &:hover img, &:hover svg { filter: invert(26%) sepia(57%) saturate(900%) hue-rotate(152deg) brightness(100%) contrast(100%); }
+    &:hover img, &:hover svg { filter: brightness(0) invert(23%) sepia(72%) saturate(800%) hue-rotate(153deg) brightness(100%) contrast(100%); }
 
     &--empty {
       opacity: 0.3;
