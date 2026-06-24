@@ -58,6 +58,17 @@
         &:hover { background: rgba(255,255,255,0.1); color: #fff; }
       }
 
+      .nav-list__chevron {
+        filter: brightness(0) invert(1);
+        opacity: 0.8;
+      }
+
+      .nav-list__trigger:hover .nav-list__chevron,
+      .nav-list__item--open > .nav-list__trigger .nav-list__chevron {
+        filter: brightness(0) invert(1);
+        opacity: 1;
+      }
+
       .nav-dropdown {
         position: static;
         opacity: 1;
@@ -137,8 +148,13 @@
 
   &__drawer-close {
     color: rgba(255,255,255,0.8);
-    svg, img { width: 24px; height: 24px; }
-    &:hover { color: #fff; opacity: 0.8; }
+    svg, img {
+      width: 24px;
+      height: 24px;
+      filter: brightness(0) invert(1);
+      opacity: 0.8;
+    }
+    &:hover svg, &:hover img { opacity: 1; }
   }
 
   &__actions {
