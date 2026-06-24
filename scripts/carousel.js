@@ -36,8 +36,7 @@ function renderCarousel() {
           <img class="carousel__bg" src="${s.img}" alt="" aria-hidden="true" />
           <div class="carousel__overlay" aria-hidden="true"></div>
           <div class="carousel__body">
-            <img class="carousel__logo" src="${siteConfig.company.logoNegative}" alt="${siteConfig.company.name}" />
-            <h1 class="carousel__title">${s.title}</h1>
+<h1 class="carousel__title">${s.title}</h1>
             <p class="carousel__subtitle">${s.subtitle}</p>
             <a href="${s.cta.href}" class="carousel__cta">${s.cta.label}</a>
           </div>
