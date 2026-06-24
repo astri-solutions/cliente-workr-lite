@@ -256,11 +256,24 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-text-muted);
-    transition: color 0.2s;
     padding: $spacing-1;
     border-radius: 4px;
-    &:hover { color: var(--color-secondary); }
-    svg { width: 32px; height: 32px; display: block; }
+    transition: opacity 0.2s, filter 0.2s;
+
+    img, svg {
+      width: 32px;
+      height: 32px;
+      display: block;
+      // tint bitmap icons to secondary color (#0b5b68)
+      filter: invert(26%) sepia(57%) saturate(700%) hue-rotate(152deg) brightness(87%) contrast(100%);
+    }
+
+    &:hover img, &:hover svg { filter: invert(26%) sepia(57%) saturate(900%) hue-rotate(152deg) brightness(100%) contrast(100%); }
+
+    &--empty {
+      opacity: 0.3;
+      pointer-events: none;
+      cursor: default;
+    }
   }
 }
