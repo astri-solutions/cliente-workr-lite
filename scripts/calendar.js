@@ -50,10 +50,9 @@ function outlookUrl(e) {
   return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(e.label)}&startdt=${dt}&enddt=${dt}&allday=true`;
 }
 
-const PDF_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-// Colored brand icons
-const GMAIL_ICON = `<svg viewBox="0 0 48 48" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M6 40h6V23.8L4 18v18c0 2.2 1.8 4 4 4"/><path fill="#34A853" d="M36 40h6c2.2 0 4-1.8 4-4V18l-10 5.8"/><path fill="#4A90D9" d="M36 8l-12 8.7L12 8H6v10l18 10.4L42 18V8"/><path fill="#FBBC04" d="M4 18l8 5.8V8H6c-1.1 0-2 .9-2 2v8"/><path fill="#EA4335" d="M42 8h-6v15.8L44 18v-8c0-1.1-.9-2-2-2"/></svg>`;
-const OUTLOOK_ICON = `<svg viewBox="0 0 48 48" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="34" x="2" y="7" rx="2" fill="#0072C6"/><rect width="18" height="22" x="28" y="13" rx="1" fill="#fff"/><rect width="18" height="22" x="28" y="13" rx="1" fill="none" stroke="#0072C6" stroke-width="1"/><path d="M28 13l10 9 10-9" fill="none" stroke="#0072C6" stroke-width="1.5"/><ellipse cx="15" cy="24" rx="6" ry="7" fill="#fff"/></svg>`;
+const PDF_ICON    = `<img src="/assets/icons/pdf.svg"     width="20" height="20" aria-hidden="true" alt="">`;
+const GMAIL_ICON   = `<img src="/assets/icons/gmail.svg"   width="20" height="20" aria-hidden="true" alt="">`;
+const OUTLOOK_ICON = `<img src="/assets/icons/outlook.svg" width="20" height="20" aria-hidden="true" alt="">`;
 
 // Tooltip
 let tooltip = null;
@@ -135,11 +134,11 @@ function renderCalendar() {
     <div class="cal-box">
       <div class="cal-box__nav">
         <button class="cal-nav__btn" id="cal-prev" aria-label="Mês anterior">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+          <img src="/assets/icons/chevron-left.svg" width="16" height="16" aria-hidden="true" alt="">
         </button>
         <span class="cal-box__title">${MONTHS_PT[currentMonth]} / ${currentYear}</span>
         <button class="cal-nav__btn" id="cal-next" aria-label="Próximo mês">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+          <img src="/assets/icons/chevron-right.svg" width="16" height="16" aria-hidden="true" alt="">
         </button>
       </div>
       <div class="cal-header">

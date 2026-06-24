@@ -137,8 +137,8 @@
 
   &__drawer-close {
     color: rgba(255,255,255,0.8);
-    svg { width: 24px; height: 24px; }
-    &:hover { color: #fff; }
+    svg, img { width: 24px; height: 24px; }
+    &:hover { color: #fff; opacity: 0.8; }
   }
 
   &__actions {

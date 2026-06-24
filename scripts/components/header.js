@@ -24,11 +24,7 @@ export function initHeader(config) {
         <button class="nav-list__trigger" type="button"
           aria-haspopup="true" aria-expanded="false" data-nav-trigger>
           ${item.label}
-          <svg class="nav-list__chevron" viewBox="0 0 16 16" fill="none"
-            stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="4 6 8 10 12 6"/>
-          </svg>
+          <img class="nav-list__chevron" src="/assets/icons/chevron-down.svg" width="16" height="16" aria-hidden="true" alt="">
         </button>
         <ul class="nav-dropdown">${children}</ul>
       </li>`;
@@ -47,11 +43,7 @@ export function initHeader(config) {
                class="site-header__drawer-logo" />
           <button class="site-header__drawer-close" type="button"
             aria-label="Fechar menu" data-nav-close>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"/>
-              <line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
+            <img src="/assets/icons/close.svg" width="24" height="24" aria-hidden="true" alt="">
           </button>
         </div>
 

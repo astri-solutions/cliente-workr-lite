@@ -43,7 +43,7 @@ function renderCarousel() {
     </div>
     <div class="carousel__controls" aria-label="Navegação do carrossel">
       <button class="carousel__btn carousel__btn--prev" id="carousel-prev" aria-label="Slide anterior">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+        <img src="/assets/icons/chevron-left.svg" width="20" height="20" aria-hidden="true" alt="">
       </button>
       <div class="carousel__dots" role="tablist" aria-label="Slides">
         ${SLIDES.map((_, i) => `
@@ -51,7 +51,7 @@ function renderCarousel() {
         `).join('')}
       </div>
       <button class="carousel__btn carousel__btn--next" id="carousel-next" aria-label="Próximo slide">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9 18 15 12 9 6"/></svg>
+        <img src="/assets/icons/chevron-right.svg" width="20" height="20" aria-hidden="true" alt="">
       </button>
     </div>`;
 

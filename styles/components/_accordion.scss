@@ -25,7 +25,7 @@
 
     &:hover { background: var(--color-surface); }
 
-    svg {
+    svg, img {
       flex-shrink: 0;
       width: 20px;
       height: 20px;
@@ -34,7 +34,8 @@
   }
 
   // Chevron rotation for default variant
-  &__item--open &__trigger svg { transform: rotate(180deg); }
+  &__item--open &__trigger svg,
+  &__item--open &__trigger img { transform: rotate(180deg); }
 
   &__body {
     max-height: 0;
@@ -77,14 +78,14 @@
       &:hover { background: var(--color-primary-light); }
 
       // + icon → rotate 45deg to form ×
-      svg { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+      svg, img { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     }
 
     .accordion__item--open .accordion__trigger {
       background: var(--color-primary);
       color: var(--color-on-primary);
 
-      svg { transform: rotate(45deg); }
+      svg, img { transform: rotate(45deg); }
     }
 
     .accordion__body {
