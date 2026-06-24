@@ -31,7 +31,7 @@ export function initHeader(config) {
   }).join('');
 
   const hideNav = el.hasAttribute('data-hide-nav');
-  const variant = config.header?.variant || 'navbar-default';
+  const variant = el.dataset.navbarVariant || config.header?.variant || 'navbar-default';
   const isDark   = variant === 'navbar-dark';
   const isBlur   = variant === 'navbar-blur';
   const logoSrc  = (isDark || isBlur) ? config.company.logoNegative : config.company.logoOriginal;
