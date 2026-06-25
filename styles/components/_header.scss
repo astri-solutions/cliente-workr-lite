@@ -259,10 +259,13 @@
     top: 40px;
     left: 0;
     right: 0;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border-bottom-color: rgba(255,255,255,0.2);
+    transition: transform 0.3s, box-shadow 0.3s, top 0.2s ease, background 0.3s;
+
+    &.is-scrolled { top: 0; }
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(6px) saturate(130%);
+    -webkit-backdrop-filter: blur(6px) saturate(130%);
+    border-bottom-color: rgba(255,255,255,0.12);
 
     .site-header__search { color: rgba(255,255,255,0.8); &:hover { color: #fff; } }
     .site-header__hamburger span { background: rgba(255,255,255,0.9); }
@@ -280,9 +283,10 @@
     }
 
     &.is-scrolled {
-      background: rgba(11,91,104,0.82);
-      backdrop-filter: blur(20px) saturate(200%);
-      -webkit-backdrop-filter: blur(20px) saturate(200%);
+      top: 0;
+      background: rgba(11,91,104,0.75);
+      backdrop-filter: blur(12px) saturate(160%);
+      -webkit-backdrop-filter: blur(12px) saturate(160%);
       border-bottom-color: rgba(255,255,255,0.15);
       box-shadow: 0 2px 16px rgba(0,0,0,0.2);
     }
