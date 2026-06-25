@@ -256,6 +256,7 @@
   // ── Variant: navbar-blur ──────────────────────────────────────────────────────
   &--navbar-blur {
     position: fixed;
+    top: 40px;
     left: 0;
     right: 0;
     background: rgba(255,255,255,0.15);
@@ -298,7 +299,3 @@
   }
 }
 
-// navbar-blur is fixed over content — no padding needed on main
-body:has(.site-header--navbar-blur) .site-header--navbar-blur {
-  top: 0;
-}
