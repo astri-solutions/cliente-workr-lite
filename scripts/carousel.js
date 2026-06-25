@@ -1,33 +1,47 @@
 // scripts/carousel.js
 import { siteConfig } from './site.config.js';
 
-const SLIDES = [
+const SLIDES_DEFAULT = [
   {
-    img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80',
-    title: 'Relações com Investidores',
+    img:      '/assets/img/banners/banner-full.jpg',
+    title:    'Relações com Investidores',
     subtitle: 'Transparência e acesso às informações financeiras da companhia.',
-    cta: { label: 'Central de Resultados', href: '/central-resultados.html' },
+    cta:      { label: 'Central de Resultados', href: '/central-resultados.html' },
+  },
+];
+
+const SLIDES_V2 = [
+  {
+    img:      '/assets/img/banners/banner-01.jpg',
+    title:    'Relações com Investidores',
+    subtitle: 'Transparência e acesso às informações financeiras da companhia.',
+    cta:      { label: 'Central de Resultados', href: '/central-resultados.html' },
   },
   {
-    img: 'https://images.unsplash.com/photo-1611974955409-f0c5c1d31b0b?auto=format&fit=crop&w=1920&q=80',
-    title: 'Resultados Financeiros',
+    img:      '/assets/img/banners/banner-02.jpg',
+    title:    'Resultados Financeiros',
     subtitle: 'Acesse os relatórios trimestrais, apresentações e demonstrações financeiras.',
-    cta: { label: 'Ver Resultados', href: '/central-resultados.html' },
+    cta:      { label: 'Ver Resultados', href: '/central-resultados.html' },
   },
   {
-    img: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=1920&q=80',
-    title: 'Calendário de Eventos',
+    img:      '/assets/img/banners/banner-03.jpg',
+    title:    'Calendário de Eventos',
     subtitle: 'Fique por dentro dos próximos eventos e teleconferências de resultados.',
-    cta: { label: 'Ver Calendário', href: '/calendario-eventos.html' },
+    cta:      { label: 'Ver Calendário', href: '/calendario-eventos.html' },
   },
 ];
 
 let current = 0;
 let autoplayTimer = null;
+let SLIDES = [];
 
 function renderCarousel() {
   const el = document.getElementById('home-carousel');
   if (!el) return;
+
+  // Pick slide set based on data-slides attribute on the carousel element
+  const slideSet = el.dataset.slides;
+  SLIDES = slideSet === 'v2' ? SLIDES_V2 : SLIDES_DEFAULT;
 
   el.innerHTML = `
     <div class="carousel__track" id="carousel-track">
@@ -36,7 +50,7 @@ function renderCarousel() {
           <img class="carousel__bg" src="${s.img}" alt="" aria-hidden="true" />
           <div class="carousel__overlay" aria-hidden="true"></div>
           <div class="carousel__body">
-<h1 class="carousel__title">${s.title}</h1>
+            <h1 class="carousel__title">${s.title}</h1>
             <p class="carousel__subtitle">${s.subtitle}</p>
             <a href="${s.cta.href}" class="carousel__cta">${s.cta.label}</a>
           </div>
