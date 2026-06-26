@@ -9,6 +9,7 @@
 
   &--alt { background: var(--color-tertiary, #F6F6F0); }
   &--dark { background: var(--color-secondary); color: #fff; }
+  &--flush-top { padding-top: 40px; }
 
   &__container { @include container; }
 
