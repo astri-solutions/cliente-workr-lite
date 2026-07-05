@@ -5,19 +5,43 @@ export function initTopbar(config) {
   const el = document.getElementById('site-topbar');
   if (!el) return;
 
-  const tickers = config.tickers.map((t, i) => `
-    <div class="topbar__ticker${i === 0 ? ' is-active' : ''}" data-topbar-ticker>
-      <span class="topbar__ticker-symbol">${t.symbol}</span>
-      <span class="topbar__ticker-dot" aria-hidden="true">·</span>
-      <span class="topbar__ticker-price">${t.price}</span>
-      <span class="topbar__ticker-change topbar__ticker-change--${t.direction}"
-        aria-label="${t.direction === 'up' ? 'Alta' : 'Baixa'} de ${t.change}">
-        <svg viewBox="0 0 10 10" width="8" height="8" fill="currentColor" aria-hidden="true">
-          <path d="${t.direction === 'up' ? 'M5 2 9 8H1z' : 'M5 8 9 2H1z'}"/>
-        </svg>
-        ${t.change}
-      </span>
-    </div>`).join('');
+  // Suporte ao novo formato ticker.type / ticker.items (retro-compatível com tickers[])
+  const ticker = config.ticker ?? {};
+  const tickerType = ticker.type ?? 'static';
+  const tickerItems = ticker.items ?? config.tickers ?? [];
+
+  let tickersHtml = '';
+
+  if (tickerType === 'iframe' && ticker.iframeUrl) {
+    // Widget externo (ex.: Enfoque cotação)
+    tickersHtml = `
+      <div class="topbar__ticker-iframe-wrap" aria-label="Cotação">
+        <iframe
+          src="${ticker.iframeUrl}"
+          class="topbar__ticker-iframe"
+          title="Cotação"
+          loading="lazy"
+          frameborder="0"
+          scrolling="no"
+          tabindex="-1"
+        ></iframe>
+      </div>`;
+  } else {
+    // Ticker estático (valores de site.config.js)
+    tickersHtml = tickerItems.map((t, i) => `
+      <div class="topbar__ticker${i === 0 ? ' is-active' : ''}" data-topbar-ticker>
+        <span class="topbar__ticker-symbol">${t.symbol}</span>
+        <span class="topbar__ticker-dot" aria-hidden="true">·</span>
+        <span class="topbar__ticker-price">${t.price}</span>
+        <span class="topbar__ticker-change topbar__ticker-change--${t.direction}"
+          aria-label="${t.direction === 'up' ? 'Alta' : 'Baixa'} de ${t.change}">
+          <svg viewBox="0 0 10 10" width="8" height="8" fill="currentColor" aria-hidden="true">
+            <path d="${t.direction === 'up' ? 'M5 2 9 8H1z' : 'M5 8 9 2H1z'}"/>
+          </svg>
+          ${t.change}
+        </span>
+      </div>`).join('');
+  }
 
   el.className = 'topbar';
   el.setAttribute('role', 'navigation');
@@ -30,7 +54,7 @@ export function initTopbar(config) {
         <a href="#" class="topbar__link">Institucional</a>
       </div>
       <div class="topbar__tickers" aria-label="Cotação" aria-live="polite">
-        ${tickers}
+        ${tickersHtml}
       </div>
       <div class="topbar__right">
         <div class="topbar__a11y" role="group" aria-label="Acessibilidade">

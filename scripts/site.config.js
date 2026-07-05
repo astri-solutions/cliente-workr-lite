@@ -1,6 +1,6 @@
 // scripts/site.config.js
-// Este arquivo é gerado/substituído pelo Workr Lite CMS ao publicar um portal.
-// Todos os campos marcados com ← são injetados automaticamente pelo CMS.
+// Este arquivo é gerado/substituído pelo Workr Lite CMS ao criar um novo portal.
+// Todos os campos marcados com ← são injetados automaticamente na criação do portal.
 export const siteConfig = {
 
   company: {
@@ -28,9 +28,15 @@ export const siteConfig = {
   },
 
   // Ticker de cotação.
-  tickers: [
-    { symbol: 'WKLA3', price: 'R$ 00,00', change: '0,00%', direction: 'up' },
-  ],
+  // type 'static' → valores definidos em items[] (placeholder).
+  // type 'iframe'  → embed do widget Enfoque via iframeUrl.
+  ticker: {
+    type:      'static',  // ← ticker.type ('static' | 'iframe')
+    iframeUrl: '',        // ← ticker.iframeUrl (URL Enfoque)
+    items: [
+      { symbol: 'WKLA3', price: 'R$ 00,00', change: '0,00%', direction: 'up' },
+    ],
+  },
 
   nav: [
     {
