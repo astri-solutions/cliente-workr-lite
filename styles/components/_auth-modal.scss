@@ -167,41 +167,77 @@
 
 // ── Navbar lock button ────────────────────────────────────────────────────────
 .site-header__lock {
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
   color: var(--color-text-muted);
-  padding: $spacing-2;
+  padding: $spacing-2 $spacing-3;
   border-radius: 6px;
   transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
 
-  svg { width: 20px; height: 20px; display: block; }
-  &:hover { color: var(--color-secondary); }
+  svg { width: 18px; height: 18px; flex-shrink: 0; }
+  &:hover { color: var(--color-secondary); background: var(--color-surface); }
 
-  &.is-authenticated {
-    color: var(--color-secondary);
+  &.is-authenticated { color: var(--color-secondary); }
+}
 
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      right: 4px;
-      width: 7px;
-      height: 7px;
-      background: var(--color-primary);
-      border-radius: 50%;
-      border: 1.5px solid var(--color-bg);
-    }
-  }
+// Label text next to the lock icon
+.site-header__lock-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  line-height: 1;
 }
 
 // Lock button overrides per navbar variant
 .site-header--navbar-dark,
 .site-header--navbar-blur {
   .site-header__lock {
-    color: rgba(255, 255, 255, 0.7);
-    &:hover { color: #fff; }
+    color: rgba(255, 255, 255, 0.75);
+    &:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+    &.is-authenticated { color: rgba(255, 255, 255, 0.95); }
+  }
+}
+
+// ── Drawer lock section (mobile only) ────────────────────────────────────────
+.site-header__drawer-lock {
+  display: none;
+
+  @include respond-down(desktop) {
+    display: block;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: $spacing-4;
+    margin-top: $spacing-2;
+  }
+
+  .site-header__lock {
+    width: 100%;
+    justify-content: flex-start;
+    color: rgba(255, 255, 255, 0.85);
+    padding: $spacing-3 $spacing-2;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: $spacing-3;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+      opacity: 0.8;
+    }
+
+    span { font-size: $font-size-sm; color: rgba(255, 255, 255, 0.9); }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      svg { opacity: 1; }
+      span { color: #fff; }
+    }
 
     &.is-authenticated {
-      color: rgba(255, 255, 255, 0.95);
+      svg { filter: brightness(0) saturate(100%) invert(75%) sepia(60%) saturate(400%) hue-rotate(80deg) brightness(110%); opacity: 1; }
+      span { color: #fff; font-weight: $font-weight-semibold; }
     }
   }
 }

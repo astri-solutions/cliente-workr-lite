@@ -16,6 +16,10 @@ function lockIconSVG(open) {
       </svg>`;
 }
 
+function lockBtnHTML(auth) {
+  return `${lockIconSVG(auth)}<span class="site-header__lock-label">Área Restrita</span>`;
+}
+
 function buildNavItem(item, restricted) {
   if (!item.children || item.children.length === 0) {
     return `
@@ -52,7 +56,14 @@ function syncLockButton() {
   const auth = isAuthenticated();
   btn.classList.toggle('is-authenticated', auth);
   btn.setAttribute('aria-label', auth ? 'Área Restrita — você está conectado' : 'Área Restrita — fazer login');
-  btn.innerHTML = lockIconSVG(auth);
+  btn.innerHTML = lockBtnHTML(auth);
+
+  // Sync mobile drawer lock item
+  const drawerLock = document.querySelector('[data-drawer-lock]');
+  if (drawerLock) {
+    drawerLock.innerHTML = `${lockIconSVG(auth)}<span>Área Restrita</span>`;
+    drawerLock.classList.toggle('is-authenticated', auth);
+  }
 
   const existing = document.getElementById('auth-dropdown');
   if (existing) existing.remove();
@@ -102,6 +113,7 @@ export function initHeader(config) {
   const isDark  = variant === 'navbar-dark';
   const isBlur  = variant === 'navbar-blur';
   const logoSrc = (isDark || isBlur) ? config.company.logoNegative : config.company.logoOriginal;
+  const auth    = isAuthenticated();
 
   el.className = `site-header site-header--${variant}`;
   el.innerHTML = `
@@ -129,6 +141,12 @@ export function initHeader(config) {
           <button class="topbar__lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
         </div>
         <ul class="nav-list">${navItems}</ul>
+        <div class="site-header__drawer-lock">
+          <button class="site-header__lock site-header__lock--drawer${auth ? ' is-authenticated' : ''}"
+            type="button" aria-label="Área Restrita" data-drawer-lock data-lock-toggle>
+            ${lockBtnHTML(auth)}
+          </button>
+        </div>
       </nav>
       ${hideNav ? '' : `<div class="site-header__actions">
         <button class="site-header__search" type="button" aria-label="Buscar" data-search-toggle>
@@ -138,8 +156,9 @@ export function initHeader(config) {
           </svg>
         </button>
         <div class="site-header__lock-wrap" style="position:relative">
-          <button class="site-header__lock" type="button" aria-label="Área Restrita — fazer login" data-lock-toggle>
-            ${lockIconSVG(isAuthenticated())}
+          <button class="site-header__lock" type="button"
+            aria-label="Área Restrita — fazer login" data-lock-toggle>
+            ${lockBtnHTML(auth)}
           </button>
         </div>
         <button class="site-header__hamburger" type="button" aria-label="Abrir menu"
@@ -154,13 +173,17 @@ export function initHeader(config) {
   syncRestrictedItems();
   syncLockButton();
 
-  el.querySelector('[data-lock-toggle]')?.addEventListener('click', () => {
-    if (isAuthenticated()) {
-      const dropdown = document.getElementById('auth-dropdown');
-      if (dropdown) dropdown.classList.toggle('is-open');
-    } else {
-      openModal();
-    }
+  // All lock toggle buttons (desktop + drawer)
+  el.querySelectorAll('[data-lock-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (isAuthenticated()) {
+        // Only desktop wrap has dropdown
+        const dropdown = document.getElementById('auth-dropdown');
+        if (dropdown) dropdown.classList.toggle('is-open');
+      } else {
+        openModal();
+      }
+    });
   });
 
   document.addEventListener('click', e => {
