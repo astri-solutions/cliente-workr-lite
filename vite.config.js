@@ -23,6 +23,7 @@ export default defineConfig({
         definicaoCookies:     resolve(__dirname, 'definicao-de-cookies.html'),
         homeV2:               resolve(__dirname, 'home-v2.html'),
         homeSideBar:          resolve(__dirname, 'home-side-bar.html'),
+        areaRestrita:         resolve(__dirname, 'area-restrita.html'),
         icons:                resolve(__dirname, 'icons.html'),
       },
     },

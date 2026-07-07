@@ -50,6 +50,19 @@ export const siteConfig = {
     variant: 'navbar-default', // 'navbar-default' | 'navbar-dark' | 'navbar-blur'
   },
 
+  // Nav items only visible after login (área restrita)
+  restrictedNav: [
+    {
+      label: 'Área Restrita',
+      children: [
+        { label: 'Relatórios Exclusivos',        href: '/area-restrita.html' },
+        { label: 'Apresentações a Investidores', href: '/area-restrita.html' },
+        { label: 'Acordos de Acionistas',        href: '/area-restrita.html' },
+        { label: 'Documentos Confidenciais',     href: '/area-restrita.html' },
+      ],
+    },
+  ],
+
   footer: {
     variant: 'simple', // 'full' | 'simple'
     address:   'Av. Brigadeiro Faria Lima, 2.277, 17º andar — São Paulo/SP, CEP 01452-000',
