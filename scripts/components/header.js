@@ -51,20 +51,23 @@ function syncRestrictedItems() {
 }
 
 function syncLockButton() {
-  const btn = document.querySelector('.site-header__lock');
+  // Target only the desktop button
+  const btn = document.querySelector('[data-lock-desktop]');
   if (!btn) return;
+
   const auth = isAuthenticated();
   btn.classList.toggle('is-authenticated', auth);
   btn.setAttribute('aria-label', auth ? 'Área Restrita — você está conectado' : 'Área Restrita — fazer login');
   btn.innerHTML = lockBtnHTML(auth);
 
-  // Sync mobile drawer lock item
-  const drawerLock = document.querySelector('[data-drawer-lock]');
-  if (drawerLock) {
-    drawerLock.innerHTML = `${lockIconSVG(auth)}<span>Área Restrita</span>`;
-    drawerLock.classList.toggle('is-authenticated', auth);
+  // Sync drawer button too
+  const drawerBtn = document.querySelector('[data-lock-drawer]');
+  if (drawerBtn) {
+    drawerBtn.classList.toggle('is-authenticated', auth);
+    drawerBtn.innerHTML = lockBtnHTML(auth);
   }
 
+  // Remove old dropdown
   const existing = document.getElementById('auth-dropdown');
   if (existing) existing.remove();
 
@@ -143,7 +146,7 @@ export function initHeader(config) {
         <ul class="nav-list">${navItems}</ul>
         <div class="site-header__drawer-lock">
           <button class="site-header__lock site-header__lock--drawer${auth ? ' is-authenticated' : ''}"
-            type="button" aria-label="Área Restrita" data-drawer-lock data-lock-toggle>
+            type="button" aria-label="Área Restrita" data-lock-drawer>
             ${lockBtnHTML(auth)}
           </button>
         </div>
@@ -156,8 +159,8 @@ export function initHeader(config) {
           </svg>
         </button>
         <div class="site-header__lock-wrap" style="position:relative">
-          <button class="site-header__lock" type="button"
-            aria-label="Área Restrita — fazer login" data-lock-toggle>
+          <button class="site-header__lock${auth ? ' is-authenticated' : ''}" type="button"
+            aria-label="Área Restrita — fazer login" data-lock-desktop>
             ${lockBtnHTML(auth)}
           </button>
         </div>
@@ -173,19 +176,22 @@ export function initHeader(config) {
   syncRestrictedItems();
   syncLockButton();
 
-  // All lock toggle buttons (desktop + drawer)
-  el.querySelectorAll('[data-lock-toggle]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (isAuthenticated()) {
-        // Only desktop wrap has dropdown
-        const dropdown = document.getElementById('auth-dropdown');
-        if (dropdown) dropdown.classList.toggle('is-open');
-      } else {
-        openModal();
-      }
-    });
+  // Desktop lock button
+  el.querySelector('[data-lock-desktop]')?.addEventListener('click', () => {
+    if (isAuthenticated()) {
+      const dropdown = document.getElementById('auth-dropdown');
+      if (dropdown) dropdown.classList.toggle('is-open');
+    } else {
+      openModal();
+    }
   });
 
+  // Drawer lock button
+  el.querySelector('[data-lock-drawer]')?.addEventListener('click', () => {
+    openModal();
+  });
+
+  // Close dropdown when clicking outside the lock-wrap
   document.addEventListener('click', e => {
     const dropdown = document.getElementById('auth-dropdown');
     if (!dropdown) return;

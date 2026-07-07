@@ -173,11 +173,18 @@
   color: var(--color-text-muted);
   padding: $spacing-2 $spacing-3;
   border-radius: 6px;
-  transition: color 0.15s, background 0.15s;
+  border: 1.5px solid var(--color-border);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
   white-space: nowrap;
 
+  // Override global :focus-visible outline to match the button style
+  &:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+  }
+
   svg { width: 18px; height: 18px; flex-shrink: 0; }
-  &:hover { color: var(--color-secondary); background: var(--color-surface); }
+  &:hover { color: var(--color-secondary); background: var(--color-surface); border-color: var(--color-secondary); }
 
   &.is-authenticated { color: var(--color-secondary); }
 }
@@ -194,8 +201,10 @@
 .site-header--navbar-blur {
   .site-header__lock {
     color: rgba(255, 255, 255, 0.75);
-    &:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
-    &.is-authenticated { color: rgba(255, 255, 255, 0.95); }
+    border-color: rgba(255, 255, 255, 0.3);
+    &:hover { color: #fff; background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.6); }
+    &.is-authenticated { color: rgba(255, 255, 255, 0.95); border-color: rgba(255, 255, 255, 0.5); }
+    &:focus-visible { outline-color: #fff; }
   }
 }
 
