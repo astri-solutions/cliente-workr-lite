@@ -50,49 +50,100 @@
             </div>
           </div>
 
-          <div class="data-table-wrap">
-            <table class="data-table results-table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>1T26</th>
-                  <th>2T26</th>
-                  <th>3T26</th>
-                  <th>4T26</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>ITR/DFP</td>
-                  <td><a href="#" class="results-table__file" aria-label="ITR/DFP 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
-                  <td><a href="#" class="results-table__file" aria-label="ITR/DFP 2T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                </tr>
-                <tr>
-                  <td>Replay da conferência</td>
-                  <td><a href="#" class="results-table__file" aria-label="Replay 1T26"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
-                  <td><a href="#" class="results-table__file" aria-label="Replay 2T26"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                </tr>
-                <tr>
-                  <td>Apresentação de Resultados</td>
-                  <td><a href="#" class="results-table__file" aria-label="Apresentação 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
-                  <td><a href="#" class="results-table__file" aria-label="Apresentação 2T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                </tr>
-                <tr>
-                  <td>Relatório da administração</td>
-                  <td><a href="#" class="results-table__file" aria-label="Relatório 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                  <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <!-- empresa-tabs: exibido quando siteConfig.empresas.length > 1 -->
+          <div data-empresa-section>
+            <nav class="tab-menu__nav" data-tab-nav="resultados" role="tablist" aria-label="Selecionar empresa">
+              <button class="tab-menu__tab is-active" data-tab="imc" role="tab" aria-selected="true">International Meal Company</button>
+              <button class="tab-menu__tab" data-tab="imc-fii" role="tab" aria-selected="false">IMC Recebíveis FII</button>
+            </nav>
+
+            <!-- Painel: IMC -->
+            <div class="tab-menu__panel is-active" data-tab-panel="resultados" data-panel="imc">
+              <div class="data-table-wrap">
+                <table class="data-table results-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>1T26</th>
+                      <th>2T26</th>
+                      <th>3T26</th>
+                      <th>4T26</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>ITR/DFP</td>
+                      <td><a href="#" class="results-table__file" aria-label="ITR/DFP 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><a href="#" class="results-table__file" aria-label="ITR/DFP 2T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                    </tr>
+                    <tr>
+                      <td>Replay da conferência</td>
+                      <td><a href="#" class="results-table__file" aria-label="Replay 1T26"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><a href="#" class="results-table__file" aria-label="Replay 2T26"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/video.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                    </tr>
+                    <tr>
+                      <td>Apresentação de Resultados</td>
+                      <td><a href="#" class="results-table__file" aria-label="Apresentação 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><a href="#" class="results-table__file" aria-label="Apresentação 2T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                    </tr>
+                    <tr>
+                      <td>Relatório da administração</td>
+                      <td><a href="#" class="results-table__file" aria-label="Relatório 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Painel: IMC Recebíveis FII -->
+            <div class="tab-menu__panel" data-tab-panel="resultados" data-panel="imc-fii">
+              <div class="data-table-wrap">
+                <table class="data-table results-table">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>1T26</th>
+                      <th>2T26</th>
+                      <th>3T26</th>
+                      <th>4T26</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Informe Mensal</td>
+                      <td><a href="#" class="results-table__file" aria-label="Informe Mensal 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><a href="#" class="results-table__file" aria-label="Informe Mensal 2T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                    </tr>
+                    <tr>
+                      <td>Relatório Trimestral</td>
+                      <td><a href="#" class="results-table__file" aria-label="Relatório Trimestral 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                    </tr>
+                    <tr>
+                      <td>Apresentação ao Mercado</td>
+                      <td><a href="#" class="results-table__file" aria-label="Apresentação 1T26 PDF"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></a></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                      <td><span class="results-table__file results-table__file--empty" aria-label="Não disponível"><img src="/assets/icons/pdf.svg" width="20" height="20" aria-hidden="true" alt=""></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div><!-- /data-empresa-section -->
 
         </div>
       </section>

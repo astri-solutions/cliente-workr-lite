@@ -9,6 +9,7 @@ import './icons.js';
 import './reveal.js';
 import './accordion.js';
 import './counter.js';
+import './empresa-tabs.js';
 
 // Injeta cores e fontes do CMS antes de qualquer outro componente
 initTheme(siteConfig);

@@ -69,6 +69,13 @@ export const siteConfig = {
     },
   ],
 
+  // Empresas (sub-entidades do portal). Se length > 1, páginas de lista/resultados
+  // exibem um tabmenu por empresa. Gerado pelo Workr Lite CMS na criação do portal.
+  empresas: [
+    { id: 'imc',     label: 'International Meal Company', short: 'IMC'     },
+    { id: 'imc-fii', label: 'IMC Recebíveis FII',         short: 'IMC FII' },
+  ],
+
   header: {
     variant: 'navbar-default', // 'navbar-default' | 'navbar-dark' | 'navbar-blur'
   },

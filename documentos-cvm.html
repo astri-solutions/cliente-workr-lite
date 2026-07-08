@@ -48,66 +48,116 @@
             </div>
           </div>
 
-          <div class="accordion accordion--primary">
-            <!-- Item 1: aberto -->
-            <div class="accordion__item accordion__item--open">
-              <button class="accordion__trigger" type="button" aria-expanded="true">
-                Informações Trimestrais (ITR)
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body">
-                <a href="#" class="doc-row" aria-label="ITR — 1T26 — Informações Trimestrais">
-                  <span class="doc-row__date">14/05/2026</span>
-                  <span class="doc-row__sep">-</span>
-                  <span class="doc-row__title">ITR — 1T26 — Informações Trimestrais</span>
-                  <span class="doc-row__pdf" aria-hidden="true">
-                    <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
-                    <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
-                  </span>
-                </a>
+          <!-- empresa-tabs: exibido quando siteConfig.empresas.length > 1 -->
+          <div data-empresa-section>
+            <nav class="tab-menu__nav" data-tab-nav="docs-cvm" role="tablist" aria-label="Selecionar empresa">
+              <button class="tab-menu__tab is-active" data-tab="imc" role="tab" aria-selected="true">International Meal Company</button>
+              <button class="tab-menu__tab" data-tab="imc-fii" role="tab" aria-selected="false">IMC Recebíveis FII</button>
+            </nav>
+
+            <!-- Painel: IMC -->
+            <div class="tab-menu__panel is-active" data-tab-panel="docs-cvm" data-panel="imc">
+              <div class="accordion accordion--primary">
+                <div class="accordion__item accordion__item--open">
+                  <button class="accordion__trigger" type="button" aria-expanded="true">
+                    Informações Trimestrais (ITR)
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body">
+                    <a href="#" class="doc-row" aria-label="ITR — 1T26 — Informações Trimestrais">
+                      <span class="doc-row__date">14/05/2026</span>
+                      <span class="doc-row__sep">-</span>
+                      <span class="doc-row__title">ITR — 1T26 — Informações Trimestrais</span>
+                      <span class="doc-row__pdf" aria-hidden="true">
+                        <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
+                        <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Formulário de Referência
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Formulário Cadastral
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Fatos Relevantes
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Comunicados ao Mercado
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Aviso aos Acionistas
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
               </div>
             </div>
-            <!-- Item 2 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Formulário de Referência
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
+
+            <!-- Painel: IMC Recebíveis FII -->
+            <div class="tab-menu__panel" data-tab-panel="docs-cvm" data-panel="imc-fii">
+              <div class="accordion accordion--primary">
+                <div class="accordion__item accordion__item--open">
+                  <button class="accordion__trigger" type="button" aria-expanded="true">
+                    Informe Mensal
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body">
+                    <a href="#" class="doc-row" aria-label="Informe Mensal — Abril 2026">
+                      <span class="doc-row__date">15/05/2026</span>
+                      <span class="doc-row__sep">-</span>
+                      <span class="doc-row__title">Informe Mensal — Abril 2026</span>
+                      <span class="doc-row__pdf" aria-hidden="true">
+                        <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
+                        <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Fatos Relevantes
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Comunicados ao Mercado
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
+                <div class="accordion__item">
+                  <button class="accordion__trigger" type="button" aria-expanded="false">
+                    Regulamento e Prospecto
+                    <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                  </button>
+                  <div class="accordion__body"></div>
+                </div>
+              </div>
             </div>
-            <!-- Item 3 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Formulário Cadastral
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-            <!-- Item 4 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Fatos Relevantes
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-            <!-- Item 5 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Comunicados ao Mercado
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-            <!-- Item 6 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Aviso aos Acionistas
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-          </div>
+          </div><!-- /data-empresa-section -->
+
         </div>
       </section>
     </main>
