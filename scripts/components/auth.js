@@ -1,6 +1,9 @@
 // scripts/components/auth.js
 // Área Restrita — modal de login e gestão de estado de autenticação.
-// Demo: qualquer e-mail válido + senha "ri@2026"
+// Quando VITE_SUPABASE_URL está configurado usa Supabase Auth.
+// Sem as env vars cai em modo demo: qualquer e-mail + senha "ri@2026".
+
+import { supabase, isSupabaseConfigured } from '../supabase.js';
 
 const STORAGE_KEY = 'ri_auth';
 const DEMO_PASSWORD = 'ri@2026';
@@ -18,8 +21,22 @@ function setAuth(value) {
   document.dispatchEvent(new CustomEvent('ri:auth-change', { detail: { authenticated: value } }));
 }
 
-export function logout() {
+export async function logout() {
+  if (isSupabaseConfigured) {
+    await supabase.auth.signOut();
+  }
   setAuth(false);
+}
+
+// Sincroniza sessão Supabase → flag de sessionStorage ao carregar a página
+if (isSupabaseConfigured) {
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    setAuth(!!session);
+  });
+
+  supabase.auth.onAuthStateChange((_event, session) => {
+    setAuth(!!session);
+  });
 }
 
 // ── Modal ─────────────────────────────────────────────────────────────────────
@@ -78,9 +95,10 @@ function buildModal() {
           Entrar
         </button>
 
+        ${!isSupabaseConfigured ? `
         <p class="auth-modal__hint">
           <strong>Demo:</strong> qualquer e-mail + senha <code>ri@2026</code>
-        </p>
+        </p>` : ''}
       </form>
     </div>`;
 
@@ -112,7 +130,6 @@ function buildModal() {
 
   // ESC to close
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !el.getAttribute('aria-hidden') === false) closeModal();
     if (e.key === 'Escape' && el.getAttribute('aria-hidden') === 'false') closeModal();
   });
 
@@ -129,13 +146,11 @@ export function openModal() {
   modal.classList.add('is-open');
   document.body.style.overflow = 'hidden';
 
-  // Clear previous state
   const errorEl = modal.querySelector('[data-auth-error]');
   if (errorEl) errorEl.textContent = '';
   const form = modal.querySelector('[data-auth-form]');
   if (form) form.reset();
 
-  // Focus first input
   setTimeout(() => {
     const first = modal.querySelector('input');
     if (first) first.focus();
@@ -150,7 +165,7 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-function handleLogin(modal) {
+async function handleLogin(modal) {
   const email = modal.querySelector('#auth-email').value.trim();
   const password = modal.querySelector('#auth-password').value;
   const errorEl = modal.querySelector('[data-auth-error]');
@@ -158,7 +173,6 @@ function handleLogin(modal) {
 
   errorEl.textContent = '';
 
-  // Basic email validation
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errorEl.textContent = 'Informe um e-mail válido.';
     modal.querySelector('#auth-email').focus();
@@ -171,20 +185,31 @@ function handleLogin(modal) {
     return;
   }
 
-  // Loading state
   submitBtn.disabled = true;
   submitBtn.textContent = 'Entrando…';
 
-  // Simulate async auth
-  setTimeout(() => {
-    if (password === DEMO_PASSWORD) {
-      setAuth(true);
-      closeModal();
-    } else {
+  if (isSupabaseConfigured) {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
       errorEl.textContent = 'E-mail ou senha incorretos. Tente novamente.';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Entrar';
       modal.querySelector('#auth-password').focus();
+    } else {
+      closeModal();
     }
-  }, 600);
+  } else {
+    // Modo demo
+    setTimeout(() => {
+      if (password === DEMO_PASSWORD) {
+        setAuth(true);
+        closeModal();
+      } else {
+        errorEl.textContent = 'E-mail ou senha incorretos. Tente novamente.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Entrar';
+        modal.querySelector('#auth-password').focus();
+      }
+    }, 600);
+  }
 }
