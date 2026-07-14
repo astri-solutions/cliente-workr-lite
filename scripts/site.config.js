@@ -1,9 +1,11 @@
 // scripts/site.config.js
+// Este arquivo é gerado/substituído pelo Workr Lite CMS ao publicar um portal.
+// Todos os campos marcados com ← são injetados automaticamente pelo CMS.
 export const siteConfig = {
 
   company: {
-    name:        'Workr Lite - Astri teste',
-    nameShort:   'Workr Lite Teste',
+    name:        'Workr Lite - Astri teste',   // ← company.name
+    nameShort:   'Workr Lite Teste',            // ← company.nameShort
     description:  'Relações com Investidores — Workr Lite Teste.',
     logoOriginal: '/assets/logotipo/logotipo-original.svg',
     logoNegative: '/assets/logotipo/logotipo-negative.svg',
@@ -11,6 +13,21 @@ export const siteConfig = {
     favicon:      '/favicon.svg',
   },
 
+  // Paleta de cores — injetada em runtime como CSS custom properties por theme.js.
+  // Sobrescreve os valores estáticos de _colors.scss sem necessitar rebuild.
+  colors: {
+    primary:   '#00D865',   // ← cores.primary (500)
+    secondary: '#0B5B68',   // ← cores.secondary (500)
+    tertiary:  '#F4A261',   // ← cores.tertiary (500)
+  },
+
+  // Tipografia — carregada via Google Fonts em runtime por theme.js.
+  fonts: {
+    display: 'Plus Jakarta Sans',   // ← fontes.display
+    body:    'Inter',               // ← fontes.body
+  },
+
+  // Ticker de cotação.
   tickers: [
     { symbol: 'WKLA3', price: 'R$ 00,00', change: '0,00%', direction: 'up' },
   ],

@@ -1,5 +1,6 @@
 // scripts/page.js
 import { siteConfig }  from './site.config.js';
+import { initTheme }   from './components/theme.js';
 import { initTopbar }  from './components/topbar.js';
 import { initHeader }  from './components/header.js';
 import { initFooter }  from './components/footer.js';
@@ -8,6 +9,9 @@ import './icons.js';
 import './reveal.js';
 import './accordion.js';
 import './counter.js';
+
+// Injeta cores e fontes do CMS antes de qualquer outro componente
+initTheme(siteConfig);
 
 // Inicializa todos os componentes compartilhados
 initTopbar(siteConfig);
