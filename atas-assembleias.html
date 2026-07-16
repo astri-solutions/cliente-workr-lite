@@ -48,6 +48,16 @@
             </div>
           </div>
 
+          <!-- empresa-tabs: exibido quando siteConfig.empresas.length > 1 -->
+          <div data-empresa-section>
+            <nav class="tab-menu__nav" data-tab-nav="atas" role="tablist" aria-label="Selecionar empresa">
+              <button class="tab-menu__tab is-active" data-tab="imc" role="tab" aria-selected="true">International Meal Company</button>
+              <button class="tab-menu__tab" data-tab="imc-fii" role="tab" aria-selected="false">IMC Recebíveis FII</button>
+            </nav>
+
+            <!-- Painel: IMC -->
+            <div class="tab-menu__panel is-active" data-tab-panel="atas" data-panel="imc">
+
           <div class="doc-group">
             <h2 class="doc-group__title">Atas</h2>
             <a href="#" class="doc-row" aria-label="Ata da Assembleia Geral Ordinária — AGO 2026">
@@ -127,6 +137,46 @@
               </span>
             </a>
           </div>
+            </div><!-- /tab-menu__panel imc -->
+
+            <!-- Painel: IMC Recebíveis FII -->
+            <div class="tab-menu__panel" data-tab-panel="atas" data-panel="imc-fii">
+              <div class="doc-group">
+                <h2 class="doc-group__title">Atas de Assembleia de Cotistas</h2>
+                <a href="#" class="doc-row" aria-label="Ata da Assembleia Geral de Cotistas — AGC 2026">
+                  <span class="doc-row__date">20/04/2026</span>
+                  <span class="doc-row__sep">-</span>
+                  <span class="doc-row__title">Ata da Assembleia Geral de Cotistas — AGC 2026</span>
+                  <span class="doc-row__pdf" aria-hidden="true">
+                    <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
+                    <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
+                  </span>
+                </a>
+                <a href="#" class="doc-row" aria-label="Ata da Assembleia Geral de Cotistas — AGC 2025">
+                  <span class="doc-row__date">14/04/2025</span>
+                  <span class="doc-row__sep">-</span>
+                  <span class="doc-row__title">Ata da Assembleia Geral de Cotistas — AGC 2025</span>
+                  <span class="doc-row__pdf" aria-hidden="true">
+                    <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
+                    <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
+                  </span>
+                </a>
+              </div>
+              <div class="doc-group">
+                <h2 class="doc-group__title">Editais de Convocação</h2>
+                <a href="#" class="doc-row" aria-label="AGC 2026 — Edital de Convocação">
+                  <span class="doc-row__date">05/04/2026</span>
+                  <span class="doc-row__sep">-</span>
+                  <span class="doc-row__title">AGC 2026 — Edital de Convocação</span>
+                  <span class="doc-row__pdf" aria-hidden="true">
+                    <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
+                    <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
+                  </span>
+                </a>
+              </div>
+            </div><!-- /tab-menu__panel imc-fii -->
+
+          </div><!-- /data-empresa-section -->
         </div>
       </section>
     </main>

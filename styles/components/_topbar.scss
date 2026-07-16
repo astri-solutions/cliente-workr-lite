@@ -57,6 +57,23 @@
       &--up   { color: #6EFFA3; }
       &--down { color: #FF8080; }
     }
+
+    // Iframe ticker (widget Enfoque ou similar)
+    &-iframe-wrap {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      height: 28px;
+      max-width: 320px;
+    }
+    &-iframe {
+      border: none;
+      height: 28px;
+      width: 320px;
+      background: transparent;
+      color-scheme: light;
+      pointer-events: auto;
+    }
   }
 
   &__right {

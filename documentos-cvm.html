@@ -3,11 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentos CVM — Workr Lite Teste RI</title>
+    <title>Documentos CVM</title>
     <meta name="description" content="ITR, DFP, IANe e demais documentos regulatórios." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles/main.scss" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
@@ -24,7 +21,7 @@
         <div class="page-header__inner">
           <ol class="page-header__breadcrumb" aria-label="Você está em">
             <li><a href="/">Home</a></li>
-            <li><a href="/documentos-cvm.html">Governança</a></li>
+            <li>Governança</li>
             <li aria-current="page">Documentos CVM</li>
           </ol>
           <h1 id="page-title" class="page-header__title">Documentos CVM</h1>
@@ -34,80 +31,71 @@
 
       <section class="page-section" aria-label="Documentos CVM" data-reveal>
         <div class="page-section__container">
+
           <div class="filter-bar">
             <div class="filter-bar__group">
               <span class="filter-bar__label">Filtrar por:</span>
               <div class="select">
-                <select aria-label="Ano">
-                  <option>2026</option>
-                  <option>2025</option>
-                  <option>2024</option>
-                  <option>2023</option>
-                </select>
+                <select aria-label="Ano" id="filter-ano"></select>
               </div>
             </div>
           </div>
 
-          <div class="accordion accordion--primary">
-            <!-- Item 1: aberto -->
-            <div class="accordion__item accordion__item--open">
-              <button class="accordion__trigger" type="button" aria-expanded="true">
-                Informações Trimestrais (ITR)
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body">
-                <a href="#" class="doc-row" aria-label="ITR — 1T26 — Informações Trimestrais">
-                  <span class="doc-row__date">14/05/2026</span>
-                  <span class="doc-row__sep">-</span>
-                  <span class="doc-row__title">ITR — 1T26 — Informações Trimestrais</span>
-                  <span class="doc-row__pdf" aria-hidden="true">
-                    <img class="doc-row__icon doc-row__icon--pdf"      src="/assets/icons/pdf.svg"      width="28" height="28" alt="">
-                    <img class="doc-row__icon doc-row__icon--download" src="/assets/icons/download.svg" width="28" height="28" alt="">
-                  </span>
-                </a>
+          <!-- empresa-tabs — gerado dinamicamente por empresa-tabs.js -->
+          <div data-empresa-section data-empresa-group="docs-cvm">
+
+            <!-- Template clonado por empresa -->
+            <template data-empresa-panel-template>
+              <div data-empresa-panel>
+                <div class="accordion accordion--primary">
+                  <div class="accordion__item">
+                    <button class="accordion__trigger" type="button" aria-expanded="false">
+                      Informações Trimestrais (ITR)
+                      <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                    </button>
+                    <div class="accordion__body" data-cvm-docs="itr"></div>
+                  </div>
+                  <div class="accordion__item">
+                    <button class="accordion__trigger" type="button" aria-expanded="false">
+                      Formulário de Referência
+                      <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                    </button>
+                    <div class="accordion__body" data-cvm-docs="fre"></div>
+                  </div>
+                  <div class="accordion__item">
+                    <button class="accordion__trigger" type="button" aria-expanded="false">
+                      Formulário Cadastral
+                      <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                    </button>
+                    <div class="accordion__body" data-cvm-docs="fca"></div>
+                  </div>
+                  <div class="accordion__item">
+                    <button class="accordion__trigger" type="button" aria-expanded="false">
+                      Fatos Relevantes
+                      <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                    </button>
+                    <div class="accordion__body" data-cvm-docs="fato-relevante"></div>
+                  </div>
+                  <div class="accordion__item">
+                    <button class="accordion__trigger" type="button" aria-expanded="false">
+                      Comunicados ao Mercado
+                      <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                    </button>
+                    <div class="accordion__body" data-cvm-docs="comunicado"></div>
+                  </div>
+                  <div class="accordion__item">
+                    <button class="accordion__trigger" type="button" aria-expanded="false">
+                      Aviso aos Acionistas
+                      <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
+                    </button>
+                    <div class="accordion__body" data-cvm-docs="aviso"></div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <!-- Item 2 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Formulário de Referência
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-            <!-- Item 3 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Formulário Cadastral
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-            <!-- Item 4 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Fatos Relevantes
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-            <!-- Item 5 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Comunicados ao Mercado
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-            <!-- Item 6 -->
-            <div class="accordion__item">
-              <button class="accordion__trigger" type="button" aria-expanded="false">
-                Aviso aos Acionistas
-                <img src="/assets/icons/plus.svg" width="20" height="20" aria-hidden="true" alt="">
-              </button>
-              <div class="accordion__body"></div>
-            </div>
-          </div>
+            </template>
+
+          </div><!-- /data-empresa-section -->
+
         </div>
       </section>
     </main>
@@ -127,6 +115,17 @@
       </div>
     </div>
 
+    <script type="module">
+      // Popula filtro de anos dinamicamente
+      const yearSelect = document.getElementById('filter-ano');
+      const currentYear = new Date().getFullYear();
+      for (let y = currentYear; y >= currentYear - 4; y--) {
+        const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+      }
+    </script>
     <script type="module" src="/scripts/page.js"></script>
   </body>
 </html>
