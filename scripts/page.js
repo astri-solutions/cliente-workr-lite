@@ -31,6 +31,21 @@ if (siteConfig.company?.favicon) {
   if (faviconEl) faviconEl.setAttribute('href', siteConfig.company.favicon);
 }
 
+// Atualiza title e favicon com os dados do portal
+if (siteConfig.company?.name) {
+  const raw = document.title.trim();
+  // Substitui qualquer título de template ou título simples de página pelo formato correto
+  if (!raw || raw.includes('Workr Lite')) {
+    document.title = siteConfig.company.name + ' — RI';
+  } else {
+    document.title = raw + ' — ' + siteConfig.company.name;
+  }
+}
+if (siteConfig.company?.favicon) {
+  const faviconEl = document.querySelector('link[rel="icon"]');
+  if (faviconEl) faviconEl.setAttribute('href', siteConfig.company.favicon);
+}
+
 // Inicializa todos os componentes compartilhados
 initTopbar(siteConfig);
 initHeader(siteConfig);
