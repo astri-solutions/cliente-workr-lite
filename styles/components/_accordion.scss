@@ -99,3 +99,10 @@
     }
   }
 }
+
+.docs-vazio {
+  padding: $spacing-4 $spacing-6;
+  font-size: $font-size-sm;
+  color: var(--color-text-muted);
+  font-style: italic;
+}

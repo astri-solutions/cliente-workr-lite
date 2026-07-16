@@ -205,11 +205,23 @@ export function initHeader(config) {
   });
 
   const logoEl = el.querySelector('.site-header__logo');
-  if (logoEl && config.company.logoContrast) {
-    const html = document.documentElement;
-    const observer = new MutationObserver(() => {
-      logoEl.src = html.dataset.contrast === 'on' ? config.company.logoContrast : logoSrc;
+  if (logoEl) {
+    // Fallback to company name text if logo file is missing
+    logoEl.addEventListener('error', () => {
+      const brand = logoEl.closest('.site-header__brand');
+      if (brand) {
+        logoEl.remove();
+        brand.textContent = config.company.name;
+        brand.style.cssText = 'font-weight:600;font-size:1.1rem;';
+      }
     });
-    observer.observe(html, { attributes: true, attributeFilter: ['data-contrast'] });
+
+    if (config.company.logoContrast) {
+      const html = document.documentElement;
+      const observer = new MutationObserver(() => {
+        logoEl.src = html.dataset.contrast === 'on' ? config.company.logoContrast : logoSrc;
+      });
+      observer.observe(html, { attributes: true, attributeFilter: ['data-contrast'] });
+    }
   }
 }
