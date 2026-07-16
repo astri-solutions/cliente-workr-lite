@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home — Workr Lite Teste RI</title>
-    <meta name="description" content="Relações com Investidores — Workr Lite Teste." />
+    <title>Home — Workr Lite RI</title>
+    <meta name="description" content="Relações com Investidores — Transparência e acesso às informações da companhia." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -17,7 +17,7 @@
 
     <main>
       <section class="home-hero" aria-label="Início">
-        <img class="home-hero__bg"
+        <img class="home-hero__bg" id="hero-bg"
              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80"
              alt="" aria-hidden="true" />
         <div class="home-hero__overlay" aria-hidden="true"></div>
@@ -28,30 +28,15 @@
             Transparência e confiança para nossos investidores.
             Acompanhe resultados, documentos e informações corporativas.
           </p>
-          <a href="/central-resultados.html" class="home-hero__cta">
-            Acessar Central de Resultados
+          <!-- href updated by page.js to first enabled channel -->
+          <a href="#" data-hero-cta class="home-hero__cta">
+            Acessar conteúdo
           </a>
         </div>
 
+        <!-- shortcuts populated by page.js from siteConfig.nav -->
         <nav class="home-hero__shortcuts" aria-label="Acesso rápido">
-          <div class="home-hero__shortcuts-inner">
-            <a href="/documentos-cvm.html" class="home-hero__shortcut">
-              <span class="home-hero__shortcut-label">CVM</span>
-              <span class="home-hero__shortcut-desc">Documentos públicos</span>
-            </a>
-            <a href="/central-resultados.html" class="home-hero__shortcut">
-              <span class="home-hero__shortcut-label">Resultados</span>
-              <span class="home-hero__shortcut-desc">Números da companhia</span>
-            </a>
-            <a href="/fale-com-ri.html" class="home-hero__shortcut">
-              <span class="home-hero__shortcut-label">Contato</span>
-              <span class="home-hero__shortcut-desc">Fale com RI</span>
-            </a>
-            <a href="/mailing.html" class="home-hero__shortcut">
-              <span class="home-hero__shortcut-label">Mailing</span>
-              <span class="home-hero__shortcut-desc">Receba atualizações</span>
-            </a>
-          </div>
+          <div class="home-hero__shortcuts-inner" data-hero-shortcuts></div>
         </nav>
       </section>
     </main>

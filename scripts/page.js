@@ -35,6 +35,22 @@ initHeader(siteConfig);
 initFooter(siteConfig);
 initSearch();
 
+// ── Banner hero — shortcuts e CTA dinâmicos de siteConfig.nav ─────────────────
+const shortcutsInner = document.querySelector('[data-hero-shortcuts]');
+if (shortcutsInner && siteConfig.nav?.length) {
+  const enabled = siteConfig.nav.filter(ch => ch.enabled !== false);
+  shortcutsInner.innerHTML = enabled.map(ch =>
+    `<a href="${ch.href}" class="home-hero__shortcut">
+      <span class="home-hero__shortcut-label">${ch.label}</span>
+    </a>`
+  ).join('');
+}
+const heroCta = document.querySelector('[data-hero-cta]');
+if (heroCta && siteConfig.nav?.length) {
+  const first = siteConfig.nav.find(ch => ch.enabled !== false);
+  if (first) heroCta.setAttribute('href', first.href);
+}
+
 // Marca o link ativo no nav
 document.querySelectorAll('.nav-dropdown__link').forEach(link => {
   if (link.getAttribute('href') === location.pathname.replace(/\/$/, '') ||
