@@ -2,7 +2,7 @@
 @use '../abstracts' as *;
 
 .site-footer {
-  background: #083e49;
+  background: var(--color-secondary-900);
   color: rgba(255,255,255,0.8);
   font-size: 12px;
   margin-top: auto;

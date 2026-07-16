@@ -186,8 +186,10 @@ export function initTheme(config) {
     const bodyFamily    = fonts.body    ? `'${fonts.body}', sans-serif`    : null;
 
     const fontRules = [
-      displayFamily ? `  --font-display: ${displayFamily};` : '',
-      bodyFamily    ? `  --font-body:    ${bodyFamily};`    : '',
+      displayFamily ? `  --font-family-display: ${displayFamily};` : '',
+      displayFamily ? `  --font-display:         ${displayFamily};` : '',
+      bodyFamily    ? `  --font-family-base:     ${bodyFamily};`    : '',
+      bodyFamily    ? `  --font-body:             ${bodyFamily};`   : '',
     ].filter(Boolean).join('\n');
 
     const style = document.createElement('style');
