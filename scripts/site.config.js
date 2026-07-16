@@ -76,6 +76,14 @@ export const siteConfig = {
     { id: 'imc-fii', label: 'IMC Recebíveis FII',         short: 'IMC FII' },
   ],
 
+  // Supabase — injetado pelo CMS ao provisionar/publicar.
+  // Permite que cores e fontes sejam atualizadas em runtime sem Publicar.
+  supabase: {
+    url:      null,  // ← SUPABASE_URL
+    anonKey:  null,  // ← SUPABASE_ANON_KEY
+    portalId: null,  // ← portals.id (UUID)
+  },
+
   header: {
     variant: 'navbar-default', // 'navbar-default' | 'navbar-dark' | 'navbar-blur'
   },

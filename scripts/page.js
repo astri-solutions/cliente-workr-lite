@@ -1,6 +1,6 @@
 // scripts/page.js
 import { siteConfig }  from './site.config.js';
-import { initTheme }   from './components/theme.js';
+import { initTheme, refreshThemeFromSupabase } from './components/theme.js';
 import { initTopbar }  from './components/topbar.js';
 import { initHeader }  from './components/header.js';
 import { initFooter }  from './components/footer.js';
@@ -13,6 +13,8 @@ import './empresa-tabs.js';
 
 // Injeta cores e fontes do CMS antes de qualquer outro componente
 initTheme(siteConfig);
+// Reaplica em background do Supabase — sem push/redeploy para mudanças visuais
+refreshThemeFromSupabase(siteConfig);
 
 // Atualiza title e favicon com os dados do portal
 if (siteConfig.company?.name) {

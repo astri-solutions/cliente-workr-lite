@@ -103,6 +103,18 @@ function onColor(hex) {
   return luminance(hexToRgb(hex)) > 0.179 ? '#000000' : '#ffffff';
 }
 
+// ── Style upsert — create or replace a <style> tag by ID ─────────────────────
+
+function upsertStyle(id, content) {
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement('style');
+    el.id = id;
+    document.head.appendChild(el);
+  }
+  el.textContent = content;
+}
+
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 export function initTheme(config) {
@@ -146,10 +158,7 @@ export function initTheme(config) {
   }
 
   if (rules.length > 0) {
-    const style = document.createElement('style');
-    style.id = 'wl-theme-colors';
-    style.textContent = `:root {\n${rules.join('\n')}\n}`;
-    document.head.appendChild(style);
+    upsertStyle('wl-theme-colors', `:root {\n${rules.join('\n')}\n}`);
   }
 
   // ── Fontes — Google Fonts ─────────────────────────────────────────────────
@@ -192,9 +201,29 @@ export function initTheme(config) {
       bodyFamily    ? `  --font-body:             ${bodyFamily};`   : '',
     ].filter(Boolean).join('\n');
 
-    const style = document.createElement('style');
-    style.id = 'wl-theme-fonts';
-    style.textContent = `:root {\n${fontRules}\n}`;
-    document.head.appendChild(style);
+    upsertStyle('wl-theme-fonts', `:root {\n${fontRules}\n}`);
   }
+}
+
+// ── Runtime refresh from Supabase ─────────────────────────────────────────────
+// Fetches fresh cores/fontes from portal_config and re-applies theme without
+// a GitHub push or Vercel redeploy — visual changes are instant after saving.
+
+export async function refreshThemeFromSupabase(config) {
+  const sb = config.supabase;
+  if (!sb?.url || !sb?.anonKey || !sb?.portalId) return;
+  try {
+    const res = await fetch(
+      `${sb.url}/rest/v1/portal_config?select=cores,fontes&portal_id=eq.${sb.portalId}&limit=1`,
+      { headers: { apikey: sb.anonKey, Accept: 'application/json' } }
+    );
+    if (!res.ok) return;
+    const [row] = await res.json();
+    if (!row) return;
+    // fontes saved by admin as { heading, body }; site.config uses { display, body }
+    const freshFonts = row.fontes
+      ? { display: row.fontes.heading ?? row.fontes.display ?? config.fonts?.display, body: row.fontes.body ?? config.fonts?.body }
+      : config.fonts;
+    initTheme({ ...config, colors: row.cores ?? config.colors, fonts: freshFonts });
+  } catch { /* non-fatal — static site.config.js values remain active */ }
 }
