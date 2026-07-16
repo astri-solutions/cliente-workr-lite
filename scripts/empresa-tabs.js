@@ -1,47 +1,71 @@
 // scripts/empresa-tabs.js
 // Inicializa o tabmenu por empresa em páginas de lista/resultados/documentos.
-// Lê siteConfig.empresas: se length > 1, exibe abas; se único/nenhum, achata painéis.
+// Gera abas e painéis dinamicamente a partir de siteConfig.empresas.
 import { siteConfig } from './site.config.js';
 
 const empresas = siteConfig.empresas ?? [];
 
 document.querySelectorAll('[data-empresa-section]').forEach(section => {
-  const nav = section.querySelector('[data-tab-nav]');
-  if (!nav) return;
+  const template = section.querySelector('[data-empresa-panel-template]');
+  if (!template) return; // página sem template de painel — skip
 
-  const group  = nav.dataset.tabNav;
-  const tabs   = nav.querySelectorAll('[data-tab]');
-  const panels = section.querySelectorAll(`[data-tab-panel="${group}"]`);
+  const group = section.dataset.empresaGroup ?? 'empresa';
 
+  // ── Build tab nav ────────────────────────────────────────────────────────
+  const nav = document.createElement('nav');
+  nav.className = 'tab-menu__nav';
+  nav.dataset.tabNav = group;
+  nav.setAttribute('role', 'tablist');
+  nav.setAttribute('aria-label', 'Selecionar empresa');
+
+  // ── Build panels ─────────────────────────────────────────────────────────
+  const panels = empresas.map((emp, i) => {
+    const clone = template.content.cloneNode(true);
+    const panel = clone.querySelector('[data-empresa-panel]');
+    if (panel) {
+      panel.dataset.tabPanel = group;
+      panel.dataset.panel    = emp.id;
+      if (i === 0) panel.classList.add('is-active');
+    }
+    return { emp, el: clone, panelEl: panel };
+  });
+
+  // Single-empresa: hide nav, show all panels without tabs
   if (empresas.length <= 1) {
-    // Portal com empresa única: oculta o nav, mostra todos os painéis diretamente.
-    nav.hidden = true;
-    panels.forEach(p => p.classList.add('is-active'));
+    section.innerHTML = '';
+    panels.forEach(({ el }) => section.appendChild(el));
     return;
   }
 
-  // Múltiplas empresas: atualiza rótulos das abas pelo config e ativa a primeira.
-  tabs.forEach(tab => {
-    const emp = empresas.find(e => e.id === tab.dataset.tab);
-    if (emp) tab.textContent = emp.label;
+  // Multi-empresa: build tab buttons
+  empresas.forEach((emp, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-menu__tab' + (i === 0 ? ' is-active' : '');
+    btn.dataset.tab = emp.id;
+    btn.type = 'button';
+    btn.role = 'tab';
+    btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    btn.textContent = emp.label;
+    nav.appendChild(btn);
   });
 
-  // Garante estado inicial correto (primeira aba ativa).
-  if (![...tabs].some(t => t.classList.contains('is-active'))) {
-    tabs[0]?.classList.add('is-active');
-    tabs[0]?.setAttribute('aria-selected', 'true');
-    panels[0]?.classList.add('is-active');
-  }
+  // Insert nav + panels
+  section.innerHTML = '';
+  section.appendChild(nav);
+  panels.forEach(({ el }) => section.appendChild(el));
 
-  // Ativa abas ao clicar.
-  tabs.forEach(tab => {
+  // Tab switching
+  const allTabs   = () => nav.querySelectorAll('[data-tab]');
+  const allPanels = () => section.querySelectorAll(`[data-tab-panel="${group}"]`);
+
+  allTabs().forEach(tab => {
     tab.addEventListener('click', () => {
-      tabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
-      panels.forEach(p => p.classList.remove('is-active'));
+      allTabs().forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+      allPanels().forEach(p => p.classList.remove('is-active'));
       tab.classList.add('is-active');
       tab.setAttribute('aria-selected', 'true');
-      const target = section.querySelector(`[data-tab-panel="${group}"][data-panel="${tab.dataset.tab}"]`);
-      target?.classList.add('is-active');
+      section.querySelector(`[data-tab-panel="${group}"][data-panel="${tab.dataset.tab}"]`)
+        ?.classList.add('is-active');
     });
   });
 });
