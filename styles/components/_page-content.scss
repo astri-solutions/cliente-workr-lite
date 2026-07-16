@@ -272,6 +272,38 @@
   }
 }
 
+// ── Em construção ─────────────────────────────────────────────────────────────
+.em-construcao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-4;
+  padding: $spacing-16 $spacing-8;
+  text-align: center;
+  color: var(--color-text-muted);
+
+  &__icon {
+    width: 56px;
+    height: 56px;
+    color: var(--color-text-muted);
+    opacity: 0.45;
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  &__desc {
+    font-size: $font-size-sm;
+    margin: 0;
+    max-width: 360px;
+  }
+}
+
 // ── Doc group ─────────────────────────────────────────────────────────────────
 .doc-group {
   margin-bottom: $spacing-10;
