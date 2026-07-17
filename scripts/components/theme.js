@@ -103,6 +103,28 @@ function onColor(hex) {
   return luminance(hexToRgb(hex)) > 0.179 ? '#000000' : '#ffffff';
 }
 
+// ── Font ID → Google Fonts family name mapping ────────────────────────────────
+const FONT_ID_MAP = {
+  'inter': 'Inter',
+  'plus-jakarta': 'Plus Jakarta Sans',
+  'montserrat': 'Montserrat',
+  'poppins': 'Poppins',
+  'raleway': 'Raleway',
+  'lato': 'Lato',
+  'source-sans': 'Source Sans 3',
+  'nunito': 'Nunito',
+  'playfair': 'Playfair Display',
+  'merriweather': 'Merriweather',
+  'lora': 'Lora',
+  'eb-garamond': 'EB Garamond',
+  'libre-baskerville': 'Libre Baskerville',
+  'cormorant': 'Cormorant Garamond',
+};
+
+function resolveFont(nameOrId) {
+  return FONT_ID_MAP[nameOrId] ?? nameOrId;
+}
+
 // ── Style upsert — create or replace a <style> tag by ID ─────────────────────
 
 function upsertStyle(id, content) {
@@ -207,28 +229,6 @@ export function initTheme(config) {
 
     upsertStyle('wl-theme-fonts', `:root {\n${fontRules}\n}`);
   }
-}
-
-// ── Font ID → Google Fonts family name mapping ────────────────────────────────
-const FONT_ID_MAP = {
-  'inter': 'Inter',
-  'plus-jakarta': 'Plus Jakarta Sans',
-  'montserrat': 'Montserrat',
-  'poppins': 'Poppins',
-  'raleway': 'Raleway',
-  'lato': 'Lato',
-  'source-sans': 'Source Sans 3',
-  'nunito': 'Nunito',
-  'playfair': 'Playfair Display',
-  'merriweather': 'Merriweather',
-  'lora': 'Lora',
-  'eb-garamond': 'EB Garamond',
-  'libre-baskerville': 'Libre Baskerville',
-  'cormorant': 'Cormorant Garamond',
-};
-
-function resolveFont(nameOrId) {
-  return FONT_ID_MAP[nameOrId] ?? nameOrId;
 }
 
 // ── Runtime refresh from Supabase ─────────────────────────────────────────────
