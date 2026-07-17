@@ -5,6 +5,7 @@ import { initTopbar }  from './components/topbar.js';
 import { initHeader }  from './components/header.js';
 import { initFooter }  from './components/footer.js';
 import { initSearch }  from './components/search.js';
+import { initMaterias } from './components/materias.js';
 import './icons.js';
 import './reveal.js';
 import './accordion.js';
@@ -19,7 +20,6 @@ refreshThemeFromSupabase(siteConfig);
 // Atualiza title e favicon com os dados do portal
 if (siteConfig.company?.name) {
   const raw = document.title.trim();
-  // Substitui qualquer título de template ou título simples de página pelo formato correto
   if (!raw || raw.includes('Workr Lite')) {
     document.title = siteConfig.company.name + ' — RI';
   } else {
@@ -28,22 +28,11 @@ if (siteConfig.company?.name) {
 }
 if (siteConfig.company?.favicon) {
   const faviconEl = document.querySelector('link[rel="icon"]');
-  if (faviconEl) faviconEl.setAttribute('href', siteConfig.company.favicon);
-}
-
-// Atualiza title e favicon com os dados do portal
-if (siteConfig.company?.name) {
-  const raw = document.title.trim();
-  // Substitui qualquer título de template ou título simples de página pelo formato correto
-  if (!raw || raw.includes('Workr Lite')) {
-    document.title = siteConfig.company.name + ' — RI';
-  } else {
-    document.title = raw + ' — ' + siteConfig.company.name;
+  if (faviconEl) {
+    faviconEl.setAttribute('href', siteConfig.company.favicon);
+    const ext = siteConfig.company.favicon.split('.').pop()?.toLowerCase();
+    faviconEl.setAttribute('type', ext === 'svg' ? 'image/svg+xml' : ext === 'ico' ? 'image/x-icon' : `image/${ext}`);
   }
-}
-if (siteConfig.company?.favicon) {
-  const faviconEl = document.querySelector('link[rel="icon"]');
-  if (faviconEl) faviconEl.setAttribute('href', siteConfig.company.favicon);
 }
 
 // Inicializa todos os componentes compartilhados
@@ -51,6 +40,7 @@ initTopbar(siteConfig);
 initHeader(siteConfig);
 initFooter(siteConfig);
 initSearch();
+initMaterias(siteConfig);
 
 // ── Banner hero — shortcuts e CTA dinâmicos de siteConfig.nav ─────────────────
 const shortcutsInner = document.querySelector('[data-hero-shortcuts]');

@@ -11,6 +11,7 @@ export function initTopbar(config) {
   const tickerItems = ticker.items ?? config.tickers ?? [];
 
   let tickersHtml = '';
+  const showTicker = tickerType !== 'none' && (tickerType !== 'iframe' || !!ticker.iframeUrl) && tickerItems.length > 0 || (tickerType === 'iframe' && !!ticker.iframeUrl);
 
   if (tickerType === 'iframe' && ticker.iframeUrl) {
     // Widget externo (ex.: Enfoque cotação)
@@ -53,9 +54,9 @@ export function initTopbar(config) {
         <span class="topbar__sep" aria-hidden="true"></span>
         <a href="#" class="topbar__link">Institucional</a>
       </div>
-      <div class="topbar__tickers" aria-label="Cotação" aria-live="polite">
+      ${showTicker ? `<div class="topbar__tickers" aria-label="Cotação" aria-live="polite">
         ${tickersHtml}
-      </div>
+      </div>` : ''}
       <div class="topbar__right">
         <div class="topbar__a11y" role="group" aria-label="Acessibilidade">
           <span class="topbar__a11y-label">Acessibilidade</span>
