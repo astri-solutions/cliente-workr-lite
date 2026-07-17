@@ -164,11 +164,13 @@ export function initTheme(config) {
   // ── Fontes — Google Fonts ─────────────────────────────────────────────────
   const weights = '400;500;600;700';
   const families = [];
-  if (fonts.display) {
-    families.push(`family=${encodeURIComponent(fonts.display)}:wght@${weights}`);
+  const displayName = fonts.display ? resolveFont(fonts.display) : null;
+  const bodyName    = fonts.body    ? resolveFont(fonts.body)    : null;
+  if (displayName) {
+    families.push(`family=${encodeURIComponent(displayName)}:wght@${weights}`);
   }
-  if (fonts.body && fonts.body !== fonts.display) {
-    families.push(`family=${encodeURIComponent(fonts.body)}:wght@${weights}`);
+  if (bodyName && bodyName !== displayName) {
+    families.push(`family=${encodeURIComponent(bodyName)}:wght@${weights}`);
   }
 
   if (families.length > 0) {
@@ -190,9 +192,11 @@ export function initTheme(config) {
   }
 
   // ── Font-family custom properties ────────────────────────────────────────
-  if (fonts.display || fonts.body) {
-    const displayFamily = fonts.display ? `'${fonts.display}', sans-serif` : null;
-    const bodyFamily    = fonts.body    ? `'${fonts.body}', sans-serif`    : null;
+  const resolvedDisplay = fonts.display ? resolveFont(fonts.display) : null;
+  const resolvedBody    = fonts.body    ? resolveFont(fonts.body)    : null;
+  if (resolvedDisplay || resolvedBody) {
+    const displayFamily = resolvedDisplay ? `'${resolvedDisplay}', sans-serif` : null;
+    const bodyFamily    = resolvedBody    ? `'${resolvedBody}', sans-serif`    : null;
 
     const fontRules = [
       displayFamily ? `  --font-family-display: ${displayFamily};` : '',
@@ -203,6 +207,28 @@ export function initTheme(config) {
 
     upsertStyle('wl-theme-fonts', `:root {\n${fontRules}\n}`);
   }
+}
+
+// ── Font ID → Google Fonts family name mapping ────────────────────────────────
+const FONT_ID_MAP = {
+  'inter': 'Inter',
+  'plus-jakarta': 'Plus Jakarta Sans',
+  'montserrat': 'Montserrat',
+  'poppins': 'Poppins',
+  'raleway': 'Raleway',
+  'lato': 'Lato',
+  'source-sans': 'Source Sans 3',
+  'nunito': 'Nunito',
+  'playfair': 'Playfair Display',
+  'merriweather': 'Merriweather',
+  'lora': 'Lora',
+  'eb-garamond': 'EB Garamond',
+  'libre-baskerville': 'Libre Baskerville',
+  'cormorant': 'Cormorant Garamond',
+};
+
+function resolveFont(nameOrId) {
+  return FONT_ID_MAP[nameOrId] ?? nameOrId;
 }
 
 // ── Runtime refresh from Supabase ─────────────────────────────────────────────

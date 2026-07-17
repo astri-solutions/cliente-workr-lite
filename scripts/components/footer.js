@@ -31,8 +31,8 @@ export function initFooter(config) {
 
   const isSimple = footer.variant === 'simple';
   el.className = isSimple ? 'site-footer site-footer--simple' : 'site-footer';
-  el.innerHTML = `
-    <div class="site-footer__inner">
+
+  const fullSections = isSimple ? '' : `
       <div class="site-footer__top">
         <img src="${company.logoNegative}" alt="${company.name}" class="site-footer__logo" />
       </div>
@@ -58,8 +58,11 @@ export function initFooter(config) {
           <h4>Redes Sociais</h4>
           <div class="site-footer__social-links">${socialLinks}</div>
         </div>
-      </div>
+      </div>`;
 
+  el.innerHTML = `
+    <div class="site-footer__inner">
+      ${fullSections}
       <div class="site-footer__bottom">
         <div class="site-footer__bottom-links">${legalLinks}</div>
         <span class="site-footer__copyright">${footer.copyright}</span>
