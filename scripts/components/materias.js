@@ -178,6 +178,12 @@ export async function initMaterias(siteConfig) {
     })).join('');
     bindForms(container, sb);
     container.classList.add('materias--loaded');
+
+    // The blank-page template always ships a sibling "Em construção"
+    // placeholder (page.js converts .page-empty to it on load, before this
+    // fetch resolves) — once real content renders, that placeholder is
+    // stale and must go, or both show stacked on top of each other.
+    container.parentElement?.querySelector('.page-empty, .em-construcao')?.remove();
   } catch {
     // Silently skip — page renders without dynamic content
   }
