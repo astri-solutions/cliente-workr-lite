@@ -8,8 +8,6 @@ import { initSearch }  from './components/search.js';
 import { initMaterias } from './components/materias.js';
 import { initSplash }  from './components/splash.js';
 import { initCookies } from './components/cookies.js';
-import { initSidebarNav } from './sidebar-nav.js';
-import { initTabMenu } from './tab-menu.js';
 import './icons.js';
 import './reveal.js';
 import './accordion.js';
@@ -38,11 +36,6 @@ if (siteConfig.company?.favicon) {
     faviconEl.setAttribute('type', ext === 'svg' ? 'image/svg+xml' : ext === 'ico' ? 'image/x-icon' : `image/${ext}`);
   }
 }
-
-// Restructures the page for sidebar/tabmenu layouts (persistent nav,
-// hero banner removed) before header/materias look at the DOM.
-initSidebarNav(siteConfig);
-initTabMenu(siteConfig);
 
 // Inicializa todos os componentes compartilhados
 initTopbar(siteConfig);

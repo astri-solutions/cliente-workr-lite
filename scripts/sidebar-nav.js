@@ -1,63 +1,72 @@
 // scripts/sidebar-nav.js
-// Sidebar-model portals (header.variant === 'sidebar') should show a
-// persistent left nav on every content page, not just the homepage — and
-// none of these pages should show the big hero banner, which is a
-// 'banner'-model concept. This runs on every page via page.js and
-// transforms the page in place when needed.
-export function initSidebarNav(siteConfig) {
-  if (siteConfig?.header?.variant !== 'sidebar') return;
+import { siteConfig } from './site.config.js';
+import { loadMateriasInto } from './components/materias.js';
+
+// Sidebar-model portals (header.variant === 'sidebar') show every channel's
+// matéria content inline, next to the menu — clicking a menu item loads its
+// content into the panel on the right without leaving the page.
+function buildSidebar() {
+  const navList = document.querySelector('.sidebar-nav__list');
+  const contentArea = document.querySelector('.sidebar-content');
+  if (!navList || !contentArea) return;
 
   const channels = (siteConfig.nav ?? []).filter(ch => ch.enabled !== false);
   if (!channels.length) return;
 
-  const currentPath = location.pathname.replace(/\/$/, '') || '/';
+  const sb = siteConfig.supabase;
+  const loaded = new Set();
 
-  // The homepage has no content of its own — land straight on the first channel.
-  if (currentPath === '/') {
-    location.replace(channels[0].href);
-    return;
+  navList.innerHTML = '';
+  contentArea.innerHTML = '';
+
+  channels.forEach((ch, i) => {
+    const slug = ch.id ?? ch.slug ?? ch.label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+    const li = document.createElement('li');
+    li.className = 'sidebar-nav__item';
+    const btn = document.createElement('button');
+    btn.className = 'sidebar-nav__btn' + (i === 0 ? ' is-active' : '');
+    btn.dataset.panel = slug;
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    btn.textContent = ch.label;
+    li.appendChild(btn);
+    navList.appendChild(li);
+
+    const panel = document.createElement('div');
+    panel.className = 'sidebar-panel' + (i === 0 ? ' is-active' : '');
+    panel.dataset.panel = slug;
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-label', ch.label);
+    panel.innerHTML = `<div data-materias></div><div class="page-empty"></div>`;
+    contentArea.appendChild(panel);
+  });
+
+  const btns = navList.querySelectorAll('.sidebar-nav__btn');
+  const panels = contentArea.querySelectorAll('.sidebar-panel');
+
+  async function loadPanel(slug) {
+    if (loaded.has(slug)) return;
+    loaded.add(slug);
+    const panel = contentArea.querySelector(`[data-panel="${slug}"]`);
+    const container = panel?.querySelector('[data-materias]');
+    await loadMateriasInto(slug, container, sb);
   }
 
-  // The persistent side nav replaces the top nav — avoid showing both.
-  document.getElementById('site-header')?.setAttribute('data-hide-nav', '');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.panel;
+      btns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
+      panels.forEach(p => p.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+      contentArea.querySelector(`[data-panel="${target}"]`)?.classList.add('is-active');
+      loadPanel(target);
+    });
+  });
 
-  let navList = document.querySelector('.sidebar-nav__list');
-
-  if (!navList) {
-    // A regular content page (documentos-cvm.html, mailing.html, etc.) —
-    // these ship with the 'banner'-model hero + top nav by default since the
-    // same static files are shared across every layout. Strip the hero and
-    // wrap the real content in the same persistent sidebar shell the
-    // homepage uses, instead of duplicating a whole separate template.
-    const pageSection = document.querySelector('main > .page-section');
-    if (!pageSection) return;
-    document.querySelector('.page-header')?.remove();
-
-    const container = pageSection.querySelector('.page-section__container') ?? pageSection;
-
-    const newSection = document.createElement('section');
-    newSection.className = 'page-section page-section--flush-top';
-    newSection.setAttribute('aria-label', 'Conteúdo RI');
-    newSection.innerHTML = `
-      <div class="page-section__container">
-        <div class="sidebar-layout">
-          <aside class="sidebar-nav" aria-label="Seções de conteúdo">
-            <ul class="sidebar-nav__list"></ul>
-          </aside>
-          <div class="sidebar-content"></div>
-        </div>
-      </div>`;
-
-    newSection.querySelector('.sidebar-content').appendChild(container);
-    pageSection.replaceWith(newSection);
-    navList = newSection.querySelector('.sidebar-nav__list');
-  }
-
-  navList.innerHTML = channels.map(ch => {
-    const isActive = currentPath === ch.href.replace(/\.html$/, '') || currentPath === ch.href;
-    return `<li class="sidebar-nav__item">
-      <a class="sidebar-nav__btn${isActive ? ' is-active' : ''}" href="${ch.href}"
-        role="tab" aria-selected="${isActive ? 'true' : 'false'}">${ch.label}</a>
-    </li>`;
-  }).join('');
+  // Eagerly load the first (default-active) panel.
+  loadPanel(channels[0].id ?? channels[0].slug ?? channels[0].label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
 }
+
+buildSidebar();
