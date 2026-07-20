@@ -1,59 +1,37 @@
 // scripts/sidebar-nav.js
 import { siteConfig } from './site.config.js';
 
-const NAV_ID = 'home-sidebar';
-
+// Each channel already has a real, fully-rendered standalone page (with its
+// own data-materias/document list/etc. wired up). This nav used to build an
+// in-page tab/panel per channel and populate every panel with a static empty
+// placeholder that was never connected to real content — clicking a sidebar
+// item always showed "Em construção" instead of the channel's actual page.
+// Simplest correct fix: navigate to the channel's real page.
 function buildSidebar() {
   const navList = document.querySelector('.sidebar-nav__list');
-  const contentArea = document.querySelector('.sidebar-content');
-  if (!navList || !contentArea) return;
+  if (!navList) return;
 
   const channels = (siteConfig.nav ?? []).filter(ch => ch.enabled !== false);
   if (!channels.length) return;
 
-  navList.innerHTML = '';
-  contentArea.innerHTML = '';
+  const currentPath = location.pathname.replace(/\/$/, '') || '/';
 
-  channels.forEach((ch, i) => {
-    const slug = ch.slug ?? ch.label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  // This homepage has no content of its own — it only ever showed each
+  // channel's (broken) empty panel. Since channels now navigate to their
+  // real pages, landing here should go straight to the first one instead
+  // of showing a blank content area.
+  if (currentPath === '/') {
+    location.replace(channels[0].href);
+    return;
+  }
 
-    // Nav item
-    const li = document.createElement('li');
-    li.className = 'sidebar-nav__item';
-    const btn = document.createElement('button');
-    btn.className = 'sidebar-nav__btn' + (i === 0 ? ' is-active' : '');
-    btn.dataset.panel = slug;
-    btn.setAttribute('role', 'tab');
-    btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-    btn.textContent = ch.label;
-    li.appendChild(btn);
-    navList.appendChild(li);
-
-    // Panel
-    const panel = document.createElement('div');
-    panel.className = 'sidebar-panel' + (i === 0 ? ' is-active' : '');
-    panel.dataset.sidebarPanel = NAV_ID;
-    panel.dataset.panel = slug;
-    panel.setAttribute('role', 'tabpanel');
-    panel.setAttribute('aria-label', ch.label);
-    panel.innerHTML = `<div class="page-empty"></div>`;
-    contentArea.appendChild(panel);
-  });
-
-  // Wire up tab switching
-  const btns = navList.querySelectorAll('.sidebar-nav__btn');
-  const panels = contentArea.querySelectorAll('.sidebar-panel');
-
-  btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.panel;
-      btns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
-      panels.forEach(p => p.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      btn.setAttribute('aria-selected', 'true');
-      contentArea.querySelector(`[data-panel="${target}"]`)?.classList.add('is-active');
-    });
-  });
+  navList.innerHTML = channels.map(ch => {
+    const isActive = currentPath === ch.href.replace(/\.html$/, '') || currentPath === ch.href;
+    return `<li class="sidebar-nav__item">
+      <a class="sidebar-nav__btn${isActive ? ' is-active' : ''}" href="${ch.href}"
+        role="tab" aria-selected="${isActive ? 'true' : 'false'}">${ch.label}</a>
+    </li>`;
+  }).join('');
 }
 
 buildSidebar();
