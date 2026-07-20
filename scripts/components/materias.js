@@ -221,5 +221,5 @@ export async function initMaterias(siteConfig) {
   const sb = siteConfig?.supabase;
   const pageId = resolvePageId(siteConfig.nav);
   const container = document.querySelector('[data-materias]');
-  await loadMateriasInto(pageId, container, sb);
+  return loadMateriasInto(pageId, container, sb);
 }
