@@ -10,7 +10,8 @@ import { fileBadgeSvg } from './documentos.js';
 function looksLikeResultadosPage(entry) {
   const slug = String(entry?.id ?? '').toLowerCase();
   const href = String(entry?.href ?? '').toLowerCase();
-  return slug.includes('resultado') || href.includes('resultado');
+  const label = String(entry?.label ?? '').toLowerCase();
+  return slug.includes('resultado') || href.includes('resultado') || label.includes('resultado');
 }
 
 function fileUrl(sb, filePath) {
