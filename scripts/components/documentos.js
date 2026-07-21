@@ -153,9 +153,12 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
 
   const years = [...new Set(docs.map(yearOf).filter(Boolean))].sort((a, b) => b - a);
 
+  // With more than one empresa, documents must never mix between companies
+  // in the same view — default to the principal (first) empresa rather than
+  // an "all companies" state, for both the tab and select UIs.
   const filters = {
     ano: '',
-    empresa: showEmpresaTabs ? (empresas[0]?.id ?? '') : '',
+    empresa: empresas.length > 1 ? (empresas[0]?.id ?? '') : '',
   };
 
   function passesFilters(d) {
@@ -172,7 +175,6 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
     </select></div>`);
     if (showEmpresaFilter) {
       parts.push(`<div class="select"><select data-doc-filter="empresa" aria-label="Empresa">
-        <option value="">Todas as empresas</option>
         ${empresas.map(e => `<option value="${e.id}"${filters.empresa === e.id ? ' selected' : ''}>${e.label}</option>`).join('')}
       </select></div>`);
     }
