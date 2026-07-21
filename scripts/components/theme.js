@@ -164,8 +164,10 @@ export function initTheme(config) {
   if (colors.secondary) {
     const scale = buildScale(colors.secondary);
     const on    = onColor(colors.secondary);
+    const rgb   = hexToRgb(colors.secondary);
     rules.push(
       `  --color-secondary:        ${scale[500]};`,
+      `  --color-secondary-rgb:    ${rgb.r}, ${rgb.g}, ${rgb.b};`,
       `  --color-secondary-light:  ${scale[100]};`,
       `  --color-secondary-hover:  ${scale[700]};`,
       `  --color-on-secondary:     ${on};`,

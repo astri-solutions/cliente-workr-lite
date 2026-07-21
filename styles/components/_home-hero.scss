@@ -26,9 +26,9 @@ $shortcuts-height: 100px;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(11, 91, 104, 0.55) 0%,
-      rgba(11, 91, 104, 0.75) 60%,
-      rgba(11, 91, 104, 0.95) 100%
+      rgba(var(--color-secondary-rgb), 0.55) 0%,
+      rgba(var(--color-secondary-rgb), 0.75) 60%,
+      rgba(var(--color-secondary-rgb), 0.95) 100%
     );
     z-index: 1;
   }

@@ -1,6 +1,17 @@
 // scripts/components/topbar.js
 import { initTopbarBehavior } from '../topbar.js';
 
+const LANG_SHORT = { 'pt-BR': 'PT', 'pt': 'PT', 'en': 'EN', 'en-US': 'EN', 'es': 'ES', 'es-ES': 'ES' };
+const LANG_LABEL = { 'pt-BR': 'Português', 'pt': 'Português', 'en': 'English', 'en-US': 'English', 'es': 'Español', 'es-ES': 'Español' };
+
+function langShort(code) {
+  return LANG_SHORT[code] ?? code.slice(0, 2).toUpperCase();
+}
+
+function langLabel(code) {
+  return LANG_LABEL[code] ?? code;
+}
+
 export function initTopbar(config) {
   const el = document.getElementById('site-topbar');
   if (!el) return;
@@ -10,8 +21,14 @@ export function initTopbar(config) {
   const tickerType = ticker.type ?? 'static';
   const tickerItems = ticker.items ?? config.tickers ?? [];
 
+  const topbarCfg = config.topbar ?? {};
+  const linkRi = topbarCfg.ri ?? { label: 'Relações com Investidores', url: '/' };
+  const linkInstitucional = topbarCfg.institucional ?? { label: 'Institucional', url: '#' };
+  const topbarShowTicker = topbarCfg.showTicker ?? true;
+
   let tickersHtml = '';
-  const showTicker = tickerType !== 'none' && (tickerType !== 'iframe' || !!ticker.iframeUrl) && tickerItems.length > 0 || (tickerType === 'iframe' && !!ticker.iframeUrl);
+  const hasTickerContent = tickerType !== 'none' && (tickerType !== 'iframe' || !!ticker.iframeUrl) && tickerItems.length > 0 || (tickerType === 'iframe' && !!ticker.iframeUrl);
+  const showTicker = topbarShowTicker && hasTickerContent;
 
   if (tickerType === 'iframe' && ticker.iframeUrl) {
     // Widget externo (ex.: Enfoque cotação)
@@ -44,15 +61,24 @@ export function initTopbar(config) {
       </div>`).join('');
   }
 
+  // O seletor de idioma só existe quando o portal foi criado com mais de um
+  // idioma — portais monolíngues (a maioria) não mostram PT/EN.
+  const languages = config.languages ?? ['pt-BR'];
+  const showLangSwitcher = languages.length > 1;
+  const langButtonsHtml = languages.map((code, i) => `
+    <button class="topbar__lang-btn${i === 0 ? ' is-active' : ''}" type="button"
+      data-lang="${code}" aria-pressed="${i === 0 ? 'true' : 'false'}" data-tooltip="${langLabel(code)}">${langShort(code)}</button>`)
+    .join(`<span class="topbar__lang-sep" aria-hidden="true">|</span>`);
+
   el.className = 'topbar';
   el.setAttribute('role', 'navigation');
   el.setAttribute('aria-label', 'Barra de utilitários');
   el.innerHTML = `
     <div class="topbar__inner">
       <div class="topbar__left">
-        <a href="/" class="topbar__link topbar__link--active">Relações com Investidores</a>
+        <a href="${linkRi.url}" class="topbar__link topbar__link--active">${linkRi.label}</a>
         <span class="topbar__sep" aria-hidden="true"></span>
-        <a href="#" class="topbar__link">Institucional</a>
+        <a href="${linkInstitucional.url}" class="topbar__link">${linkInstitucional.label}</a>
       </div>
       ${showTicker ? `<div class="topbar__tickers" aria-label="Cotação" aria-live="polite">
         ${tickersHtml}
@@ -72,14 +98,11 @@ export function initTopbar(config) {
           <button class="topbar__a11y-btn topbar__a11y-btn--font-down" type="button"
             data-a11y="font-down" aria-label="Reduzir fonte" data-tooltip="Reduzir texto">A<sup>-</sup></button>
         </div>
+        ${showLangSwitcher ? `
         <div class="topbar__sep" aria-hidden="true"></div>
         <div class="topbar__lang" role="group" aria-label="Idioma">
-          <button class="topbar__lang-btn is-active" type="button"
-            data-lang="pt" aria-pressed="true" data-tooltip="Português">PT</button>
-          <span class="topbar__lang-sep" aria-hidden="true">|</span>
-          <button class="topbar__lang-btn" type="button"
-            data-lang="en" aria-pressed="false" data-tooltip="English">EN</button>
-        </div>
+          ${langButtonsHtml}
+        </div>` : ''}
       </div>
     </div>`;
 
