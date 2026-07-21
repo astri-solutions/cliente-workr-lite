@@ -51,7 +51,7 @@
     transition: opacity 0.3s ease, transform 0.3s ease;
     text-align: center;
 
-    @include respond-down(mobile) {
+    @include respond-down(tablet) {
       padding: $spacing-8 $spacing-5;
       border-radius: 12px;
     }

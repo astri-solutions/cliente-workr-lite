@@ -60,7 +60,7 @@
       height: 400px;
     }
 
-    @include respond-down(mobile) {
+    @include respond-down(tablet) {
       height: 350px;
     }
   }

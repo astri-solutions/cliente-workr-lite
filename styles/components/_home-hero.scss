@@ -104,7 +104,7 @@ $shortcuts-height: 100px;
     min-height: $shortcuts-height;
 
     @include respond-down(desktop) { grid-template-columns: repeat(2, 1fr); }
-    @include respond-down(mobile)  { grid-template-columns: 1fr 1fr; }
+    @include respond-down(tablet)  { grid-template-columns: 1fr 1fr; }
   }
 
   &__shortcut {
