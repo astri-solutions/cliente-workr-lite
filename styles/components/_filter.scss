@@ -72,6 +72,7 @@
 
   select {
     appearance: none;
+    width: 100%;
     border: none;
     background: transparent;
     padding: 0;
@@ -83,7 +84,8 @@
     &:focus { outline: none; }
 
     // Best-effort — option padding is only honored by some browser engines
-    // (Chromium/Firefox), ignored elsewhere; harmless where unsupported.
+    // (Firefox mostly; Chromium's native <option> popup ignores most box
+    // model properties). Harmless where unsupported.
     option { padding: $spacing-2 $spacing-3; }
   }
 
