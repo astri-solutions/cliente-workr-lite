@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     gap: $spacing-1;
-    border-bottom: 2px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: $spacing-8;
     flex-wrap: wrap;
 
@@ -29,12 +29,12 @@
     font-weight: $font-weight-medium;
     color: var(--color-text-muted);
     border: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     border-radius: 0;
     background: transparent;
     transition: color 0.2s, border-color 0.2s;
     position: relative;
-    bottom: -2px;
+    bottom: -1px;
 
     &:hover { color: var(--color-secondary); }
 
