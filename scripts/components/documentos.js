@@ -1,4 +1,5 @@
 // scripts/components/documentos.js
+import { getLang, pick, t } from '../lib/i18n.js';
 // Fetches published documents (portal_documents) for a page and renders them
 // either as a flat filterable list ("lista") or as an accordion grouped by
 // sub-grupo/ano ("lista-agrupada"), mirroring cms-lista.html / cms-lista-agrupada.html.
@@ -56,9 +57,8 @@ function formatDate(iso) {
   } catch { return ''; }
 }
 
-function titleOf(doc) {
-  const t = doc.titulo ?? {};
-  return t['pt-BR'] ?? Object.values(t)[0] ?? 'Documento';
+function titleOf(doc, lang) {
+  return pick(doc.titulo, lang) || 'Documento';
 }
 
 function yearOf(doc) {
@@ -74,9 +74,9 @@ function groupLabel(doc, pageId) {
   return year ? String(year) : 'Documentos';
 }
 
-function docItemHtml(d, sb) {
+function docItemHtml(d, sb, lang) {
   const href = d.external_link || fileUrl(sb, d.file_path);
-  const title = titleOf(d);
+  const title = titleOf(d, lang);
   return `<li class="doc-list__item">
     <div class="doc-list__info">
       <span class="doc-list__date">${formatDate(d.created_at)}</span>
@@ -91,13 +91,13 @@ function docItemHtml(d, sb) {
   </li>`;
 }
 
-function renderFlatList(list, sb) {
-  if (!list.length) return `<p class="docs-vazio">Nenhum documento disponível.</p>`;
-  return `<ul class="doc-list" role="list">${list.map(d => docItemHtml(d, sb)).join('')}</ul>`;
+function renderFlatList(list, sb, lang) {
+  if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
+  return `<ul class="doc-list" role="list">${list.map(d => docItemHtml(d, sb, lang)).join('')}</ul>`;
 }
 
-function renderGroupedList(list, pageId, sb) {
-  if (!list.length) return `<p class="docs-vazio">Nenhum documento disponível.</p>`;
+function renderGroupedList(list, pageId, sb, lang) {
+  if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
   const groups = [];
   for (const d of list) {
     const label = groupLabel(d, pageId);
@@ -116,7 +116,7 @@ function renderGroupedList(list, pageId, sb) {
         </span>
       </button>
       <div class="accordion__body">
-        <ul class="doc-list" role="list">${g.docs.map(d => docItemHtml(d, sb)).join('')}</ul>
+        <ul class="doc-list" role="list">${g.docs.map(d => docItemHtml(d, sb, lang)).join('')}</ul>
       </div>
     </div>`).join('');
   return `<div class="accordion" data-accordion>${groupHtml}</div>`;
@@ -148,6 +148,7 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
   const listType = entry.pageType === 'lista' ? 'lista' : 'lista-agrupada';
   const empresas = siteConfig.empresas ?? [];
   const variant = siteConfig.header?.variant ?? 'sidebar';
+  const lang = getLang(siteConfig);
   const showEmpresaTabs = empresas.length > 1 && variant !== 'tabmenu';
   const showEmpresaFilter = empresas.length > 1 && variant === 'tabmenu';
 
@@ -170,16 +171,16 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
   function controlsHtml() {
     const parts = [`<div class="filter-bar__group">`];
     parts.push(`<label class="filter-box">
-      <span class="filter-box__label">Filtrar por Ano</span>
+      <span class="filter-box__label">${t('filtrarAno', lang)}</span>
       <select data-doc-filter="ano">
-        <option value="">Todos os anos</option>
+        <option value="">${t('todosOsAnos', lang)}</option>
         ${years.map(y => `<option value="${y}"${filters.ano === String(y) ? ' selected' : ''}>${y}</option>`).join('')}
       </select>
       <span class="filter-box__chevron" aria-hidden="true"></span>
     </label>`);
     if (showEmpresaFilter) {
       parts.push(`<label class="filter-box">
-        <span class="filter-box__label">Filtrar por Empresa</span>
+        <span class="filter-box__label">${t('filtrarEmpresa', lang)}</span>
         <select data-doc-filter="empresa">
           ${empresas.map(e => `<option value="${e.id}"${filters.empresa === e.id ? ' selected' : ''}>${e.label}</option>`).join('')}
         </select>
@@ -201,7 +202,7 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
 
   function render() {
     const filtered = docs.filter(passesFilters);
-    const body = listType === 'lista' ? renderFlatList(filtered, sb) : renderGroupedList(filtered, pageId, sb);
+    const body = listType === 'lista' ? renderFlatList(filtered, sb, lang) : renderGroupedList(filtered, pageId, sb, lang);
     container.innerHTML = `${controlsHtml()}${empresaTabsHtml()}<div data-doc-content>${body}</div>`;
     bind();
   }

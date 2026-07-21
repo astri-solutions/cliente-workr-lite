@@ -6,6 +6,7 @@
 // the portal + empresa, so this triggers whenever the current page/panel
 // looks like the results channel (slug/href containing "resultado").
 import { fileBadgeSvg } from './documentos.js';
+import { getLang, t } from '../lib/i18n.js';
 
 function looksLikeResultadosPage(entry) {
   const slug = String(entry?.id ?? '').toLowerCase();
@@ -48,10 +49,10 @@ function docItemHtml(a, sb) {
   </li>`;
 }
 
-function renderPeriodoItem(periodo, arquivos, sb, idx) {
+function renderPeriodoItem(periodo, arquivos, sb, idx, lang) {
   const body = arquivos.length
     ? `<ul class="doc-list" role="list">${arquivos.map(a => docItemHtml(a, sb)).join('')}</ul>`
-    : `<p class="docs-vazio">Nenhum arquivo disponível.</p>`;
+    : `<p class="docs-vazio">${t('nenhumArquivo', lang)}</p>`;
   return `<div class="accordion__item${idx === 0 ? ' accordion__item--open' : ''}" data-accordion-item>
     <button class="accordion__trigger" type="button" aria-expanded="${idx === 0 ? 'true' : 'false'}">
       <span class="accordion__label">📁 ${periodo.period}</span>
@@ -86,6 +87,7 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
   const variant = siteConfig.header?.variant ?? 'sidebar';
   const showEmpresaTabs = empresas.length > 1 && variant !== 'tabmenu';
   const showEmpresaFilter = empresas.length > 1 && variant === 'tabmenu';
+  const lang = getLang(siteConfig);
 
   const years = [...new Set(periodos.map(periodYear).filter(Boolean))].sort((a, b) => b - a);
 
@@ -106,16 +108,16 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
   function controlsHtml() {
     const parts = [`<div class="filter-bar__group">`];
     parts.push(`<label class="filter-box">
-      <span class="filter-box__label">Filtrar por Ano</span>
+      <span class="filter-box__label">${t('filtrarAno', lang)}</span>
       <select data-res-filter="ano">
-        <option value="">Todos os anos</option>
+        <option value="">${t('todosOsAnos', lang)}</option>
         ${years.map(y => `<option value="${y}"${filters.ano === String(y) ? ' selected' : ''}>${y}</option>`).join('')}
       </select>
       <span class="filter-box__chevron" aria-hidden="true"></span>
     </label>`);
     if (showEmpresaFilter) {
       parts.push(`<label class="filter-box">
-        <span class="filter-box__label">Filtrar por Empresa</span>
+        <span class="filter-box__label">${t('filtrarEmpresa', lang)}</span>
         <select data-res-filter="empresa">
           ${empresas.map(e => `<option value="${e.id}"${filters.empresa === e.id ? ' selected' : ''}>${e.label}</option>`).join('')}
         </select>
@@ -139,7 +141,7 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
     const filtered = periodos.filter(passesFilters);
     let body;
     if (!filtered.length) {
-      body = `<p class="docs-vazio">Nenhum resultado disponível.</p>`;
+      body = `<p class="docs-vazio">${t('nenhumResultado', lang)}</p>`;
     } else {
       const byYear = [];
       for (const p of filtered) {
@@ -151,7 +153,7 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
       body = byYear.map(g => `
         <h3 class="resultados-year-label">${g.year}</h3>
         <div class="accordion" data-accordion>
-          ${g.periodos.map((p, idx) => renderPeriodoItem(p, arquivosByPeriodo[p.id] ?? [], sb, idx)).join('')}
+          ${g.periodos.map((p, idx) => renderPeriodoItem(p, arquivosByPeriodo[p.id] ?? [], sb, idx, lang)).join('')}
         </div>`).join('');
     }
     container.innerHTML = `${controlsHtml()}${empresaTabsHtml()}<div data-res-content>${body}</div>`;

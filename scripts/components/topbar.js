@@ -1,5 +1,6 @@
 // scripts/components/topbar.js
 import { initTopbarBehavior } from '../topbar.js';
+import { getLang } from '../lib/i18n.js';
 
 const LANG_SHORT = { 'pt-BR': 'PT', 'pt': 'PT', 'en': 'EN', 'en-US': 'EN', 'es': 'ES', 'es-ES': 'ES' };
 const LANG_LABEL = { 'pt-BR': 'Português', 'pt': 'Português', 'en': 'English', 'en-US': 'English', 'es': 'Español', 'es-ES': 'Español' };
@@ -65,9 +66,11 @@ export function initTopbar(config) {
   // idioma — portais monolíngues (a maioria) não mostram PT/EN.
   const languages = config.languages ?? ['pt-BR'];
   const showLangSwitcher = languages.length > 1;
-  const langButtonsHtml = languages.map((code, i) => `
-    <button class="topbar__lang-btn${i === 0 ? ' is-active' : ''}" type="button"
-      data-lang="${code}" aria-pressed="${i === 0 ? 'true' : 'false'}" data-tooltip="${langLabel(code)}">${langShort(code)}</button>`)
+  const currentLang = getLang(config);
+  document.documentElement.lang = currentLang;
+  const langButtonsHtml = languages.map(code => `
+    <button class="topbar__lang-btn${code === currentLang ? ' is-active' : ''}" type="button"
+      data-lang="${code}" aria-pressed="${code === currentLang ? 'true' : 'false'}" data-tooltip="${langLabel(code)}">${langShort(code)}</button>`)
     .join(`<span class="topbar__lang-sep" aria-hidden="true">|</span>`);
 
   el.className = 'topbar';

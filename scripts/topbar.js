@@ -1,4 +1,6 @@
 // scripts/topbar.js
+import { setLang } from './lib/i18n.js';
+
 export function initTopbarBehavior() {
   // Tickers: rotação automática se houver mais de um
   const tickers = document.querySelectorAll('[data-topbar-ticker]');
@@ -33,15 +35,16 @@ export function initTopbarBehavior() {
     });
   });
 
-  // Idioma
+  // Idioma — troca o idioma de todo o conteúdo do site, não só o botão ativo.
+  // A escolha é persistida e a página recarrega para que todo componente
+  // (documentos, resultados, textos estáticos) releia o idioma atual.
   document.querySelectorAll('[data-lang]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-lang]').forEach(b => {
-        b.classList.remove('is-active');
-        b.setAttribute('aria-pressed', 'false');
-      });
-      btn.classList.add('is-active');
-      btn.setAttribute('aria-pressed', 'true');
+      const code = btn.dataset.lang;
+      if (document.documentElement.lang === code) return;
+      setLang(code);
+      document.documentElement.lang = code;
+      location.reload();
     });
   });
 }
