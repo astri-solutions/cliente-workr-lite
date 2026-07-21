@@ -104,15 +104,23 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
   }
 
   function controlsHtml() {
-    const parts = [`<div class="filter-bar__group"><span class="filter-bar__label">Filtrar por:</span>`];
-    parts.push(`<div class="select"><select data-res-filter="ano" aria-label="Ano">
-      <option value="">Todos os anos</option>
-      ${years.map(y => `<option value="${y}"${filters.ano === String(y) ? ' selected' : ''}>${y}</option>`).join('')}
-    </select></div>`);
+    const parts = [`<div class="filter-bar__group">`];
+    parts.push(`<label class="filter-box">
+      <span class="filter-box__label">Filtrar por Ano</span>
+      <select data-res-filter="ano">
+        <option value="">Todos os anos</option>
+        ${years.map(y => `<option value="${y}"${filters.ano === String(y) ? ' selected' : ''}>${y}</option>`).join('')}
+      </select>
+      <span class="filter-box__chevron" aria-hidden="true"></span>
+    </label>`);
     if (showEmpresaFilter) {
-      parts.push(`<div class="select"><select data-res-filter="empresa" aria-label="Empresa">
-        ${empresas.map(e => `<option value="${e.id}"${filters.empresa === e.id ? ' selected' : ''}>${e.label}</option>`).join('')}
-      </select></div>`);
+      parts.push(`<label class="filter-box">
+        <span class="filter-box__label">Filtrar por Empresa</span>
+        <select data-res-filter="empresa">
+          ${empresas.map(e => `<option value="${e.id}"${filters.empresa === e.id ? ' selected' : ''}>${e.label}</option>`).join('')}
+        </select>
+        <span class="filter-box__chevron" aria-hidden="true"></span>
+      </label>`);
     }
     parts.push(`</div>`);
     return `<div class="filter-bar">${parts.join('')}</div>`;
