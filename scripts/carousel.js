@@ -1,5 +1,6 @@
 // scripts/carousel.js
 import { siteConfig } from './site.config.js';
+import { getLang, pick } from './lib/i18n.js';
 
 const SLIDES_DEFAULT = [
   {
@@ -35,13 +36,34 @@ let current = 0;
 let autoplayTimer = null;
 let SLIDES = [];
 
+// Slides configured in Personalizar → Banner (CMS), translated to the
+// current site language — falls back to the static placeholders above when
+// the portal hasn't configured any banner slide yet.
+function slidesFromConfig() {
+  const raw = siteConfig.banner;
+  if (!Array.isArray(raw) || raw.length === 0) return null;
+  const lang = getLang(siteConfig);
+  const primaryHref = (siteConfig.nav ?? []).find(ch => ch.enabled !== false)?.href ?? '#';
+  const slides = raw.map(s => {
+    const c = pick(s.content, lang) ?? {};
+    return {
+      img: s.imagem || SLIDES_DEFAULT[0].img,
+      title: c.titulo ?? '',
+      subtitle: c.subtitulo ?? '',
+      cta: { label: c.cta ?? '', href: primaryHref },
+    };
+  }).filter(s => s.title || s.subtitle);
+  return slides.length > 0 ? slides : null;
+}
+
 function renderCarousel() {
   const el = document.getElementById('home-carousel');
   if (!el) return;
 
-  // Pick slide set based on data-slides attribute on the carousel element
+  // Pick slide set based on data-slides attribute on the carousel element,
+  // falling back to CMS-configured slides when available.
   const slideSet = el.dataset.slides;
-  SLIDES = slideSet === 'v2' ? SLIDES_V2 : SLIDES_DEFAULT;
+  SLIDES = slidesFromConfig() ?? (slideSet === 'v2' ? SLIDES_V2 : SLIDES_DEFAULT);
 
   el.innerHTML = `
     <div class="carousel__track" id="carousel-track">
@@ -52,7 +74,7 @@ function renderCarousel() {
           <div class="carousel__body">
             <h1 class="carousel__title">${s.title}</h1>
             <p class="carousel__subtitle">${s.subtitle}</p>
-            <a href="${s.cta.href}" class="carousel__cta">${s.cta.label}</a>
+            ${s.cta.label ? `<a href="${s.cta.href}" class="carousel__cta">${s.cta.label}</a>` : ''}
           </div>
         </div>`).join('')}
     </div>
