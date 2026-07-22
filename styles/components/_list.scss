@@ -206,10 +206,6 @@
     }
 
     &--year { color: #fff; }
-
-    // No file for this category/quarter — stays visually empty (transparent),
-    // never a placeholder dash or icon.
-    &--empty { background: transparent; }
   }
 
   &__link {
@@ -219,5 +215,13 @@
     &:hover { color: var(--color-primary); }
 
     svg { width: 22px; height: 24px; }
+
+    // No file for this category/quarter — same icon shape, grayed out and
+    // inert (not a link, not clickable), instead of an empty cell.
+    &--disabled {
+      color: var(--color-border);
+      cursor: default;
+      pointer-events: none;
+    }
   }
 }

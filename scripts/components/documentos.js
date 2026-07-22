@@ -39,11 +39,11 @@ function extOf(path) {
 // under /assets/icons (those embed a bitmap pattern fill and blur when
 // scaled down to list-icon size). Exported for reuse by resultados.js.
 export function fileBadgeSvg(pathOrUrl) {
-  const label = EXT_LABEL[extOf(pathOrUrl)] ?? 'LINK';
+  const label = pathOrUrl ? (EXT_LABEL[extOf(pathOrUrl)] ?? 'LINK') : '';
   return `<svg width="26" height="30" viewBox="0 0 26 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M2 3.5C2 2.67157 2.67157 2 3.5 2H14.5L23 10.5V26.5C23 27.3284 22.3284 28 21.5 28H3.5C2.67157 28 2 27.3284 2 26.5V3.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
     <path d="M14.5 2V9.5C14.5 10.0523 14.9477 10.5 15.5 10.5H23" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-    <text x="12.5" y="21" text-anchor="middle" font-size="6.5" font-weight="700" letter-spacing="0.2" font-family="inherit" fill="currentColor">${label}</text>
+    ${label ? `<text x="12.5" y="21" text-anchor="middle" font-size="6.5" font-weight="700" letter-spacing="0.2" font-family="inherit" fill="currentColor">${label}</text>` : ''}
   </svg>`;
 }
 

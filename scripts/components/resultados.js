@@ -79,7 +79,13 @@ const TIPO_ROWS = [
 ];
 
 function matrixCellHtml(arquivo, sb) {
-  if (!arquivo) return `<td class="doc-matrix__cell doc-matrix__cell--empty"></td>`;
+  if (!arquivo) {
+    return `<td class="doc-matrix__cell doc-matrix__cell--empty">
+      <span class="doc-matrix__link doc-matrix__link--disabled" aria-hidden="true">
+        ${fileBadgeSvg('')}
+      </span>
+    </td>`;
+  }
   const href = arquivo.external_link || fileUrl(sb, arquivo.file_path);
   return `<td class="doc-matrix__cell">
     <a href="${href}" class="doc-matrix__link" aria-label="Baixar ${arquivo.nome}" target="_blank" rel="noopener">
