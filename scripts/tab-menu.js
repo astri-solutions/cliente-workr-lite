@@ -40,7 +40,13 @@ function buildTabMenu() {
     panel.dataset.panel = slug;
     panel.setAttribute('role', 'tabpanel');
     panel.setAttribute('aria-label', ch.label);
-    panel.innerHTML = `<div data-materias></div><div class="page-empty"></div>`;
+    // No .page-empty here — it must only appear once loadPanel() has
+    // actually tried and failed to find content. The global MutationObserver
+    // in page.js converts .page-empty into "Em construção" the instant it's
+    // inserted, so adding it upfront (before the async fetch even starts)
+    // showed that message on every tab switch and every reload, even when
+    // the channel had real content.
+    panel.innerHTML = `<div data-materias></div>`;
     panelArea.appendChild(panel);
   });
 
@@ -59,7 +65,12 @@ function buildTabMenu() {
     const found = await loadMateriasInto(slug, container, sb);
     const ch = channelBySlug.get(slug) ?? slug;
     const found2 = found || await loadDocumentosInto(ch, container, sb, siteConfig);
-    if (!found2) await loadResultadosInto(ch, container, sb, siteConfig);
+    const found3 = found2 || await loadResultadosInto(ch, container, sb, siteConfig);
+    // Only now — after every loader has actually tried — do we know the
+    // channel really has nothing to show.
+    if (!found3 && panel && !panel.querySelector('.page-empty, .em-construcao')) {
+      panel.insertAdjacentHTML('beforeend', '<div class="page-empty"></div>');
+    }
   }
 
   tabs.forEach(tab => {
