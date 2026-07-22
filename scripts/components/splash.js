@@ -1,9 +1,10 @@
 // scripts/components/splash.js
-// Renders the CMS-configured splash modal (siteConfig.splash) once per
-// browser session, shown automatically on first visit to any page.
+// Renders the CMS-configured splash modal (siteConfig.splash) on every load
+// of the home page — not once per session, and not on internal pages, per
+// how a splash/announcement modal is meant to be used (a notice shown right
+// when someone lands on the site).
 
 const SIZE_PX = { sm: 360, md: 540, lg: 740 };
-const SESSION_KEY = 'workr_splash_dismissed';
 
 function buildButtons(buttons) {
   if (!Array.isArray(buttons) || buttons.length === 0) return '';
@@ -12,10 +13,15 @@ function buildButtons(buttons) {
   </div>`;
 }
 
+function isHomePage() {
+  const path = location.pathname.replace(/\/index\.html$/, '/');
+  return path === '/' || path === '';
+}
+
 export function initSplash(siteConfig) {
   const cfg = siteConfig?.splash;
   if (!cfg?.enabled) return;
-  if (sessionStorage.getItem(SESSION_KEY) === '1') return;
+  if (!isHomePage()) return;
 
   const size = SIZE_PX[cfg.size] ?? SIZE_PX.md;
   const overlay = document.createElement('div');
@@ -35,7 +41,6 @@ export function initSplash(siteConfig) {
 
   function dismiss() {
     overlay.classList.remove('is-visible');
-    sessionStorage.setItem(SESSION_KEY, '1');
     setTimeout(() => overlay.remove(), 250);
   }
 
