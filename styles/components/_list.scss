@@ -219,7 +219,7 @@
     // No file for this category/quarter — same icon shape, grayed out and
     // inert (not a link, not clickable), instead of an empty cell.
     &--disabled {
-      color: var(--color-border);
+      color: var(--color-gray-400);
       cursor: default;
       pointer-events: none;
     }
