@@ -5,7 +5,7 @@
 // documentos.js, results aren't scoped to a page/canal — they're scoped to
 // the portal + empresa, so this triggers whenever the current page/panel
 // looks like the results channel (slug/href containing "resultado").
-import { fileBadgeSvg } from './documentos.js';
+import { fileBadgeSvg, resolvePageEntry } from './documentos.js';
 import { getLang, t } from '../lib/i18n.js';
 import { filterBoxHtml, initFilterSelects } from './filterSelect.js';
 
@@ -50,6 +50,43 @@ function docItemHtml(a, sb) {
   </li>`;
 }
 
+function tableRowHtml(periodo, a, sb) {
+  const href = a.external_link || fileUrl(sb, a.file_path);
+  return `<tr class="doc-table__row">
+    <td class="doc-table__cell doc-table__cell--date">${formatDate(a.created_at)}</td>
+    <td class="doc-table__cell doc-table__cell--periodo">${periodo.period}</td>
+    <td class="doc-table__cell doc-table__cell--name">${a.nome}</td>
+    <td class="doc-table__cell doc-table__cell--action">
+      <a href="${href}" class="doc-list__link doc-list__icon" aria-label="Baixar ${a.nome}" target="_blank" rel="noopener">
+        ${fileBadgeSvg(a.file_path ?? a.external_link ?? '')}
+      </a>
+    </td>
+  </tr>`;
+}
+
+// Tabela pageType — same período/arquivo data as the accordion, laid out as
+// rows instead of grouped/collapsible sections. Content is identical either
+// way; only the presentation changes.
+function renderResultadosTable(periodos, arquivosByPeriodo, sb, lang) {
+  const rows = periodos.flatMap(p => (arquivosByPeriodo[p.id] ?? []).map(a => ({ p, a })));
+  if (!rows.length) return `<p class="docs-vazio">${t('nenhumResultado', lang)}</p>`;
+  return `<div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th class="doc-table__cell">Data</th>
+          <th class="doc-table__cell">Trimestre</th>
+          <th class="doc-table__cell">Arquivo</th>
+          <th class="doc-table__cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(({ p, a }) => tableRowHtml(p, a, sb)).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
 function renderPeriodoItem(periodo, arquivos, sb, idx, lang) {
   const body = arquivos.length
     ? `<ul class="doc-list" role="list">${arquivos.map(a => docItemHtml(a, sb)).join('')}</ul>`
@@ -83,7 +120,7 @@ function bindAccordion(container) {
   });
 }
 
-function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig) {
+function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig, pageType) {
   const empresas = siteConfig.empresas ?? [];
   const variant = siteConfig.header?.variant ?? 'sidebar';
   const showEmpresaTabs = empresas.length > 1 && variant !== 'tabmenu';
@@ -140,6 +177,8 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
     let body;
     if (!filtered.length) {
       body = `<p class="docs-vazio">${t('nenhumResultado', lang)}</p>`;
+    } else if (pageType === 'tabela') {
+      body = renderResultadosTable(filtered, arquivosByPeriodo, sb, lang);
     } else {
       const byYear = [];
       for (const p of filtered) {
@@ -205,7 +244,7 @@ export async function loadResultadosInto(pageEntry, container, sb, siteConfig = 
       (arquivosByPeriodo[a.periodo_id] ??= []).push(a);
     });
 
-    renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig ?? {});
+    renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig ?? {}, entry.pageType);
     container.classList.add('resultados--loaded');
     container.parentElement?.querySelector('.page-empty, .em-construcao')?.remove();
     return true;
@@ -220,5 +259,9 @@ export async function initResultados(siteConfig, alreadyRendered) {
   if (!path.toLowerCase().includes('resultado')) return;
   const sb = siteConfig?.supabase;
   const container = document.querySelector('[data-materias]');
-  await loadResultadosInto({ id: path }, container, sb, siteConfig);
+  // Resolve the real nav entry (not just a synthetic {id: path}) so its
+  // pageType (lista / lista-agrupada / tabela, set via Canais → Editar
+  // canal) is honored — same content, different presentation.
+  const entry = resolvePageEntry(siteConfig?.nav) ?? { id: path };
+  await loadResultadosInto(entry, container, sb, siteConfig);
 }

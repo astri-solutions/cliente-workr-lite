@@ -106,3 +106,47 @@
     &:hover { border-color: var(--color-primary); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
   }
 }
+
+// ── Tabela pageType (Documentos / Central de Resultados) ─────────────────────
+// Same data as .doc-list/.accordion, laid out as an actual table — used when
+// a canal's "Tipo de página" is set to Tabela.
+.doc-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+
+  thead {
+    background: var(--color-surface);
+
+    th {
+      text-align: left;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-semibold;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+  }
+
+  &__row {
+    border-top: 1px solid var(--color-border);
+    transition: background 0.15s;
+    &:hover { background: var(--color-surface); }
+  }
+
+  &__cell {
+    padding: $spacing-3 $spacing-4;
+    white-space: nowrap;
+
+    &--date { color: var(--color-text-muted); }
+    &--periodo { color: var(--color-text-muted); }
+    &--name { color: var(--color-text); font-weight: $font-weight-medium; white-space: normal; }
+    &--action { width: 1%; }
+  }
+}

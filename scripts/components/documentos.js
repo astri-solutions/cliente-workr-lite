@@ -9,7 +9,7 @@ import { filterBoxHtml, initFilterSelects } from './filterSelect.js';
 // like a nested nav), while tabmenu layouts get a second "Empresa" filter select
 // next to "Ano" (adding tabs-inside-tabs there would be confusing).
 
-function resolvePageEntry(nav) {
+export function resolvePageEntry(nav) {
   const path = location.pathname.replace(/\/$/, '') || '/';
   const matches = href => href && (path === href.replace(/\.html$/, '') || path + '.html' === href || path === href);
   for (const canal of nav ?? []) {
@@ -92,6 +92,41 @@ function docItemHtml(d, sb, lang) {
   </li>`;
 }
 
+function tableRowHtml(d, sb, lang) {
+  const href = d.external_link || fileUrl(sb, d.file_path);
+  const title = titleOf(d, lang);
+  return `<tr class="doc-table__row">
+    <td class="doc-table__cell doc-table__cell--date">${formatDate(d.created_at)}</td>
+    <td class="doc-table__cell doc-table__cell--name">${title}</td>
+    <td class="doc-table__cell doc-table__cell--action">
+      <a href="${href}" class="doc-list__link doc-list__icon" aria-label="Baixar ${title}" target="_blank" rel="noopener">
+        ${fileBadgeSvg(d.file_path ?? d.external_link ?? '')}
+      </a>
+    </td>
+  </tr>`;
+}
+
+// Tabela pageType — same documents as lista/lista-agrupada, laid out as rows
+// instead of a list or accordion. Content is identical either way; only the
+// presentation changes.
+function renderTable(list, sb, lang) {
+  if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
+  return `<div class="doc-table-wrap">
+    <table class="doc-table">
+      <thead>
+        <tr>
+          <th class="doc-table__cell">Data</th>
+          <th class="doc-table__cell">Documento</th>
+          <th class="doc-table__cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${list.map(d => tableRowHtml(d, sb, lang)).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
 function renderFlatList(list, sb, lang) {
   if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
   return `<ul class="doc-list" role="list">${list.map(d => docItemHtml(d, sb, lang)).join('')}</ul>`;
@@ -146,7 +181,7 @@ function bindAccordion(container) {
  */
 function renderDocumentos(entry, docs, container, sb, siteConfig) {
   const pageId = entry.id;
-  const listType = entry.pageType === 'lista' ? 'lista' : 'lista-agrupada';
+  const listType = entry.pageType === 'lista' || entry.pageType === 'tabela' ? entry.pageType : 'lista-agrupada';
   const empresas = siteConfig.empresas ?? [];
   const variant = siteConfig.header?.variant ?? 'sidebar';
   const lang = getLang(siteConfig);
@@ -200,7 +235,9 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
 
   function render() {
     const filtered = docs.filter(passesFilters);
-    const body = listType === 'lista' ? renderFlatList(filtered, sb, lang) : renderGroupedList(filtered, pageId, sb, lang);
+    const body = listType === 'lista' ? renderFlatList(filtered, sb, lang)
+      : listType === 'tabela' ? renderTable(filtered, sb, lang)
+      : renderGroupedList(filtered, pageId, sb, lang);
     container.innerHTML = `${controlsHtml()}${empresaTabsHtml()}<div data-doc-content>${body}</div>`;
     bind();
   }
