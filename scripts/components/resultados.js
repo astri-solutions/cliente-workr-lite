@@ -64,6 +64,70 @@ function tableRowHtml(periodo, a, sb) {
   </tr>`;
 }
 
+// Row order/labels for the "Tabela Resultados" matrix — mirrors the tipo
+// options in the CMS's Central de Resultados file editor.
+const TIPO_ROWS = [
+  { tipo: 'release',      label: 'Release de Resultados' },
+  { tipo: 'apresentacao', label: 'Apresentação de Resultados' },
+  { tipo: 'planilha',     label: 'Planilha de Apoio' },
+  { tipo: 'dfs',          label: 'Demonstrações Financeiras' },
+  { tipo: 'transcricao',  label: 'Transcrição' },
+  { tipo: 'audio',        label: 'Áudio' },
+  { tipo: 'transmissao',  label: 'Transmissão' },
+  { tipo: 'ata',          label: 'Ata RCA' },
+  { tipo: 'outros',       label: 'Outros' },
+];
+
+function matrixCellHtml(arquivo, sb) {
+  if (!arquivo) return `<td class="doc-matrix__cell doc-matrix__cell--empty"></td>`;
+  const href = arquivo.external_link || fileUrl(sb, arquivo.file_path);
+  return `<td class="doc-matrix__cell">
+    <a href="${href}" class="doc-matrix__link" aria-label="Baixar ${arquivo.nome}" target="_blank" rel="noopener">
+      ${fileBadgeSvg(arquivo.file_path ?? arquivo.external_link ?? '')}
+    </a>
+  </td>`;
+}
+
+// "Tabela Resultados" pageType — a category × trimestre matrix (one table
+// per year), matching the reference layout: rows are document categories,
+// columns are the year's trimestres, and a cell is either the file's icon
+// (linked) or empty/transparent when that category has no file that quarter.
+function renderResultadosMatrix(periodos, arquivosByPeriodo, sb) {
+  const byYear = [];
+  for (const p of periodos) {
+    const year = periodYear(p.period) ?? '—';
+    let g = byYear.find(g => g.year === year);
+    if (!g) { g = { year, periodos: [] }; byYear.push(g); }
+    g.periodos.push(p);
+  }
+  byYear.forEach(g => g.periodos.sort((a, b) => a.period.localeCompare(b.period)));
+
+  return byYear.map(g => {
+    const rows = TIPO_ROWS.filter(row =>
+      g.periodos.some(p => (arquivosByPeriodo[p.id] ?? []).some(a => a.tipo === row.tipo))
+    );
+    if (!rows.length) return '';
+    const rowsHtml = rows.map(row => {
+      const cells = g.periodos.map(p => {
+        const arquivo = (arquivosByPeriodo[p.id] ?? []).find(a => a.tipo === row.tipo);
+        return matrixCellHtml(arquivo, sb);
+      }).join('');
+      return `<tr><th class="doc-matrix__cell doc-matrix__cell--row" scope="row">${row.label}</th>${cells}</tr>`;
+    }).join('');
+    return `<div class="doc-matrix-wrap">
+      <table class="doc-matrix">
+        <thead>
+          <tr>
+            <th class="doc-matrix__cell doc-matrix__cell--year">${g.year}</th>
+            ${g.periodos.map(p => `<th class="doc-matrix__cell">${p.period}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>`;
+  }).join('');
+}
+
 // Tabela pageType — same período/arquivo data as the accordion, laid out as
 // rows instead of grouped/collapsible sections. Content is identical either
 // way; only the presentation changes.
@@ -177,6 +241,8 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
     let body;
     if (!filtered.length) {
       body = `<p class="docs-vazio">${t('nenhumResultado', lang)}</p>`;
+    } else if (pageType === 'tabela-resultados') {
+      body = renderResultadosMatrix(filtered, arquivosByPeriodo, sb);
     } else if (pageType === 'tabela') {
       body = renderResultadosTable(filtered, arquivosByPeriodo, sb, lang);
     } else {
