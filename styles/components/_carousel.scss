@@ -39,10 +39,9 @@
     position: absolute;
     inset: 0;
     background: linear-gradient(
-      to bottom,
-      rgba(var(--color-secondary-rgb), 0.5) 0%,
-      rgba(var(--color-secondary-rgb), 0.75) 60%,
-      rgba(var(--color-secondary-rgb), 0.92) 100%
+      to right,
+      rgba(var(--color-secondary-rgb), 0.9) 0%,
+      rgba(var(--color-secondary-rgb), 0) 100%
     );
   }
 

@@ -164,9 +164,16 @@
 
 .doc-matrix {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: $font-size-sm;
   background: var(--color-bg);
+
+  // First column (category / year label) takes the remaining space; every
+  // quarter column gets a fixed, narrow width so a single quarter doesn't
+  // stretch across half the table.
+  th:first-child, td:first-child { width: auto; }
+  th:not(:first-child), td:not(:first-child) { width: 110px; }
 
   thead th {
     background: var(--color-secondary-900);
@@ -183,6 +190,8 @@
     padding: $spacing-3 $spacing-4;
     text-align: center;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     border-bottom: 1px solid var(--color-border);
 
     &--row {
