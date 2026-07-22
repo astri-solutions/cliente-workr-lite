@@ -1,6 +1,12 @@
 // scripts/components/header.js
 import { initNav } from '../nav.js';
 import { isAuthenticated, openModal, logout } from './auth.js';
+import { getLang } from '../lib/i18n.js';
+
+const LANG_SHORT = { 'pt-BR': 'PT', 'pt': 'PT', 'en': 'EN', 'en-US': 'EN', 'es': 'ES', 'es-ES': 'ES' };
+const LANG_LABEL = { 'pt-BR': 'Português', 'pt': 'Português', 'en': 'English', 'en-US': 'English', 'es': 'Español', 'es-ES': 'Español' };
+function langShort(code) { return LANG_SHORT[code] ?? code.slice(0, 2).toUpperCase(); }
+function langLabel(code) { return LANG_LABEL[code] ?? code; }
 
 function lockIconSVG(open) {
   return open
@@ -118,6 +124,16 @@ export function initHeader(config) {
   const logoSrc = (isDark || isBlur) ? config.company.logoNegative : config.company.logoOriginal;
   const auth    = isAuthenticated();
 
+  // Mesma regra do topbar: só mostra o seletor de idioma no drawer quando o
+  // portal foi criado com mais de um idioma.
+  const languages = config.languages ?? ['pt-BR'];
+  const showLangSwitcher = languages.length > 1;
+  const currentLang = getLang(config);
+  const drawerLangHtml = languages.map(code => `
+    <button class="topbar__lang-btn${code === currentLang ? ' is-active' : ''}" type="button"
+      data-lang="${code}" aria-pressed="${code === currentLang ? 'true' : 'false'}" aria-label="${langLabel(code)}">${langShort(code)}</button>`)
+    .join(`<span aria-hidden="true" style="opacity:0.3">|</span>`);
+
   el.className = `site-header site-header--${variant}`;
   el.innerHTML = `
     <div class="site-header__inner">
@@ -138,11 +154,9 @@ export function initHeader(config) {
           </svg>
           <input type="search" placeholder="Buscar..." aria-label="Buscar" data-search-input />
         </div>
-        <div class="site-header__drawer-lang" role="group" aria-label="Idioma">
-          <button class="topbar__lang-btn is-active" type="button" data-lang="pt" aria-pressed="true">PT</button>
-          <span aria-hidden="true" style="opacity:0.3">|</span>
-          <button class="topbar__lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
-        </div>
+        ${showLangSwitcher ? `<div class="site-header__drawer-lang" role="group" aria-label="Idioma">
+          ${drawerLangHtml}
+        </div>` : ''}
         <ul class="nav-list">${navItems}</ul>
         <div class="site-header__drawer-lock">
           <button class="site-header__lock site-header__lock--drawer${auth ? ' is-authenticated' : ''}"
@@ -151,7 +165,8 @@ export function initHeader(config) {
           </button>
         </div>
       </nav>
-      ${hideNav ? '' : `<div class="site-header__actions">
+      <div class="site-header__actions">
+        ${hideNav ? '' : `
         <button class="site-header__search" type="button" aria-label="Buscar" data-search-toggle>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/>
@@ -163,12 +178,12 @@ export function initHeader(config) {
             aria-label="Área Restrita — fazer login" data-lock-desktop>
             ${lockBtnHTML(auth)}
           </button>
-        </div>
+        </div>`}
         <button class="site-header__hamburger" type="button" aria-label="Abrir menu"
           aria-expanded="false" aria-controls="site-nav" data-nav-hamburger>
           <span></span><span></span><span></span>
         </button>
-      </div>`}
+      </div>
     </div>
     <div class="site-header__overlay" data-nav-overlay aria-hidden="true"></div>`;
 

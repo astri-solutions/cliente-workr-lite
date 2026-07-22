@@ -23,7 +23,13 @@
   &__brand { display: flex; align-items: center; flex-shrink: 0; }
   &__logo  { height: 24px; width: auto; }
 
-  &__nav--hidden { display: none !important; }
+  // Layouts sidebar/tabmenu já navegam pela sidebar-nav/tab-menu no desktop —
+  // o dropdown horizontal do navbar não faz sentido ali. Mas o menu mobile
+  // (hamburger + drawer com páginas e idioma) continua necessário nesses
+  // layouts, então só escondemos a apresentação de desktop.
+  &__nav--hidden {
+    @include respond-up(desktop) { display: none !important; }
+  }
 
   &__nav {
     @include respond-down(desktop) {

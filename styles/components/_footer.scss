@@ -86,10 +86,15 @@
   }
 
   &__bottom-links {
-    display: grid;
-    grid-template-columns: repeat(3, max-content);
+    display: flex;
+    flex-wrap: wrap;
     gap: $spacing-2 $spacing-8;
     a { font-size: $font-size-xs; transition: color 0.2s; &:hover { color: var(--color-primary); } }
+
+    @include respond-down(tablet) {
+      flex-direction: column;
+      gap: $spacing-3;
+    }
   }
 
   &__copyright {
@@ -132,6 +137,23 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: $spacing-4;
+
+      @include respond-down(tablet) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  }
+
+  @include respond-down(tablet) {
+    &__bottom {
+      align-items: flex-start;
+    }
+
+    &__copyright,
+    &__powered {
+      max-width: 100%;
+      overflow-wrap: break-word;
     }
   }
 }

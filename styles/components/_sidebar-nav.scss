@@ -39,6 +39,14 @@
       border-radius: 0;
       gap: $spacing-1;
     }
+
+    // Mobile: one tab per row, full width, instead of wrapping into an
+    // uneven grid of boxes.
+    @include respond-down(tablet) {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      border-bottom: none;
+    }
   }
 
   &__item {
@@ -100,6 +108,16 @@
       &.is-active {
         background: #fff;
         border-bottom-color: #fff;
+      }
+    }
+
+    @include respond-down(tablet) {
+      width: 100%;
+      border-radius: 6px;
+      bottom: 0;
+
+      &.is-active {
+        border-bottom-color: var(--color-border);
       }
     }
   }
