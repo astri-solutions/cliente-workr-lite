@@ -10,6 +10,7 @@ import { initDocumentos } from './components/documentos.js';
 import { initResultados } from './components/resultados.js';
 import { initSplash }  from './components/splash.js';
 import { initCookies } from './components/cookies.js';
+import { applyStoredContrast } from './topbar.js';
 import { getLang, t } from './lib/i18n.js';
 import './icons.js';
 import './reveal.js';
@@ -19,6 +20,9 @@ import './empresa-tabs.js';
 
 // Reflete o idioma escolhido no topbar antes de qualquer render
 document.documentElement.lang = getLang(siteConfig);
+// Reaplica alto contraste antes de qualquer render — sem isso, cada
+// navegação (site multi-página) resetava para desligado.
+applyStoredContrast();
 
 // Injeta cores e fontes do CMS antes de qualquer outro componente
 initTheme(siteConfig);
