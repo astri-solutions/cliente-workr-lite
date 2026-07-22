@@ -178,7 +178,17 @@ export function initTheme(config) {
   }
 
   if (colors.tertiary) {
-    rules.push(`  --color-tertiary: ${colors.tertiary};`);
+    const scale = buildScale(colors.tertiary);
+    const on    = onColor(colors.tertiary);
+    rules.push(
+      `  --color-tertiary:        ${scale[500]};`,
+      `  --color-tertiary-light:  ${scale[100]};`,
+      `  --color-tertiary-hover:  ${scale[700]};`,
+      `  --color-on-tertiary:     ${on};`,
+      ...([100,200,300,400,500,600,700,800,900].map(n =>
+        `  --color-tertiary-${n}:   ${scale[n]};`
+      )),
+    );
   }
 
   if (rules.length > 0) {
