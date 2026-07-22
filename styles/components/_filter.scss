@@ -59,34 +59,31 @@
   background: var(--color-surface);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
+  outline: none;
 
   &:hover { border-color: var(--color-text-muted); background: var(--color-bg); }
-  &:focus-within { border-color: var(--color-secondary); background: var(--color-bg); }
-  &:focus-within &__chevron { transform: translateY(-50%) rotate(180deg); }
+  &:focus, &.is-open { border-color: var(--color-secondary); background: var(--color-bg); }
+  &.is-open &__chevron { transform: translateY(-50%) rotate(180deg); }
 
   &__label {
     font-size: 12px;
     color: var(--color-text-muted);
+    text-align: center;
     pointer-events: none;
   }
 
-  select {
-    appearance: none;
-    width: 100%;
-    border: none;
-    background: transparent;
-    padding: 0;
-    margin: 0;
-    font-size: 15px;
+  // Renders the currently selected option — replaces the native <select>,
+  // whose click target and option-list styling couldn't be made consistent
+  // across browsers. See scripts/components/filterSelect.js.
+  &__value {
+    font-size: 14px;
     font-weight: $font-weight-regular;
     color: var(--color-text);
-    cursor: pointer;
-    &:focus { outline: none; }
-
-    // Best-effort — option padding is only honored by some browser engines
-    // (Firefox mostly; Chromium's native <option> popup ignores most box
-    // model properties). Harmless where unsupported.
-    option { padding: $spacing-2 $spacing-3; }
+    text-align: center;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__chevron {
@@ -101,6 +98,43 @@
     border-top: 5px solid var(--color-text-muted);
     pointer-events: none;
     transition: transform 0.15s;
+  }
+
+  &__menu {
+    display: none;
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  &.is-open &__menu { display: block; }
+
+  &__option {
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: $font-weight-regular;
+    text-align: center;
+    color: var(--color-text);
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover { background: var(--color-surface); }
+
+    &.is-selected {
+      color: #fff;
+      background: var(--color-secondary);
+    }
   }
 
   @include respond-down(tablet) {

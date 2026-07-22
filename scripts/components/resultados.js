@@ -7,6 +7,7 @@
 // looks like the results channel (slug/href containing "resultado").
 import { fileBadgeSvg } from './documentos.js';
 import { getLang, t } from '../lib/i18n.js';
+import { filterBoxHtml, initFilterSelects } from './filterSelect.js';
 
 function looksLikeResultadosPage(entry) {
   const slug = String(entry?.id ?? '').toLowerCase();
@@ -107,22 +108,19 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
 
   function controlsHtml() {
     const parts = [`<div class="filter-bar__group">`];
-    parts.push(`<label class="filter-box">
-      <span class="filter-box__label">${t('filtrarAno', lang)}</span>
-      <select data-res-filter="ano">
-        <option value="">${t('todosOsAnos', lang)}</option>
-        ${years.map(y => `<option value="${y}"${filters.ano === String(y) ? ' selected' : ''}>${y}</option>`).join('')}
-      </select>
-      <span class="filter-box__chevron" aria-hidden="true"></span>
-    </label>`);
+    parts.push(filterBoxHtml({
+      id: 'ano',
+      label: t('filtrarAno', lang),
+      value: filters.ano,
+      options: [{ value: '', label: t('todosOsAnos', lang) }, ...years.map(y => ({ value: String(y), label: String(y) }))],
+    }));
     if (showEmpresaFilter) {
-      parts.push(`<label class="filter-box">
-        <span class="filter-box__label">${t('filtrarEmpresa', lang)}</span>
-        <select data-res-filter="empresa">
-          ${empresas.map(e => `<option value="${e.id}"${filters.empresa === e.id ? ' selected' : ''}>${e.label}</option>`).join('')}
-        </select>
-        <span class="filter-box__chevron" aria-hidden="true"></span>
-      </label>`);
+      parts.push(filterBoxHtml({
+        id: 'empresa',
+        label: t('filtrarEmpresa', lang),
+        value: filters.empresa,
+        options: empresas.map(e => ({ value: e.id, label: e.label })),
+      }));
     }
     parts.push(`</div>`);
     return `<div class="filter-bar">${parts.join('')}</div>`;
@@ -161,11 +159,10 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
   }
 
   function bind() {
-    container.querySelector('[data-res-filter="ano"]')?.addEventListener('change', e => {
-      filters.ano = e.target.value; render();
-    });
-    container.querySelector('[data-res-filter="empresa"]')?.addEventListener('change', e => {
-      filters.empresa = e.target.value; render();
+    initFilterSelects(container, (id, value) => {
+      if (id === 'ano') filters.ano = value;
+      if (id === 'empresa') filters.empresa = value;
+      render();
     });
     container.querySelectorAll('[data-res-empresa-tab]').forEach(tab => {
       tab.addEventListener('click', () => {
