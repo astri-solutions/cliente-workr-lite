@@ -143,7 +143,7 @@ function renderResultados(periodos, arquivosByPeriodo, container, sb, siteConfig
     } else {
       const byYear = [];
       for (const p of filtered) {
-        const year = periodYear(p) ?? '—';
+        const year = periodYear(p.period) ?? '—';
         let g = byYear.find(g => g.year === year);
         if (!g) { g = { year, periodos: [] }; byYear.push(g); }
         g.periodos.push(p);
