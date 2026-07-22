@@ -180,8 +180,13 @@
     color: #fff;
     font-weight: $font-weight-semibold;
     padding: $spacing-3 $spacing-4;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
+
+    // The year label (first column) stays left-aligned, like the category
+    // rows below it — only the trimestre columns center to match the
+    // (centered) file icon in each cell beneath them.
+    &:first-child { text-align: left; }
   }
 
   tbody tr:nth-child(odd) { background: var(--color-surface); }
