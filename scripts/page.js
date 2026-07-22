@@ -50,7 +50,15 @@ initFooter(siteConfig);
 initSearch();
 initMaterias(siteConfig)
   .then(found => initDocumentos(siteConfig, found))
-  .then(found => initResultados(siteConfig, found));
+  .then(found => initResultados(siteConfig, found))
+  .then(() => {
+    // Só marca como "em construção" o que sobrou vazio DEPOIS de tentar
+    // carregar o conteúdo real — convertê-los assim que a página abre
+    // (antes do fetch assíncrono responder) piscava esse aviso em toda
+    // página com conteúdo cadastrado, mesmo quando ele carregava normalmente
+    // logo em seguida.
+    document.querySelectorAll('.page-empty').forEach(el => { el.outerHTML = emConstrucaoHTML(); });
+  });
 initSplash(siteConfig);
 initCookies(siteConfig);
 
@@ -89,10 +97,6 @@ function emConstrucaoHTML() {
     <p class="em-construcao__desc">${t('emConstrucaoDesc', lang)}</p>
   </div>`;
 }
-
-document.querySelectorAll('.page-empty').forEach(el => {
-  el.outerHTML = emConstrucaoHTML();
-});
 
 // MutationObserver para capturar .page-empty adicionados dinamicamente
 const emConstrucaoObserver = new MutationObserver(mutations => {
