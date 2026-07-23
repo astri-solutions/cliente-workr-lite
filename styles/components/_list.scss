@@ -163,13 +163,12 @@
 }
 
 .doc-matrix {
-  // No width: 100% — with table-layout: fixed that forces the table into
-  // the container's width no matter what, so on a narrow viewport the
-  // "auto" first column got squeezed to ~0 while the fixed 110px quarter
-  // columns kept their full width, hiding every row label entirely. Letting
-  // the table take its natural (sum-of-columns) width means it can exceed
-  // the container and scroll horizontally via .doc-matrix-wrap instead.
-  min-width: 100%;
+  // No width (not even min-width: 100%) — any width tied to the container
+  // fights table-layout: fixed's column widths below on a narrow viewport,
+  // squeezing the first column back down to ~0. Leaving width unset lets
+  // the browser size the table to the sum of its (fixed, explicit) column
+  // widths — it can exceed the container and scroll horizontally via
+  // .doc-matrix-wrap, which is exactly what we want here.
   table-layout: fixed;
   border-collapse: collapse;
   font-size: $font-size-sm;
