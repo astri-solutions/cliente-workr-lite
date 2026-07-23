@@ -163,17 +163,23 @@
 }
 
 .doc-matrix {
-  width: 100%;
+  // No width: 100% — with table-layout: fixed that forces the table into
+  // the container's width no matter what, so on a narrow viewport the
+  // "auto" first column got squeezed to ~0 while the fixed 110px quarter
+  // columns kept their full width, hiding every row label entirely. Letting
+  // the table take its natural (sum-of-columns) width means it can exceed
+  // the container and scroll horizontally via .doc-matrix-wrap instead.
+  min-width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
   font-size: $font-size-sm;
   background: var(--color-bg);
 
-  // First column (category / year label) takes the remaining space; every
-  // quarter column gets a fixed, narrow width so a single quarter doesn't
-  // stretch across half the table.
-  th:first-child, td:first-child { width: auto; }
-  th:not(:first-child), td:not(:first-child) { width: 110px; }
+  // First column (category / year label) gets a real minimum width so it
+  // always has room to show text; quarter columns stay fixed and narrow so
+  // a single quarter doesn't stretch across half the table.
+  th:first-child, td:first-child { width: 160px; min-width: 160px; }
+  th:not(:first-child), td:not(:first-child) { width: 110px; min-width: 110px; }
 
   thead th {
     background: var(--color-secondary-900);
