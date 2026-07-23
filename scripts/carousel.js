@@ -78,6 +78,7 @@ function renderCarousel() {
           </div>
         </div>`).join('')}
     </div>
+    ${SLIDES.length > 1 ? `
     <div class="carousel__controls" aria-label="Navegação do carrossel">
       <button class="carousel__btn carousel__btn--prev" id="carousel-prev" aria-label="Slide anterior">
         <img src="/assets/icons/chevron-left.svg" width="20" height="20" aria-hidden="true" alt="">
@@ -90,7 +91,11 @@ function renderCarousel() {
       <button class="carousel__btn carousel__btn--next" id="carousel-next" aria-label="Próximo slide">
         <img src="/assets/icons/chevron-right.svg" width="20" height="20" aria-hidden="true" alt="">
       </button>
-    </div>`;
+    </div>` : ''}`;
+
+  // A single slide has nothing to navigate to or cycle through — the
+  // controls above aren't rendered at all in that case.
+  if (SLIDES.length <= 1) return;
 
   el.querySelector('#carousel-prev').addEventListener('click', () => goTo(current - 1));
   el.querySelector('#carousel-next').addEventListener('click', () => goTo(current + 1));
