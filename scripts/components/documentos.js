@@ -38,8 +38,18 @@ function extOf(path) {
 // Inline vector badge — crisp at any size, unlike the raster-in-SVG assets
 // under /assets/icons (those embed a bitmap pattern fill and blur when
 // scaled down to list-icon size). Exported for reuse by resultados.js.
-export function fileBadgeSvg(pathOrUrl) {
-  const label = pathOrUrl ? (EXT_LABEL[extOf(pathOrUrl)] ?? 'LINK') : '';
+// `isExternal` swaps the file-shape badge for an external-link glyph — an
+// external link isn't a file at all, so a "LINK" label stamped on a file
+// icon read as a wrong file type rather than as "opens elsewhere".
+export function fileBadgeSvg(pathOrUrl, isExternal = false) {
+  if (isExternal) {
+    return `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 3h6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 14L21 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  }
+  const label = pathOrUrl ? (EXT_LABEL[extOf(pathOrUrl)] ?? '') : '';
   return `<svg width="26" height="30" viewBox="0 0 26 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M2 3.5C2 2.67157 2.67157 2 3.5 2H14.5L23 10.5V26.5C23 27.3284 22.3284 28 21.5 28H3.5C2.67157 28 2 27.3284 2 26.5V3.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
     <path d="M14.5 2V9.5C14.5 10.0523 14.9477 10.5 15.5 10.5H23" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
@@ -86,7 +96,7 @@ function docItemHtml(d, sb, lang) {
     </div>
     <div class="doc-list__actions">
       <a href="${href}" class="doc-list__link doc-list__icon" aria-label="Baixar ${title}" target="_blank" rel="noopener">
-        ${fileBadgeSvg(d.file_path ?? d.external_link ?? '')}
+        ${fileBadgeSvg(d.file_path ?? d.external_link ?? '', !!d.external_link)}
       </a>
     </div>
   </li>`;
@@ -100,7 +110,7 @@ function tableRowHtml(d, sb, lang) {
     <td class="doc-table__cell doc-table__cell--name">${title}</td>
     <td class="doc-table__cell doc-table__cell--action">
       <a href="${href}" class="doc-list__link doc-list__icon" aria-label="Baixar ${title}" target="_blank" rel="noopener">
-        ${fileBadgeSvg(d.file_path ?? d.external_link ?? '')}
+        ${fileBadgeSvg(d.file_path ?? d.external_link ?? '', !!d.external_link)}
       </a>
     </td>
   </tr>`;
