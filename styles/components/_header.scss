@@ -268,6 +268,14 @@
     transition: transform 0.3s, box-shadow 0.3s, top 0.2s ease, background 0.3s;
 
     &.is-scrolled { top: 0; }
+
+    // .topbar hides entirely below the desktop breakpoint — the 40px offset
+    // above was reserved for it, so on mobile/tablet it was just an empty
+    // gap of banner showing through above the header.
+    @include respond-down(desktop) {
+      top: 0;
+      &.is-scrolled { top: 0; }
+    }
     background: rgba(255,255,255,0.06);
     backdrop-filter: blur(6px) saturate(130%);
     -webkit-backdrop-filter: blur(6px) saturate(130%);
