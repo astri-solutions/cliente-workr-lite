@@ -33,7 +33,14 @@ function channelSlug(ch) {
   return ch.id ?? ch.slug ?? ch.label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
-function buildNavItem(item, restricted, isFlatLayout) {
+// Channel names are translatable (item.labels, keyed by locale) — falls
+// back to the primary locale and then to the legacy flat `label` for nav
+// items saved before per-locale channel names existed.
+function labelOf(item, lang, primaryLang) {
+  return item.labels?.[lang] ?? item.labels?.[primaryLang] ?? item.label ?? '';
+}
+
+function buildNavItem(item, restricted, isFlatLayout, lang, primaryLang) {
   if (!item.children || item.children.length === 0) {
     // Sidebar/tabmenu layouts render every channel inline on the home page
     // (sidebar-nav.js / tab-menu.js) — there's no real standalone page to
@@ -44,18 +51,18 @@ function buildNavItem(item, restricted, isFlatLayout) {
     return `
       <li class="nav-list__item${restricted ? ' nav-list__item--restricted' : ''}">
         <a class="nav-list__trigger nav-list__trigger--link" href="${href}">
-          ${item.label}
+          ${labelOf(item, lang, primaryLang)}
         </a>
       </li>`;
   }
   const children = item.children.map(child =>
-    `<li><a class="nav-dropdown__link" href="${child.href}">${child.label}</a></li>`
+    `<li><a class="nav-dropdown__link" href="${child.href}">${labelOf(child, lang, primaryLang)}</a></li>`
   ).join('');
   return `
     <li class="nav-list__item nav-list__item--has-sub${restricted ? ' nav-list__item--restricted' : ''}">
       <button class="nav-list__trigger" type="button"
         aria-haspopup="true" aria-expanded="false" data-nav-trigger>
-        ${item.label}
+        ${labelOf(item, lang, primaryLang)}
         <img class="nav-list__chevron" src="/assets/icons/chevron-down.svg" width="16" height="16" aria-hidden="true" alt="">
       </button>
       <ul class="nav-dropdown">${children}</ul>
@@ -128,10 +135,12 @@ export function initHeader(config) {
   // the actual layout model (sidebar/tabmenu render every channel inline on
   // the home page; banner navigates to real per-channel pages).
   const isFlatLayout = config.header?.variant === 'sidebar' || config.header?.variant === 'tabmenu';
+  const lang = getLang(config);
+  const primaryLang = config.languages?.[0] ?? 'pt-BR';
 
   const navItems = [
-    ...publicItems.map(item => buildNavItem(item, false, isFlatLayout)),
-    ...restrictedItems.map(item => buildNavItem(item, true, isFlatLayout)),
+    ...publicItems.map(item => buildNavItem(item, false, isFlatLayout, lang, primaryLang)),
+    ...restrictedItems.map(item => buildNavItem(item, true, isFlatLayout, lang, primaryLang)),
   ].join('');
 
   const hideNav = el.hasAttribute('data-hide-nav');
