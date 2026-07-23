@@ -1,21 +1,44 @@
 // scripts/components/footer.js
+import { getLang } from '../lib/i18n.js';
+
+// Same per-locale/per-field fallback used by carousel.js/cookies.js — each
+// site language has its own independent text, falling back to the primary
+// language for anything left blank.
+function textsOf(footer, lang, primaryLang) {
+  const bundle = footer.content?.[lang] ?? footer.content?.[primaryLang] ?? {};
+  return {
+    address: bundle.address ?? '',
+    phone: bundle.phone ?? '',
+    hours: bundle.hours ?? '',
+    copyright: bundle.copyright ?? '',
+    disclaimer: bundle.disclaimer ?? '',
+  };
+}
+
+function labelOf(item, lang, primaryLang) {
+  return item.labels?.[lang] ?? item.labels?.[primaryLang] ?? item.label ?? '';
+}
+
 export function initFooter(config) {
   const el = document.getElementById('site-footer');
   if (!el) return;
 
   const { footer, company } = config;
+  const lang = getLang(config);
+  const primaryLang = config.languages?.[0] ?? 'pt-BR';
+  const texts = textsOf(footer, lang, primaryLang);
 
   // Usa config.nav como fonte única da árvore de canais
   const navTree = config.nav || [];
   const columns = navTree.map(item => {
     const links = item.children && item.children.length
       ? item.children
-      : [{ label: item.label, href: item.href }];
+      : [{ label: labelOf(item, lang, primaryLang), href: item.href }];
     return `
       <div class="site-footer__block">
-        <h4>${item.label}</h4>
+        <h4>${labelOf(item, lang, primaryLang)}</h4>
         <ul>${links.map(l =>
-          `<li><a href="${l.href}">${l.label}</a></li>`).join('')}
+          `<li><a href="${l.href}">${l.labels ? labelOf(l, lang, primaryLang) : l.label}</a></li>`).join('')}
         </ul>
       </div>`;
   }).join('');
@@ -44,14 +67,14 @@ export function initFooter(config) {
       <div class="site-footer__info-grid">
         <div class="site-footer__block">
           <h4>Endereço</h4>
-          <p class="site-footer__address-text">${footer.address}</p>
+          <p class="site-footer__address-text">${texts.address}</p>
         </div>
         <div class="site-footer__block">
           <h4>Entre em Contato</h4>
           <div class="site-footer__contact-details">
             <a href="mailto:${footer.email}">${footer.email}</a>
-            <a href="tel:${footer.phone.replace(/\D/g,'')}">${footer.phone}</a>
-            <p>${footer.hours}</p>
+            <a href="tel:${texts.phone.replace(/\D/g,'')}">${texts.phone}</a>
+            <p>${texts.hours}</p>
           </div>
         </div>
         <div class="site-footer__block">
@@ -65,12 +88,12 @@ export function initFooter(config) {
       ${fullSections}
       <div class="site-footer__bottom">
         <div class="site-footer__bottom-links">${legalLinks}</div>
-        <span class="site-footer__copyright">${footer.copyright}</span>
+        <span class="site-footer__copyright">${texts.copyright}</span>
         <a href="https://astri.solutions" class="site-footer__powered" target="_blank" rel="noopener">
           <span>Powered by</span>
           <img src="/assets/logotipo/logotipo-negative.svg" alt="Astri Solutions" />
         </a>
-        <p class="site-footer__legal">${footer.legalText || ''}</p>
+        <p class="site-footer__legal">${texts.disclaimer || ''}</p>
       </div>
     </div>`;
 }
