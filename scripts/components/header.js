@@ -204,6 +204,19 @@ export function initHeader(config) {
     </div>
     <div class="site-header__overlay" data-nav-overlay aria-hidden="true"></div>`;
 
+  // The mobile drawer (nav) and its dimming overlay are position: fixed,
+  // meant to cover the full viewport — but the navbar-blur header variant
+  // puts backdrop-filter on this same <header>, which creates a new
+  // containing block for any position: fixed descendant. Left inside, the
+  // drawer and overlay were confined to the header's own (tiny) box instead
+  // of the viewport, showing as a squashed strip with no dimmed background.
+  // Moving them out to be direct children of <body> sidesteps that
+  // entirely, regardless of any future filter/transform on the header.
+  const navEl = el.querySelector('[data-nav]');
+  const overlayEl = el.querySelector('[data-nav-overlay]');
+  if (navEl) document.body.appendChild(navEl);
+  if (overlayEl) document.body.appendChild(overlayEl);
+
   initNav();
   syncRestrictedItems();
   syncLockButton();
