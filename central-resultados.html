@@ -29,36 +29,10 @@
         </div>
       </section>
 
-      <section class="page-section" aria-labelledby="resultados-title">
+      <section class="page-section" aria-label="Central de Resultados" data-reveal>
         <div class="page-section__container">
-
-          <div class="filter-bar">
-            <h2 id="resultados-title" class="results-table__section-title">Resultados</h2>
-            <div class="filter-bar__group">
-              <span class="filter-bar__label">Filtrar por:</span>
-              <div class="select results-select">
-                <select aria-label="Ano" id="filter-ano"></select>
-              </div>
-            </div>
-          </div>
-
-          <!-- empresa-tabs — gerado dinamicamente por empresa-tabs.js -->
-          <div data-empresa-section data-empresa-group="resultados">
-
-            <!-- Template clonado por empresa -->
-            <template data-empresa-panel-template>
-              <div data-empresa-panel>
-                <div class="data-table-wrap" data-results-table>
-                  <!-- Tabela gerada em runtime por central-resultados.js -->
-                  <p class="page-empty" style="padding:2rem 0;color:var(--color-text-muted);text-align:center">
-                    Nenhum resultado publicado ainda.
-                  </p>
-                </div>
-              </div>
-            </template>
-
-          </div><!-- /data-empresa-section -->
-
+          <div data-materias></div>
+          <div class="page-empty"></div>
         </div>
       </section>
     </main>
@@ -78,17 +52,6 @@
       </div>
     </div>
 
-    <script type="module">
-      // Popula filtro de anos dinamicamente
-      const yearSelect = document.getElementById('filter-ano');
-      const currentYear = new Date().getFullYear();
-      for (let y = currentYear; y >= currentYear - 4; y--) {
-        const opt = document.createElement('option');
-        opt.value = y;
-        opt.textContent = y;
-        yearSelect.appendChild(opt);
-      }
-    </script>
     <script type="module" src="/scripts/page.js"></script>
   </body>
 </html>
