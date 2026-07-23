@@ -40,7 +40,14 @@ function buildSidebar() {
     panel.dataset.panel = slug;
     panel.setAttribute('role', 'tabpanel');
     panel.setAttribute('aria-label', ch.label);
-    panel.innerHTML = `<div data-materias></div><div class="page-empty"></div>`;
+    // No .page-empty here — it must only appear once loadPanel() has
+    // actually tried and failed to find content. The global MutationObserver
+    // in page.js converts .page-empty into "Em construção" the instant it's
+    // inserted, so adding it upfront (before the async fetch even starts)
+    // permanently stuck every panel at "Em construção" — loadPanel() never
+    // retries a slug once it's been attempted, so the premature conversion
+    // never had a chance to be corrected afterward.
+    panel.innerHTML = `<div data-materias></div>`;
     contentArea.appendChild(panel);
   });
 
@@ -59,7 +66,12 @@ function buildSidebar() {
     const found = await loadMateriasInto(slug, container, sb);
     const ch = channelBySlug.get(slug) ?? slug;
     const found2 = found || await loadDocumentosInto(ch, container, sb, siteConfig);
-    if (!found2) await loadResultadosInto(ch, container, sb, siteConfig);
+    const found3 = found2 || await loadResultadosInto(ch, container, sb, siteConfig);
+    // Only now — after every loader has actually tried — do we know the
+    // channel really has nothing to show.
+    if (!found3 && panel && !panel.querySelector('.page-empty, .em-construcao')) {
+      panel.insertAdjacentHTML('beforeend', '<div class="page-empty"></div>');
+    }
   }
 
   function activate(slug) {
