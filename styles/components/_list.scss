@@ -163,22 +163,29 @@
 }
 
 .doc-matrix {
-  // No width (not even min-width: 100%) — any width tied to the container
-  // fights table-layout: fixed's column widths below on a narrow viewport,
-  // squeezing the first column back down to ~0. Leaving width unset lets
-  // the browser size the table to the sum of its (fixed, explicit) column
-  // widths — it can exceed the container and scroll horizontally via
-  // .doc-matrix-wrap, which is exactly what we want here.
   table-layout: fixed;
   border-collapse: collapse;
   font-size: $font-size-sm;
   background: var(--color-bg);
 
-  // First column (category / year label) gets a real minimum width so it
-  // always has room to show text; quarter columns stay fixed and narrow so
-  // a single quarter doesn't stretch across half the table.
-  th:first-child, td:first-child { width: 160px; min-width: 160px; }
-  th:not(:first-child), td:not(:first-child) { width: 110px; min-width: 110px; }
+  // Desktop: fill the container — there's normally enough room, and the
+  // first column (category label) takes whatever's left over.
+  width: 100%;
+  th:first-child, td:first-child { width: auto; }
+  th:not(:first-child), td:not(:first-child) { width: 110px; }
+
+  // Mobile: a width tied to the container fights table-layout: fixed's
+  // column widths on a narrow viewport, squeezing the first column back
+  // down to ~0 (every row label disappearing). Below tablet, drop the
+  // container-relative width and give every column a real minimum instead
+  // — the table then sizes to the sum of its columns, can exceed the
+  // container, and scrolls horizontally via .doc-matrix-wrap, with no
+  // wrapped/cramped cell text.
+  @include respond-down(tablet) {
+    width: auto;
+    th:first-child, td:first-child { width: 160px; min-width: 160px; }
+    th:not(:first-child), td:not(:first-child) { width: 110px; min-width: 110px; }
+  }
 
   thead th {
     background: var(--color-secondary-900);
