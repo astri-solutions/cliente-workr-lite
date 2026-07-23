@@ -13,6 +13,20 @@ function langLabel(code) {
   return LANG_LABEL[code] ?? code;
 }
 
+// Small circular flag glyphs for the language dropdown — kept inline (no
+// external image requests) and simplified enough to read clearly at 18px.
+const FLAG_SVG = {
+  'pt-BR': `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" fill="#009C3B"/><polygon points="10,3 17,10 10,17 3,10" fill="#FFDF00"/><circle cx="10" cy="10" r="4" fill="#002776"/></svg>`,
+  'en': `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="c-en"><circle cx="10" cy="10" r="10"/></clipPath></defs><g clip-path="url(#c-en)"><rect width="20" height="20" fill="#B22234"/><g fill="#fff"><rect y="1.5" width="20" height="1.5"/><rect y="4.5" width="20" height="1.5"/><rect y="7.5" width="20" height="1.5"/><rect y="10.5" width="20" height="1.5"/><rect y="13.5" width="20" height="1.5"/><rect y="16.5" width="20" height="1.5"/></g><rect width="9" height="9.5" fill="#3C3B6E"/></g></svg>`,
+  'es': `<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="c-es"><circle cx="10" cy="10" r="10"/></clipPath></defs><g clip-path="url(#c-es)"><rect width="20" height="20" fill="#AA151B"/><rect y="5" width="20" height="10" fill="#F1BF00"/></g></svg>`,
+};
+
+function flagSvg(code) {
+  const svg = FLAG_SVG[code];
+  if (!svg) return `<span class="topbar__lang-flag-fallback">${langShort(code)}</span>`;
+  return svg;
+}
+
 export function initTopbar(config) {
   const el = document.getElementById('site-topbar');
   if (!el) return;
@@ -68,10 +82,28 @@ export function initTopbar(config) {
   const showLangSwitcher = languages.length > 1;
   const currentLang = getLang(config);
   document.documentElement.lang = currentLang;
-  const langButtonsHtml = languages.map(code => `
-    <button class="topbar__lang-btn${code === currentLang ? ' is-active' : ''}" type="button"
-      data-lang="${code}" aria-pressed="${code === currentLang ? 'true' : 'false'}" data-tooltip="${langLabel(code)}">${langShort(code)}</button>`)
-    .join(`<span class="topbar__lang-sep" aria-hidden="true">|</span>`);
+  const langOptionsHtml = languages.map(code => `
+    <button class="topbar__lang-option${code === currentLang ? ' is-active' : ''}" type="button"
+      data-lang="${code}" role="menuitemradio" aria-checked="${code === currentLang ? 'true' : 'false'}">
+      <span class="topbar__lang-flag">${flagSvg(code)}</span>
+      <span class="topbar__lang-code">${langShort(code)}</span>
+      <span class="topbar__lang-name">${langLabel(code)}</span>
+    </button>`).join('');
+  const langDropdownHtml = `
+    <div class="topbar__lang" data-lang-dropdown>
+      <button class="topbar__lang-trigger" type="button" data-lang-trigger
+        aria-haspopup="true" aria-expanded="false" data-tooltip="${langLabel(currentLang)}">
+        <span class="topbar__lang-flag">${flagSvg(currentLang)}</span>
+        <span class="topbar__lang-code">${langShort(currentLang)}</span>
+        <svg class="topbar__lang-chevron" viewBox="0 0 16 16" width="10" height="10" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 6 8 10 12 6"/>
+        </svg>
+      </button>
+      <div class="topbar__lang-menu" data-lang-menu role="menu" aria-label="Selecionar idioma">
+        ${langOptionsHtml}
+      </div>
+    </div>`;
 
   el.className = 'topbar';
   el.setAttribute('role', 'navigation');
@@ -103,11 +135,34 @@ export function initTopbar(config) {
         </div>
         ${showLangSwitcher ? `
         <div class="topbar__sep" aria-hidden="true"></div>
-        <div class="topbar__lang" role="group" aria-label="Idioma">
-          ${langButtonsHtml}
-        </div>` : ''}
+        ${langDropdownHtml}` : ''}
       </div>
     </div>`;
 
   initTopbarBehavior();
+  if (showLangSwitcher) initLangDropdown(el);
+}
+
+// Trigger opens/closes the option list; clicking outside or picking a
+// language (handled by the existing [data-lang] listener in topbar.js,
+// which reloads the page) both need to close it.
+function initLangDropdown(scope) {
+  const dropdown = scope.querySelector('[data-lang-dropdown]');
+  const trigger = scope.querySelector('[data-lang-trigger]');
+  if (!dropdown || !trigger) return;
+
+  function close() {
+    dropdown.classList.remove('is-open');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+  function toggle() {
+    const open = dropdown.classList.toggle('is-open');
+    trigger.setAttribute('aria-expanded', String(open));
+  }
+
+  trigger.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+  document.addEventListener('click', e => {
+    if (!dropdown.contains(e.target)) close();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 }
