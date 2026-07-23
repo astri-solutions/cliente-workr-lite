@@ -21,6 +21,18 @@
       scrollbar-width: none;
       &::-webkit-scrollbar { display: none; }
     }
+
+    // The home-tabs nav (tabmenu layout's page-level navigation) is
+    // duplicated by the mobile hamburger drawer, which now lists every
+    // channel and activates the same in-page panel — hide the on-page strip
+    // on a phone-sized screen. Scoped to [data-tab-nav="home-tabs"] only:
+    // this same .tab-menu__nav class is reused for empresa tabs elsewhere,
+    // which must stay visible on mobile (no drawer equivalent for those).
+    &[data-tab-nav="home-tabs"] {
+      @include respond-down(tablet) {
+        display: none;
+      }
+    }
   }
 
   &__tab {

@@ -23,6 +23,13 @@
     position: static;
   }
 
+  // The mobile hamburger drawer now lists every channel too (and activates
+  // the same in-page panel) — showing this strip as well on a phone-sized
+  // screen is a redundant, cramped second nav.
+  @include respond-down(tablet) {
+    display: none;
+  }
+
   &__list {
     display: flex;
     flex-direction: column;

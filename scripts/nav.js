@@ -25,6 +25,14 @@ export function initNav() {
   closeBtn?.addEventListener('click', closeDrawer);
   overlay?.addEventListener('click', closeDrawer);
 
+  // Leaf links (no submenu) close the drawer on click. On banner layout
+  // this is moot (the page navigates away anyway); on sidebar/tabmenu the
+  // link only changes the URL hash and swaps the in-page panel — without
+  // this the drawer would stay open over the newly-activated content.
+  document.querySelectorAll('.nav-list__trigger--link').forEach(link => {
+    link.addEventListener('click', closeDrawer);
+  });
+
   // Dropdowns — hover no desktop, click no mobile
   const isMobile = () => window.innerWidth < 1024;
 

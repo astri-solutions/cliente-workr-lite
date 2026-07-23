@@ -26,11 +26,24 @@ function lockBtnHTML(auth) {
   return `${lockIconSVG(auth)}<span class="site-header__lock-label">Área Restrita</span>`;
 }
 
-function buildNavItem(item, restricted) {
+// Same slug derivation used by sidebar-nav.js / tab-menu.js — needed so the
+// mobile drawer link for a channel matches the in-page panel it should
+// activate, instead of navigating to that channel's old standalone page.
+function channelSlug(ch) {
+  return ch.id ?? ch.slug ?? ch.label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+function buildNavItem(item, restricted, isFlatLayout) {
   if (!item.children || item.children.length === 0) {
+    // Sidebar/tabmenu layouts render every channel inline on the home page
+    // (sidebar-nav.js / tab-menu.js) — there's no real standalone page to
+    // navigate to. Point the link at home+hash and let those scripts read
+    // the hash to activate the right panel, instead of leaving to the old
+    // per-channel .html page (a different layout's navigation model).
+    const href = isFlatLayout ? `/#${channelSlug(item)}` : item.href;
     return `
       <li class="nav-list__item${restricted ? ' nav-list__item--restricted' : ''}">
-        <a class="nav-list__trigger nav-list__trigger--link" href="${item.href}">
+        <a class="nav-list__trigger nav-list__trigger--link" href="${href}">
           ${item.label}
         </a>
       </li>`;
@@ -111,10 +124,14 @@ export function initHeader(config) {
 
   const publicItems     = config.nav || [];
   const restrictedItems = config.restrictedNav || [];
+  // Not to be confused with `variant` below (visual navbar style) — this is
+  // the actual layout model (sidebar/tabmenu render every channel inline on
+  // the home page; banner navigates to real per-channel pages).
+  const isFlatLayout = config.header?.variant === 'sidebar' || config.header?.variant === 'tabmenu';
 
   const navItems = [
-    ...publicItems.map(item => buildNavItem(item, false)),
-    ...restrictedItems.map(item => buildNavItem(item, true)),
+    ...publicItems.map(item => buildNavItem(item, false, isFlatLayout)),
+    ...restrictedItems.map(item => buildNavItem(item, true, isFlatLayout)),
   ].join('');
 
   const hideNav = el.hasAttribute('data-hide-nav');

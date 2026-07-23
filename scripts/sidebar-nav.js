@@ -62,20 +62,28 @@ function buildSidebar() {
     if (!found2) await loadResultadosInto(ch, container, sb, siteConfig);
   }
 
+  function activate(slug) {
+    if (!channelBySlug.has(slug)) return false;
+    btns.forEach(b => { b.classList.toggle('is-active', b.dataset.panel === slug); b.setAttribute('aria-selected', String(b.dataset.panel === slug)); });
+    panels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === slug));
+    loadPanel(slug);
+    return true;
+  }
+
   btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.panel;
-      btns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
-      panels.forEach(p => p.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      btn.setAttribute('aria-selected', 'true');
-      contentArea.querySelector(`[data-panel="${target}"]`)?.classList.add('is-active');
-      loadPanel(target);
-    });
+    btn.addEventListener('click', () => activate(btn.dataset.panel));
   });
 
-  // Eagerly load the first (default-active) panel.
-  loadPanel(channels[0].id ?? channels[0].slug ?? channels[0].label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+  // The mobile menu links to home+hash instead of a standalone page (there
+  // isn't one — everything renders inline here), so hash changes need to
+  // swap panels the same way clicking a sidebar button does.
+  window.addEventListener('hashchange', () => activate(location.hash.slice(1)));
+
+  const initialSlug = location.hash.slice(1);
+  if (!activate(initialSlug)) {
+    // Eagerly load the first (default-active) panel.
+    loadPanel(channels[0].id ?? channels[0].slug ?? channels[0].label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+  }
 }
 
 buildSidebar();

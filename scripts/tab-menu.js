@@ -73,18 +73,27 @@ function buildTabMenu() {
     }
   }
 
+  function activate(slug) {
+    if (!channelBySlug.has(slug)) return false;
+    tabs.forEach(t => { t.classList.toggle('is-active', t.dataset.tab === slug); t.setAttribute('aria-selected', String(t.dataset.tab === slug)); });
+    panels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === slug));
+    loadPanel(slug);
+    return true;
+  }
+
   tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
-      panels.forEach(p => p.classList.remove('is-active'));
-      tab.classList.add('is-active');
-      tab.setAttribute('aria-selected', 'true');
-      panelArea.querySelector(`[data-panel="${tab.dataset.tab}"]`)?.classList.add('is-active');
-      loadPanel(tab.dataset.tab);
-    });
+    tab.addEventListener('click', () => activate(tab.dataset.tab));
   });
 
-  loadPanel(channels[0].id ?? channels[0].slug ?? channels[0].label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+  // The mobile menu links to home+hash instead of a standalone page (there
+  // isn't one — everything renders inline here), so hash changes need to
+  // swap tabs the same way clicking one does.
+  window.addEventListener('hashchange', () => activate(location.hash.slice(1)));
+
+  const initialSlug = location.hash.slice(1);
+  if (!activate(initialSlug)) {
+    loadPanel(channels[0].id ?? channels[0].slug ?? channels[0].label.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+  }
 }
 
 // Also handle any static [data-tab-nav] sets that are not home-tabs (other pages)
