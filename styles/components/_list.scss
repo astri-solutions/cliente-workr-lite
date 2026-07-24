@@ -84,6 +84,12 @@
   }
 }
 
+.doc-list__loadmore {
+  display: flex;
+  justify-content: center;
+  margin-top: $spacing-5;
+}
+
 .resultados-year-label {
   font-size: $font-size-sm;
   font-weight: $font-weight-semibold;

@@ -72,6 +72,13 @@ function titleOf(doc, lang) {
   return pick(doc.titulo, lang) || 'Documento';
 }
 
+// CVM-imported documents carry their real filing date in data_publicacao —
+// created_at is just when the row was inserted (import time), which would
+// show "today" for a document the CVM published months or years ago.
+function dateOf(doc) {
+  return doc.data_publicacao ?? doc.created_at;
+}
+
 // Each locale can have its own independent file/link (doc.arquivos), falling
 // back to the row's legacy flat file_path/external_link for documents saved
 // before per-locale files existed, or when this locale simply has nothing
@@ -86,7 +93,8 @@ function fileOf(doc, lang, primaryLang) {
 }
 
 function yearOf(doc) {
-  return doc.created_at ? new Date(doc.created_at).getFullYear() : null;
+  const d = dateOf(doc);
+  return d ? new Date(d).getFullYear() : null;
 }
 
 // Groups by the CMS-configured sub-grupo for this page (e.g. "Fatos Relevantes"),
@@ -104,7 +112,7 @@ function docItemHtml(d, sb, lang, primaryLang) {
   const title = titleOf(d, lang);
   return `<li class="doc-list__item">
     <div class="doc-list__info">
-      <span class="doc-list__date">${formatDate(d.created_at)}</span>
+      <span class="doc-list__date">${formatDate(dateOf(d))}</span>
       <span class="doc-list__sep" aria-hidden="true">—</span>
       <span class="doc-list__title">${title}</span>
     </div>
@@ -121,7 +129,7 @@ function tableRowHtml(d, sb, lang, primaryLang) {
   const href = file.externalLink || fileUrl(sb, file.filePath);
   const title = titleOf(d, lang);
   return `<tr class="doc-table__row">
-    <td class="doc-table__cell doc-table__cell--date">${formatDate(d.created_at)}</td>
+    <td class="doc-table__cell doc-table__cell--date">${formatDate(dateOf(d))}</td>
     <td class="doc-table__cell doc-table__cell--name">${title}</td>
     <td class="doc-table__cell doc-table__cell--action">
       <a href="${href}" class="doc-list__link doc-list__icon" aria-label="Baixar ${title}" target="_blank" rel="noopener">
@@ -131,11 +139,27 @@ function tableRowHtml(d, sb, lang, primaryLang) {
   </tr>`;
 }
 
+// A portal can accumulate hundreds of documents (Auto CVM imports whole
+// years of filings at once) — showing them all in one page load makes the
+// list unusably long, so every list/table view paginates client-side.
+const PAGE_SIZE = 20;
+
+function loadMoreHtml(key, total, shown) {
+  if (shown >= total) return '';
+  return `<div class="doc-list__loadmore">
+    <button type="button" class="btn btn--outline btn--sm doc-list__loadmore-btn" data-loadmore="${key}">
+      Carregar mais (${shown}/${total})
+    </button>
+  </div>`;
+}
+
 // Tabela pageType — same documents as lista/lista-agrupada, laid out as rows
 // instead of a list or accordion. Content is identical either way; only the
 // presentation changes.
-function renderTable(list, sb, lang, primaryLang) {
+function renderTable(list, sb, lang, primaryLang, visibleCounts) {
   if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
+  const shown = Math.min(visibleCounts.tabela ?? PAGE_SIZE, list.length);
+  const slice = list.slice(0, shown);
   return `<div class="doc-table-wrap">
     <table class="doc-table">
       <thead>
@@ -146,18 +170,20 @@ function renderTable(list, sb, lang, primaryLang) {
         </tr>
       </thead>
       <tbody>
-        ${list.map(d => tableRowHtml(d, sb, lang, primaryLang)).join('')}
+        ${slice.map(d => tableRowHtml(d, sb, lang, primaryLang)).join('')}
       </tbody>
     </table>
-  </div>`;
+  </div>${loadMoreHtml('tabela', list.length, shown)}`;
 }
 
-function renderFlatList(list, sb, lang, primaryLang) {
+function renderFlatList(list, sb, lang, primaryLang, visibleCounts) {
   if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
-  return `<ul class="doc-list" role="list">${list.map(d => docItemHtml(d, sb, lang, primaryLang)).join('')}</ul>`;
+  const shown = Math.min(visibleCounts.flat ?? PAGE_SIZE, list.length);
+  const slice = list.slice(0, shown);
+  return `<ul class="doc-list" role="list">${slice.map(d => docItemHtml(d, sb, lang, primaryLang)).join('')}</ul>${loadMoreHtml('flat', list.length, shown)}`;
 }
 
-function renderGroupedList(list, pageId, sb, lang, primaryLang) {
+function renderGroupedList(list, pageId, sb, lang, primaryLang, visibleCounts) {
   if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
   const groups = [];
   for (const d of list) {
@@ -166,7 +192,11 @@ function renderGroupedList(list, pageId, sb, lang, primaryLang) {
     if (!g) { g = { label, docs: [] }; groups.push(g); }
     g.docs.push(d);
   }
-  const groupHtml = groups.map((g, idx) => `
+  const groupHtml = groups.map((g, idx) => {
+    const key = `group:${g.label}`;
+    const shown = Math.min(visibleCounts[key] ?? PAGE_SIZE, g.docs.length);
+    const slice = g.docs.slice(0, shown);
+    return `
     <div class="accordion__item${idx === 0 ? ' accordion__item--open' : ''}" data-accordion-item>
       <button class="accordion__trigger" type="button" aria-expanded="${idx === 0 ? 'true' : 'false'}">
         <span class="accordion__label">${g.label}</span>
@@ -177,9 +207,11 @@ function renderGroupedList(list, pageId, sb, lang, primaryLang) {
         </span>
       </button>
       <div class="accordion__body">
-        <ul class="doc-list" role="list">${g.docs.map(d => docItemHtml(d, sb, lang, primaryLang)).join('')}</ul>
+        <ul class="doc-list" role="list">${slice.map(d => docItemHtml(d, sb, lang, primaryLang)).join('')}</ul>
+        ${loadMoreHtml(key, g.docs.length, shown)}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   return `<div class="accordion" data-accordion>${groupHtml}</div>`;
 }
 
@@ -259,11 +291,17 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
     return `<nav class="tab-menu__nav" data-doc-empresa-tabs role="tablist" aria-label="Selecionar empresa">${tabs}</nav>`;
   }
 
-  function render() {
+  // Reset whenever a filter changes (a new filtered set starts back at page
+  // one); preserved across a "load more" click, which re-renders without
+  // resetting so earlier pages stay expanded.
+  let visibleCounts = {};
+
+  function render(resetPaging = true) {
+    if (resetPaging) visibleCounts = {};
     const filtered = docs.filter(passesFilters);
-    const body = listType === 'lista' ? renderFlatList(filtered, sb, lang, primaryLang)
-      : listType === 'tabela' ? renderTable(filtered, sb, lang, primaryLang)
-      : renderGroupedList(filtered, pageId, sb, lang, primaryLang);
+    const body = listType === 'lista' ? renderFlatList(filtered, sb, lang, primaryLang, visibleCounts)
+      : listType === 'tabela' ? renderTable(filtered, sb, lang, primaryLang, visibleCounts)
+      : renderGroupedList(filtered, pageId, sb, lang, primaryLang, visibleCounts);
     container.innerHTML = `${controlsHtml()}${empresaTabsHtml()}<div data-doc-content>${body}</div>`;
     bind();
   }
@@ -278,6 +316,13 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
       tab.addEventListener('click', () => {
         filters.empresa = tab.dataset.docEmpresaTab;
         render();
+      });
+    });
+    container.querySelectorAll('[data-loadmore]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.loadmore;
+        visibleCounts[key] = (visibleCounts[key] ?? PAGE_SIZE) + PAGE_SIZE;
+        render(false);
       });
     });
     bindAccordion(container);
@@ -310,6 +355,11 @@ export async function loadDocumentosInto(pageEntry, container, sb, siteConfig = 
     if (!res.ok) return false;
     const docs = await res.json();
     if (!Array.isArray(docs) || docs.length === 0) return false;
+
+    // The query already orders by created_at, but CVM-imported documents
+    // need to sort by their real filing date (data_publicacao) instead —
+    // otherwise an old document imported today would jump to the top.
+    docs.sort((a, b) => new Date(dateOf(b) ?? 0) - new Date(dateOf(a) ?? 0));
 
     renderDocumentos(entry, docs, container, sb, siteConfig ?? {});
     container.classList.add('documentos--loaded');
