@@ -10,6 +10,7 @@ import { initDocumentos } from './components/documentos.js';
 import { initResultados } from './components/resultados.js';
 import { initSplash }  from './components/splash.js';
 import { initCookies } from './components/cookies.js';
+import { isPreviewMode, applyPreviewOverrides, markPreviewBanner } from './components/preview.js';
 import { applyStoredContrast } from './topbar.js';
 import { getLang, t } from './lib/i18n.js';
 import './icons.js';
@@ -23,9 +24,15 @@ document.documentElement.lang = getLang(siteConfig);
 
 // Modo de manutenção — ligado via Painel de Controle (super_admin). Nenhum
 // outro componente é inicializado; o visitante só vê o aviso, sem
-// navegação/conteúdo carregado por baixo.
-if (siteConfig.maintenance) {
+// navegação/conteúdo carregado por baixo. Em modo preview (?preview=1), o
+// admin sempre vê a página real, mesmo com manutenção ligada.
+if (siteConfig.maintenance && !isPreviewMode()) {
   showMaintenancePage();
+} else if (isPreviewMode()) {
+  // Busca canais/footer/empresas/etc. ao vivo do Supabase (rascunho incluso)
+  // ANTES de inicializar nav/footer/etc., para que já nasçam com os dados
+  // atualizados — sem isso, a página renderizaria com o último publicado.
+  applyPreviewOverrides(siteConfig).finally(() => { boot(); markPreviewBanner(); });
 } else {
   boot();
 }
