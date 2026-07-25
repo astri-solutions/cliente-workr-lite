@@ -11,6 +11,7 @@ import { initResultados } from './components/resultados.js';
 import { initSplash }  from './components/splash.js';
 import { initCookies } from './components/cookies.js';
 import { isPreviewMode, applyPreviewOverrides, markPreviewBanner } from './components/preview.js';
+import { applyPageHeaderImage } from './components/pageHeader.js';
 import { applyStoredContrast } from './topbar.js';
 import { getLang, t } from './lib/i18n.js';
 import './icons.js';
@@ -84,6 +85,7 @@ function boot() {
   initTopbar(siteConfig);
   initHeader(siteConfig);
   initFooter(siteConfig);
+  applyPageHeaderImage(siteConfig);
   initSearch();
   initMaterias(siteConfig)
     .then(found => initDocumentos(siteConfig, found))
