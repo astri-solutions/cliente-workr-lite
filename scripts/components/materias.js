@@ -214,9 +214,40 @@ function bindForms(container, sb) {
   });
 }
 
+// Tabela — content is { headers: string[], rows: { id, cells: {value}[] }[] }
+// (NovaMateriaPage's TabelaEditor shape), rendered as a plain data table.
+function renderTabela(m) {
+  const cfg = m.content ?? {};
+  const headers = Array.isArray(cfg.headers) ? cfg.headers : [];
+  const rows = Array.isArray(cfg.rows) ? cfg.rows : [];
+  return `<article class="materia-card materia-card--tabela" id="materia-${m.id}">
+    <header class="materia-card__header">
+      <h2 class="materia-card__title">${m.titulo ?? ''}</h2>
+      ${m.subtitulo ? `<p class="materia-card__subtitle">${m.subtitulo}</p>` : ''}
+    </header>
+    <div class="materia-card__body">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead><tr>${headers.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${rows.map(r => `<tr>${(r.cells ?? []).map(c => `<td>${esc(c.value)}</td>`).join('')}</tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </article>`;
+}
+
 function renderMateria(m) {
-  if (m.content && !Array.isArray(m.content) && m.content.kind === 'formulario') {
-    return renderFormulario(m);
+  if (m.content && !Array.isArray(m.content) && typeof m.content === 'object') {
+    if (m.content.kind === 'formulario') return renderFormulario(m);
+    if (Array.isArray(m.content.headers) || Array.isArray(m.content.rows)) return renderTabela(m);
+  }
+  // HTML type — content is a raw HTML string authored directly in the CMS,
+  // meant to be self-contained (its own headings/classes), so it's injected
+  // verbatim rather than wrapped in the materia-card title/subtitle chrome.
+  if (typeof m.content === 'string') {
+    return `<div id="materia-${m.id}">${m.content}</div>`;
   }
   const blocks = Array.isArray(m.content) ? m.content : [];
   const body = blocks.map(renderBlock).join('') || `<p class="materia-block materia-block--text">${m.subtitulo ?? ''}</p>`;
