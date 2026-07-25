@@ -35,6 +35,8 @@ const UI_STRINGS = {
     nenhumArquivo: 'Nenhum arquivo disponível.',
     emConstrucaoTitulo: 'Em construção',
     emConstrucaoDesc: 'Este conteúdo ainda não foi publicado. Em breve estará disponível.',
+    manutencaoTitulo: 'Site em manutenção',
+    manutencaoDesc: 'Estamos realizando atualizações. Volte novamente em breve.',
   },
   en: {
     filtrarAno: 'Filter by Year',
@@ -45,6 +47,8 @@ const UI_STRINGS = {
     nenhumArquivo: 'No files available.',
     emConstrucaoTitulo: 'Under construction',
     emConstrucaoDesc: 'This content hasn’t been published yet. Check back soon.',
+    manutencaoTitulo: 'Site under maintenance',
+    manutencaoDesc: 'We are performing updates. Please check back shortly.',
   },
   es: {
     filtrarAno: 'Filtrar por Año',
@@ -55,6 +59,8 @@ const UI_STRINGS = {
     nenhumArquivo: 'Ningún archivo disponible.',
     emConstrucaoTitulo: 'En construcción',
     emConstrucaoDesc: 'Este contenido aún no fue publicado. Estará disponible pronto.',
+    manutencaoTitulo: 'Sitio en mantenimiento',
+    manutencaoDesc: 'Estamos realizando actualizaciones. Vuelve pronto.',
   },
 };
 
