@@ -8,14 +8,22 @@
 // so the CMS's "Pré-visualizar" button can open this same live site with
 // ?preview=1 and see draft edits without a Publicar/redeploy.
 //
+// Draft matérias/documentos/resultados: those tables only expose
+// Publicado/publicado rows to anonymous readers — by design (see RLS
+// policies `public_read_published_*`). To preview drafts too, the CMS mints
+// a short-lived opaque token (see `mint-preview-token` edge function)
+// scoped to this one portal, passed as `?token=` alongside `?preview=1`.
+// materias.js / documentos.js / resultados.js call `fetchWithPreview()`
+// below instead of fetching PostgREST directly — with no token, it fetches
+// the exact same URL as before (byte-for-byte unchanged); with a token, it
+// calls the `preview-content` edge function instead, which verifies the
+// token and reads every status (draft included) via the service role, so
+// no RLS policy needs to be loosened for this.
+//
 // Deliberately NOT covered here (still shows the last-published version):
 //  - Logo/favicon/banner images: the CMS only sends these to the site as
 //    committed files on Publicar, so there is no live source to read before
 //    that happens.
-//  - Draft (unpublished) matérias/documentos/resultados: those tables only
-//    expose Publicado/publicado rows to anonymous readers (portal_config is
-//    the only one with a public SELECT policy), so drafts aren't visible
-//    here without a separate authenticated flow — out of scope for now.
 //  - Brand-new pages that were never published: each canal page is a
 //    physical .html file created at Publicar time, so a page that was never
 //    published has no URL to preview yet.
@@ -26,6 +34,30 @@
 
 export function isPreviewMode() {
   try { return new URLSearchParams(location.search).has('preview'); } catch { return false; }
+}
+
+function previewToken() {
+  if (!isPreviewMode()) return null;
+  try { return new URLSearchParams(location.search).get('token'); } catch { return null; }
+}
+
+// Drop-in replacement for `fetch(directUrl, {...})` in materias.js /
+// documentos.js / resultados.js. Without a preview token, behaves exactly
+// like the original direct PostgREST fetch. With one, calls the
+// `preview-content` edge function instead (service-role read, every
+// status) and returns a same-shaped Response so callers' existing
+// `res.ok` / `res.json()` handling needs no further changes.
+// `kind` + `extraQuery` select which table(s) preview-content reads —
+// see that function for the accepted values.
+export function fetchWithPreview(sb, directUrl, kind, extraQuery = '') {
+  const token = previewToken();
+  if (!token) {
+    return fetch(directUrl, {
+      headers: { apikey: sb.anonKey, Authorization: `Bearer ${sb.anonKey}`, Accept: 'application/json' },
+    });
+  }
+  const url = `${sb.url}/functions/v1/preview-content?portalId=${encodeURIComponent(sb.portalId)}&token=${encodeURIComponent(token)}&kind=${kind}${extraQuery}`;
+  return fetch(url, { headers: { apikey: sb.anonKey, Accept: 'application/json' } });
 }
 
 // Mirrors the enabled-only, id/label/href/children shape publish-config's

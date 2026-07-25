@@ -1,5 +1,6 @@
 // scripts/components/materias.js
 // Fetches published matérias from Supabase and renders them into the current page.
+import { fetchWithPreview } from './preview.js';
 
 /**
  * Determines the current pageId by matching the current URL against siteConfig.nav.
@@ -213,13 +214,7 @@ export async function loadMateriasInto(pageId, container, sb) {
 
   try {
     const url = `${sb.url}/rest/v1/portal_materias?portal_id=eq.${encodeURIComponent(sb.portalId)}&page_id=eq.${encodeURIComponent(pageId)}&status=eq.publicado&order=data.desc`;
-    const res = await fetch(url, {
-      headers: {
-        'apikey': sb.anonKey,
-        'Authorization': `Bearer ${sb.anonKey}`,
-        'Accept': 'application/json',
-      },
-    });
+    const res = await fetchWithPreview(sb, url, 'materias', `&pageId=${encodeURIComponent(pageId)}`);
 
     if (!res.ok) return false;
     const materias = await res.json();

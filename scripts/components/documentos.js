@@ -1,6 +1,7 @@
 // scripts/components/documentos.js
 import { getLang, pick, t } from '../lib/i18n.js';
 import { filterBoxHtml, initFilterSelects } from './filterSelect.js';
+import { fetchWithPreview } from './preview.js';
 // Fetches published documents (portal_documents) for a page and renders them
 // either as a flat filterable list ("lista") or as an accordion grouped by
 // sub-grupo/ano ("lista-agrupada"), mirroring cms-lista.html / cms-lista-agrupada.html.
@@ -370,9 +371,7 @@ export async function loadDocumentosInto(pageEntry, container, sb, siteConfig = 
   try {
     const containsFilter = `cs.%7B${encodeURIComponent(pageId)}%7D`;
     const url = `${sb.url}/rest/v1/portal_documents?portal_id=eq.${encodeURIComponent(sb.portalId)}&pagina_ids=${containsFilter}&status=eq.Publicado&order=created_at.desc`;
-    const res = await fetch(url, {
-      headers: { apikey: sb.anonKey, Authorization: `Bearer ${sb.anonKey}`, Accept: 'application/json' },
-    });
+    const res = await fetchWithPreview(sb, url, 'documentos', `&pageId=${encodeURIComponent(pageId)}`);
     if (!res.ok) return false;
     const docs = await res.json();
     if (!Array.isArray(docs) || docs.length === 0) return false;

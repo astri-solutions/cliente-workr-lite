@@ -1,4 +1,5 @@
 // scripts/components/resultados.js
+import { fetchWithPreview } from './preview.js';
 // Fetches published trimestres/anos (portal_resultado_periodos) and their
 // files (portal_resultado_arquivos) and renders them as a year-grouped
 // accordion — mirrors the CMS's own "Central de Resultados" list. Unlike
@@ -299,17 +300,13 @@ export async function loadResultadosInto(pageEntry, container, sb, siteConfig = 
 
   try {
     const periodosUrl = `${sb.url}/rest/v1/portal_resultado_periodos?portal_id=eq.${encodeURIComponent(sb.portalId)}&status=eq.Publicado&order=created_at.desc`;
-    const periodosRes = await fetch(periodosUrl, {
-      headers: { apikey: sb.anonKey, Authorization: `Bearer ${sb.anonKey}`, Accept: 'application/json' },
-    });
+    const periodosRes = await fetchWithPreview(sb, periodosUrl, 'resultado_periodos');
     if (!periodosRes.ok) return false;
     const periodos = await periodosRes.json();
     if (!Array.isArray(periodos) || periodos.length === 0) return false;
 
     const arquivosUrl = `${sb.url}/rest/v1/portal_resultado_arquivos?portal_id=eq.${encodeURIComponent(sb.portalId)}&status=eq.Publicado&order=ordem.asc`;
-    const arquivosRes = await fetch(arquivosUrl, {
-      headers: { apikey: sb.anonKey, Authorization: `Bearer ${sb.anonKey}`, Accept: 'application/json' },
-    });
+    const arquivosRes = await fetchWithPreview(sb, arquivosUrl, 'resultado_arquivos');
     const arquivos = arquivosRes.ok ? await arquivosRes.json() : [];
     const arquivosByPeriodo = {};
     (Array.isArray(arquivos) ? arquivos : []).forEach(a => {
