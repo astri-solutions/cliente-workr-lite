@@ -21,20 +21,76 @@ function resolvePageId(nav) {
   return undefined;
 }
 
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function renderGaleriaCards(cards) {
+  if (!Array.isArray(cards) || cards.length === 0) return '';
+  return `<div class="materia-block materia-block--galeria">
+    ${cards.map(c => {
+      const inner = c.link && c.link.startsWith('http') ? 'target="_blank" rel="noreferrer"' : '';
+      const body = `
+        ${c.imageUrl ? `<div class="materia-galeria-card__img"><img src="${c.imageUrl}" alt="" loading="lazy" /></div>` : ''}
+        <div class="materia-galeria-card__body">
+          ${c.titulo ? `<h3 class="materia-galeria-card__title">${esc(c.titulo)}</h3>` : ''}
+          ${c.descricao ? `<p class="materia-galeria-card__desc">${esc(c.descricao)}</p>` : ''}
+          ${c.data ? `<time class="materia-galeria-card__date">${esc(c.data)}</time>` : ''}
+        </div>`;
+      return c.link
+        ? `<a class="materia-galeria-card" href="${c.link}" ${inner}>${body}</a>`
+        : `<div class="materia-galeria-card">${body}</div>`;
+    }).join('')}
+  </div>`;
+}
+
+// Renders one authored section from NovaMateriaPage's section editor. Kept
+// in sync with `ContentSection` there — `html`/`html2`/`html3` are the rich
+// text editor's HTML, `imageUrl`/`imageAlt` a Storage-hosted image, `cards`
+// the gallery-card list. Also understands the older flat block shape
+// (paragraph/heading/image/quote/divider) for forward compatibility.
 function renderBlock(block) {
   const type = block.type;
-  if (type === 'paragraph' || type === 'text') {
+  if (type === 'text') {
+    return `<div class="materia-block materia-block--text">${block.html ?? block.content ?? ''}</div>`;
+  }
+  if (type === 'paragraph') {
     return `<p class="materia-block materia-block--text">${block.content ?? ''}</p>`;
   }
   if (type === 'heading') {
     const level = block.level ?? 2;
     return `<h${level} class="materia-block materia-block--heading">${block.content ?? ''}</h${level}>`;
   }
+  if (type === 'image-text') {
+    return `<div class="materia-block materia-block--image-text">
+      <div class="materia-block__media">${block.imageUrl ? `<img src="${block.imageUrl}" alt="${esc(block.imageAlt ?? '')}" loading="lazy" />` : ''}</div>
+      <div class="materia-block__content">${block.html ?? ''}</div>
+    </div>`;
+  }
+  if (type === 'bg-image') {
+    return `<div class="materia-block materia-block--bg-image" style="background-image:url('${block.imageUrl ?? ''}')">
+      <div class="materia-block__overlay">${block.html ?? ''}</div>
+    </div>`;
+  }
+  if (type === 'two-col' || type === 'three-col') {
+    const cols = [block.html, block.html2, type === 'three-col' ? block.html3 : null].filter(c => c != null);
+    return `<div class="materia-block materia-block--cols materia-block--cols-${cols.length}">
+      ${cols.map(c => `<div class="materia-block__col">${c ?? ''}</div>`).join('')}
+    </div>`;
+  }
   if (type === 'image') {
     return `<figure class="materia-block materia-block--image">
-      <img src="${block.src ?? ''}" alt="${block.alt ?? ''}" loading="lazy" />
+      ${block.imageUrl ? `<img src="${block.imageUrl}" alt="${esc(block.imageAlt ?? block.alt ?? '')}" loading="lazy" />` : `<img src="${block.src ?? ''}" alt="${esc(block.alt ?? '')}" loading="lazy" />`}
       ${block.caption ? `<figcaption>${block.caption}</figcaption>` : ''}
     </figure>`;
+  }
+  if (type === 'image-full') {
+    return `<figure class="materia-block materia-block--image-full">
+      <img src="${block.imageUrl ?? ''}" alt="${esc(block.imageAlt ?? '')}" loading="lazy" />
+    </figure>`;
+  }
+  if (type === 'galeria') {
+    return renderGaleriaCards(block.cards);
   }
   if (type === 'quote') {
     return `<blockquote class="materia-block materia-block--quote">${block.content ?? ''}</blockquote>`;
