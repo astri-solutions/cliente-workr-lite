@@ -183,7 +183,25 @@ function renderFlatList(list, sb, lang, primaryLang, visibleCounts) {
   return `<ul class="doc-list" role="list">${slice.map(d => docItemHtml(d, sb, lang, primaryLang)).join('')}</ul>${loadMoreHtml('flat', list.length, shown)}`;
 }
 
-function renderGroupedList(list, pageId, sb, lang, primaryLang, visibleCounts) {
+// listaAgrupadaStyle === 'secao' (set via Canais → Editar canal/página →
+// Lista Agrupada → Estilo de agrupamento) renders the same grouped data as
+// plain, always-open headed sections instead of a collapsible accordion —
+// no trigger/chevron, no bindAccordion wiring needed for this branch.
+function renderSectionedList(groups, sb, lang, primaryLang, visibleCounts) {
+  return groups.map(g => {
+    const key = `group:${g.label}`;
+    const shown = Math.min(visibleCounts[key] ?? PAGE_SIZE, g.docs.length);
+    const slice = g.docs.slice(0, shown);
+    return `
+    <div class="la-section">
+      <h3 class="la-section__title">${g.label}</h3>
+      <ul class="doc-list" role="list">${slice.map(d => docItemHtml(d, sb, lang, primaryLang)).join('')}</ul>
+      ${loadMoreHtml(key, g.docs.length, shown)}
+    </div>`;
+  }).join('');
+}
+
+function renderGroupedList(list, pageId, sb, lang, primaryLang, visibleCounts, style) {
   if (!list.length) return `<p class="docs-vazio">${t('nenhumDocumento', lang)}</p>`;
   const groups = [];
   for (const d of list) {
@@ -191,6 +209,9 @@ function renderGroupedList(list, pageId, sb, lang, primaryLang, visibleCounts) {
     let g = groups.find(g => g.label === label);
     if (!g) { g = { label, docs: [] }; groups.push(g); }
     g.docs.push(d);
+  }
+  if (style === 'secao') {
+    return `<div class="la-sections">${renderSectionedList(groups, sb, lang, primaryLang, visibleCounts)}</div>`;
   }
   const groupHtml = groups.map((g, idx) => {
     const key = `group:${g.label}`;
@@ -301,7 +322,7 @@ function renderDocumentos(entry, docs, container, sb, siteConfig) {
     const filtered = docs.filter(passesFilters);
     const body = listType === 'lista' ? renderFlatList(filtered, sb, lang, primaryLang, visibleCounts)
       : listType === 'tabela' ? renderTable(filtered, sb, lang, primaryLang, visibleCounts)
-      : renderGroupedList(filtered, pageId, sb, lang, primaryLang, visibleCounts);
+      : renderGroupedList(filtered, pageId, sb, lang, primaryLang, visibleCounts, entry.listaAgrupadaStyle);
     container.innerHTML = `${controlsHtml()}${empresaTabsHtml()}<div data-doc-content>${body}</div>`;
     bind();
   }

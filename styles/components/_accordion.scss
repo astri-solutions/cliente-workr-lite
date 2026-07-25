@@ -106,3 +106,21 @@
   color: var(--color-text-muted);
   font-style: italic;
 }
+
+// "Seção" variant of lista-agrupada — same grouped data as the accordion
+// above, but every group renders fully open with no trigger/collapse.
+.la-sections {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+}
+
+.la-section {
+  &__title {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    padding-bottom: $spacing-3;
+    margin-bottom: $spacing-3;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
