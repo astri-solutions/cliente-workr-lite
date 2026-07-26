@@ -3,6 +3,8 @@
 import { fetchWithPreview } from './preview.js';
 import { initTimelines } from './timeline.js';
 import { observeReveals } from '../reveal.js';
+import { initCounters } from '../counter.js';
+import './contentTabs.js';
 
 /**
  * Determines the current pageId by matching the current URL against siteConfig.nav.
@@ -43,6 +45,77 @@ function renderGaleriaCards(cards) {
         ? `<a class="materia-galeria-card" href="${c.link}" ${inner}>${body}</a>`
         : `<div class="materia-galeria-card">${body}</div>`;
     }).join('')}
+  </div>`;
+}
+
+// Números / indicadores. `data-counter` faz counter.js animar a contagem;
+// se o valor não for parseável (ex.: "1.234.567"), ele simplesmente fica
+// estático — nada quebra.
+function renderKpis(items) {
+  const list = Array.isArray(items) ? items.filter(i => i.valor || i.rotulo) : [];
+  if (list.length === 0) return '';
+  return `<div class="materia-block materia-kpis">
+    ${list.map(i => {
+      // "-3,2%" desce, qualquer outra coisa sobe — só afeta a cor.
+      const dir = String(i.variacao ?? '').trim().startsWith('-') ? 'down' : 'up';
+      return `<div class="materia-kpi">
+        <span class="materia-kpi__value" data-counter>${esc(i.valor)}</span>
+        ${i.rotulo ? `<span class="materia-kpi__label">${esc(i.rotulo)}</span>` : ''}
+        ${i.variacao ? `<span class="materia-kpi__delta materia-kpi__delta--${dir}">${esc(i.variacao)}</span>` : ''}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// Reaproveita as classes .accordion já existentes no template (e o
+// accordion.js, que agora usa delegação e por isso pega estes itens
+// injetados depois do load).
+function renderAccordion(items) {
+  const list = Array.isArray(items) ? items.filter(i => i.pergunta) : [];
+  if (list.length === 0) return '';
+  return `<div class="materia-block accordion">
+    ${list.map(i => `
+      <div class="accordion__item">
+        <button class="accordion__trigger" type="button" aria-expanded="false">
+          <span>${esc(i.pergunta)}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion__body">${i.resposta ?? ''}</div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function renderTabs(items) {
+  const list = Array.isArray(items) ? items.filter(i => i.titulo || i.html) : [];
+  if (list.length === 0) return '';
+  return `<div class="materia-block materia-tabs" data-materia-tabs>
+    <div class="materia-tabs__nav" role="tablist">
+      ${list.map((i, idx) => `
+        <button class="materia-tabs__tab${idx === 0 ? ' is-active' : ''}" type="button" role="tab"
+                aria-selected="${idx === 0}" data-tab-index="${idx}">${esc(i.titulo || `Aba ${idx + 1}`)}</button>`).join('')}
+    </div>
+    <div class="materia-tabs__panels">
+      ${list.map((i, idx) => `
+        <div class="materia-tabs__panel${idx === 0 ? ' is-active' : ''}" role="tabpanel" data-tab-panel="${idx}">${i.html ?? ''}</div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderPessoas(items) {
+  const list = Array.isArray(items) ? items.filter(i => i.nome) : [];
+  if (list.length === 0) return '';
+  return `<div class="materia-block materia-pessoas">
+    ${list.map(p => `
+      <div class="materia-pessoa">
+        <div class="materia-pessoa__photo">
+          ${p.imageUrl
+            ? `<img src="${p.imageUrl}" alt="${esc(p.nome)}" loading="lazy" />`
+            : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>`}
+        </div>
+        <h3 class="materia-pessoa__nome">${esc(p.nome)}</h3>
+        ${p.cargo ? `<span class="materia-pessoa__cargo">${esc(p.cargo)}</span>` : ''}
+        ${p.bio ? `<p class="materia-pessoa__bio">${esc(p.bio)}</p>` : ''}
+      </div>`).join('')}
   </div>`;
 }
 
@@ -123,6 +196,10 @@ function renderBlock(block) {
   if (type === 'timeline') {
     return renderTimeline({ items: block.timelineItems, orientation: block.timelineOrientation });
   }
+  if (type === 'kpis') return renderKpis(block.kpiItems);
+  if (type === 'accordion') return renderAccordion(block.accordionItems);
+  if (type === 'tabs') return renderTabs(block.tabItems);
+  if (type === 'pessoas') return renderPessoas(block.pessoaItems);
   if (type === 'quote') {
     return `<blockquote class="materia-block materia-block--quote">${block.content ?? ''}</blockquote>`;
   }
@@ -342,6 +419,7 @@ export async function loadMateriasInto(pageId, container, sb) {
     })).join('');
     bindForms(container, sb);
     initTimelines(container);
+    initCounters(container);
     // Each block fades in on its own as the visitor scrolls. The timeline
     // is skipped — it already animates its own items, and a second
     // transform on the wrapper would fight with that.
