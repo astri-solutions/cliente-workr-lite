@@ -2,6 +2,7 @@
 // Fetches published matérias from Supabase and renders them into the current page.
 import { fetchWithPreview } from './preview.js';
 import { initTimelines } from './timeline.js';
+import { observeReveals } from '../reveal.js';
 
 /**
  * Determines the current pageId by matching the current URL against siteConfig.nav.
@@ -86,8 +87,10 @@ function renderBlock(block) {
     const level = block.level ?? 2;
     return `<h${level} class="materia-block materia-block--heading">${block.content ?? ''}</h${level}>`;
   }
-  if (type === 'image-text') {
-    return `<div class="materia-block materia-block--image-text">
+  // Same markup for both; only the CSS modifier differs, so the mirrored
+  // variant can't drift out of sync with the original.
+  if (type === 'image-text' || type === 'text-image') {
+    return `<div class="materia-block materia-block--${type}">
       <div class="materia-block__media">${block.imageUrl ? `<img src="${block.imageUrl}" alt="${esc(block.imageAlt ?? '')}" loading="lazy" />` : ''}</div>
       <div class="materia-block__content">${block.html ?? ''}</div>
     </div>`;
@@ -339,6 +342,11 @@ export async function loadMateriasInto(pageId, container, sb) {
     })).join('');
     bindForms(container, sb);
     initTimelines(container);
+    // Each block fades in on its own as the visitor scrolls. The timeline
+    // is skipped — it already animates its own items, and a second
+    // transform on the wrapper would fight with that.
+    container.querySelectorAll('.materia-block:not(.timeline)').forEach(el => el.setAttribute('data-reveal', ''));
+    observeReveals(container);
     container.classList.add('materias--loaded');
 
     // The blank-page template always ships a sibling "Em construção"
