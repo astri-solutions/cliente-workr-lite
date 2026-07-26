@@ -1,9 +1,11 @@
 // scripts/components/timeline.js
-// Drives the "Linha do tempo" matéria block: fills the vertical line as the
-// user scrolls through it, fades each year in, and enlarges the year label
-// of whichever item is currently centered in the viewport.
+// Drives the "Linha do tempo" matéria block: fills the line as the user
+// scrolls through it, fades each item in, and enlarges the year label of
+// whichever item is currently centered in the viewport (or in the
+// horizontal scroller, for the horizontal variant).
 export function initTimelines(root = document) {
   root.querySelectorAll('.timeline--vertical[data-timeline]').forEach(initVerticalTimeline);
+  root.querySelectorAll('.timeline--horizontal[data-timeline]').forEach(initHorizontalTimeline);
 }
 
 function initVerticalTimeline(el) {
@@ -57,4 +59,62 @@ function initVerticalTimeline(el) {
     window.addEventListener('resize', onScroll);
     updateFill();
   }
+}
+
+// Horizontal — same idea, rotated 90°: the scroller itself (.timeline__items,
+// overflow-x: auto) is the "viewport" all measurements are relative to,
+// instead of the window. The track/fill live inside that scroller so they
+// travel with the content; the track's width is pinned to scrollWidth so
+// it always spans the full row, and the fill's width in px tracks how far
+// the row has been scrolled (up to its horizontal center).
+function initHorizontalTimeline(el) {
+  if (el.dataset.timelineInit) return;
+  el.dataset.timelineInit = '1';
+
+  const itemsEl = el.querySelector('.timeline__items');
+  const trackEl = el.querySelector('.timeline__track');
+  const fillEl = el.querySelector('[data-timeline-fill]');
+  const items = [...el.querySelectorAll('.timeline__item')];
+  if (!itemsEl || items.length === 0) return;
+
+  const visibilityObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('is-visible');
+    });
+  }, { root: itemsEl, threshold: 0.15 });
+
+  const activeObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle('is-active', entry.isIntersecting);
+    });
+  }, { root: itemsEl, rootMargin: '0px -45% 0px -45%', threshold: 0 });
+
+  items.forEach(item => {
+    visibilityObserver.observe(item);
+    activeObserver.observe(item);
+  });
+
+  if (!trackEl && !fillEl) return;
+
+  let ticking = false;
+  function updateTrack() {
+    ticking = false;
+    if (trackEl) trackEl.style.width = `${itemsEl.scrollWidth}px`;
+    if (fillEl) {
+      const center = itemsEl.scrollLeft + itemsEl.clientWidth / 2;
+      fillEl.style.width = `${Math.max(0, Math.min(itemsEl.scrollWidth, center))}px`;
+    }
+  }
+  function onChange() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateTrack);
+  }
+  itemsEl.addEventListener('scroll', onChange, { passive: true });
+  window.addEventListener('resize', onChange);
+  // Images loading in changes scrollWidth after the initial layout pass.
+  itemsEl.querySelectorAll('img').forEach(img => {
+    if (!img.complete) img.addEventListener('load', onChange, { once: true });
+  });
+  updateTrack();
 }
