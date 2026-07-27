@@ -221,9 +221,9 @@ function renderGroupedList(list, pageId, sb, lang, primaryLang, visibleCounts, s
   // additionally paginate what's inside it once it's opened. Every doc in
   // the group renders; visibleCounts/PAGE_SIZE only apply to flat/tabela/
   // secao, where everything is visible at once and needs its own limit.
-  const groupHtml = groups.map((g, idx) => `
-    <div class="accordion__item${idx === 0 ? ' accordion__item--open' : ''}" data-accordion-item>
-      <button class="accordion__trigger" type="button" aria-expanded="${idx === 0 ? 'true' : 'false'}">
+  const groupHtml = groups.map(g => `
+    <div class="accordion__item" data-accordion-item>
+      <button class="accordion__trigger" type="button" aria-expanded="false">
         <span class="accordion__label">${g.label}</span>
         <span class="accordion__icon" aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
