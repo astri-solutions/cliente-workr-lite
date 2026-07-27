@@ -115,11 +115,11 @@ function docItemHtml(d, sb, lang, primaryLang) {
     <div class="doc-list__info">
       <span class="doc-list__date">${formatDate(dateOf(d))}</span>
       <span class="doc-list__sep" aria-hidden="true">—</span>
-      <span class="doc-list__title">${title}</span>
+      <a href="${href}" class="doc-list__title doc-list__title-link" target="_blank" rel="noopener">${title}</a>
     </div>
     <div class="doc-list__actions">
       <a href="${href}" class="doc-list__link doc-list__icon" aria-label="Baixar ${title}" target="_blank" rel="noopener">
-        ${fileBadgeSvg(file.filePath ?? file.externalLink ?? '', !!file.externalLink)}
+        ${fileBadgeSvg(file.filePath ?? file.externalLink ?? '')}
       </a>
     </div>
   </li>`;
@@ -131,10 +131,12 @@ function tableRowHtml(d, sb, lang, primaryLang) {
   const title = titleOf(d, lang);
   return `<tr class="doc-table__row">
     <td class="doc-table__cell doc-table__cell--date">${formatDate(dateOf(d))}</td>
-    <td class="doc-table__cell doc-table__cell--name">${title}</td>
+    <td class="doc-table__cell doc-table__cell--name">
+      <a href="${href}" class="doc-table__title-link" target="_blank" rel="noopener">${title}</a>
+    </td>
     <td class="doc-table__cell doc-table__cell--action">
       <a href="${href}" class="doc-list__link doc-list__icon" aria-label="Baixar ${title}" target="_blank" rel="noopener">
-        ${fileBadgeSvg(file.filePath ?? file.externalLink ?? '', !!file.externalLink)}
+        ${fileBadgeSvg(file.filePath ?? file.externalLink ?? '')}
       </a>
     </td>
   </tr>`;
