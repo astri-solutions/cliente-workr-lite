@@ -3,6 +3,14 @@
 // Todos os campos marcados com ← são injetados automaticamente na criação do portal.
 export const siteConfig = {
 
+  // false → site normal. true → tela de manutenção em todas as páginas
+  // (page.js), exceto em modo preview.
+  maintenance: false,
+
+  // Idiomas ativos do portal — o primeiro é o idioma principal (fallback de
+  // todo texto por-locale: footer.content, cookies.content, splash, etc.).
+  languages: ['pt-BR'],
+
   company: {
     name:        'Workr Lite - Astri teste',   // ← company.name
     nameShort:   'Workr Lite Teste',            // ← company.nameShort
@@ -88,6 +96,55 @@ export const siteConfig = {
     variant: 'navbar-default', // 'navbar-default' | 'navbar-dark' | 'navbar-blur'
   },
 
+  // Barra superior (topbar.js) — links fixos + ticker de cotação.
+  topbar: {
+    ri: { label: 'Relações com Investidores', url: '/' },
+    institucional: { label: 'Institucional', url: '#' },
+    showTicker: true,
+  },
+
+  // Slides do banner/hero da home (carousel.js). Vazio = usa os placeholders
+  // estáticos definidos no próprio carousel.js.
+  banner: [],
+
+  // Atalhos exibidos na home (page.js) — vazio = nenhum atalho é mostrado.
+  home: {
+    shortcuts: [],
+  },
+
+  // Modal de anúncio exibido na home a cada carregamento (splash.js).
+  splash: {
+    enabled: false,
+    size: 'md', // 'sm' | 'md' | 'lg'
+    imageUrl: '',
+    titulo: '',
+    texto: '',
+    conteudo: '',
+    legenda: '',
+    buttons: [],
+  },
+
+  // Banner de consentimento de cookies (cookies.js) — texto por idioma em
+  // content[lang], com fallback para o idioma principal.
+  cookies: {
+    enabled: true,
+    content: {
+      'pt-BR': {
+        title: 'Nós usamos cookies',
+        description: 'Utilizamos cookies para melhorar sua experiência de navegação. Ao continuar, você concorda com nossa política de cookies.',
+        linkText: 'Saiba mais',
+        acceptLabel: 'Aceitar todos',
+        rejectLabel: 'Rejeitar',
+        customizeLabel: 'Personalizar',
+      },
+    },
+    buttons: [],
+  },
+
+  // Textos customizados para páginas de erro (404 etc.) — hoje só
+  // sobrescrito via preview.js; nenhuma página estática ainda lê este campo.
+  errorPages: {},
+
   // Nav items only visible after login (área restrita)
   restrictedNav: [
     {
@@ -103,11 +160,20 @@ export const siteConfig = {
 
   footer: {
     variant: 'simple', // 'full' | 'simple'
-    address:   'Av. Brigadeiro Faria Lima, 2.277, 17º andar — São Paulo/SP, CEP 01452-000',
-    email:     'workrlite@astri.com',
-    phone:     '(11) 1234-5678',
-    hours:     'Segunda a sexta, das 08h às 18h, exceto feriados.',
-    copyright: `©Copyright Workr Lite - Astri teste ${new Date().getFullYear()}`,
+    email: 'workrlite@astri.com',
+    // Texto por idioma — footer.js lê footer.content[lang], com fallback
+    // para o idioma principal (languages[0]). address/phone/hours/copyright/
+    // disclaimer soltos direto em footer NÃO são lidos por nada — só o que
+    // está aqui dentro de content[lang] chega à tela.
+    content: {
+      'pt-BR': {
+        address:    'Av. Brigadeiro Faria Lima, 2.277, 17º andar — São Paulo/SP, CEP 01452-000',
+        phone:      '(11) 1234-5678',
+        hours:      'Segunda a sexta, das 08h às 18h, exceto feriados.',
+        copyright:  `©Copyright Workr Lite - Astri teste ${new Date().getFullYear()}`,
+        disclaimer: 'As informações contidas neste site são de caráter meramente informativo e não constituem oferta de valores mobiliários.',
+      },
+    },
     social: {
       linkedin:  '#',
       instagram: '#',
@@ -118,7 +184,6 @@ export const siteConfig = {
       { label: 'Política de Privacidade', href: '/politica-de-privacidade.html' },
       { label: 'Definições de Cookies',   href: '/definicao-de-cookies.html'    },
     ],
-    legalText: 'As informações contidas neste site são de caráter meramente informativo e não constituem oferta de valores mobiliários.',
   },
 
 };
