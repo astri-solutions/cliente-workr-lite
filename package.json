@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Site RI — Workr Lite - Astri teste",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev":   "vite",
     "build": "vite build",
